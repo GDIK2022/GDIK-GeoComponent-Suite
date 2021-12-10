@@ -1,12 +1,11 @@
 {
-  "name": "mpmap",
+  "name": "@lgln/waas-web-mpmap",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "parcel index.html",
-    "build": "gulp build",
     "build-wc": "npm run build-wc:webpack",
     "build-wc:clean": "rm -rf dist && mkdir dist",
     "build-wc:webpack": "webpack"
