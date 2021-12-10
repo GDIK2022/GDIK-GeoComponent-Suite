@@ -98,3 +98,6 @@ class MPMap extends HTMLElement {
 
 window.customElements.define('mp-map', MPMap)
 
+module.exports = {
+     MPMap
+}
