@@ -1,0 +1,16 @@
+.idea
+node_modules
+docs
+coverage
+.cache
+.parcel-cache
+
+package-lock.json
+style.css
+index.html
+.gitignore
+babel.config.js
+config.json
+index.js
+README.md
+webpack.config.js
