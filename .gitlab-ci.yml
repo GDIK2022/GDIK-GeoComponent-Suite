@@ -16,6 +16,7 @@ npm-install:
   cache:
     <<: *global_cache
   script:
+    - npm install
     - npm ci
 
 npm-build:
