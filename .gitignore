@@ -1,0 +1,9 @@
+.idea
+node_modules
+dist
+docs
+coverage
+.cache
+.parcel-cache
+
+package-lock.json
