@@ -23,7 +23,7 @@ npm-build:
   stage: build
   image: node:14.18.1
   script:
-    - npm run build-wc
+    # - npm run build-wc
   artifacts:
     paths:
       - ./dist
