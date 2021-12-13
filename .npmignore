@@ -11,6 +11,5 @@ index.html
 .gitignore
 babel.config.js
 config.json
-index.js
 README.md
 webpack.config.js

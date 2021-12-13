@@ -1,9 +1,10 @@
+"use strict";
 import mpAPI from 'masterportalAPI/abstraction/map';
 import * as defaultConfig from './config.json'
 // TODO: remove for prod
 // import 'babel-polyfill';
 
-class MPMap extends HTMLElement {
+export default class MPMap extends HTMLElement {
      map
      container
      configURL
@@ -96,8 +97,4 @@ class MPMap extends HTMLElement {
      }
 }
 
-window.customElements.define('mp-map', MPMap)
 
-module.exports = {
-     MPMap
-}
