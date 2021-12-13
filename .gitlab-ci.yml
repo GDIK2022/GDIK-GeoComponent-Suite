@@ -1,6 +1,4 @@
 stages:
-  - init
-  - build
   - package
 
 cache: &global_cache
@@ -8,27 +6,6 @@ cache: &global_cache
   paths:
     - node_modules/
   policy: pull-push
-
-npm-install:
-  stage: init
-  image: node:14.18.1
-  interruptible: true
-  cache:
-    <<: *global_cache
-  script:
-    - npm install
-    - npm ci
-
-npm-build:
-  stage: build
-  image: node:14.18.1
-  script:
-    - npm run build-wc
-  artifacts:
-    paths:
-      - ./dist
-    expire_in: 1 hrs
-    when: on_success
 
 
 # To contribute improvements to CI/CD templates, please follow the Development guide at:
