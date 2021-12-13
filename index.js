@@ -1,22 +1,19 @@
-"use strict";
 import mpAPI from 'masterportalAPI/abstraction/map';
 import * as defaultConfig from './config.json'
-// TODO: remove for prod
-// import 'babel-polyfill';
 
 export default class MPMap extends HTMLElement {
-     map
-     container
-     configURL
-     config
 
      static get observedAttributes() {
           return ['lon', 'lat', 'layer'];
      }
 
      constructor() {
-          window.errorMessages = []
           super();
+          this.map = undefined
+          this.container = undefined
+          this.configURL = undefined
+          this.config = undefined
+          window.errorMessages = []
      }
 
      async connectedCallback() {
@@ -96,5 +93,3 @@ export default class MPMap extends HTMLElement {
           }
      }
 }
-
-
