@@ -13,3 +13,4 @@ babel.config.js
 config.json
 README.md
 webpack.config.js
+.gitlab-ci.yml
