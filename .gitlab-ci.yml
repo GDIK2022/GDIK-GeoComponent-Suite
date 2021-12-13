@@ -1,6 +1,5 @@
 stages:
   - init
-  - build
   - package
 
 cache: &global_cache
@@ -18,18 +17,6 @@ npm-install:
   script:
     - npm install
     - npm ci
-
-npm-build:
-  stage: build
-  image: node:14.18.1
-  script:
-    # - npm run build-wc
-  artifacts:
-    paths:
-      - ./dist
-    expire_in: 1 hrs
-    when: on_success
-
 
 # To contribute improvements to CI/CD templates, please follow the Development guide at:
 # https://docs.gitlab.com/ee/development/cicd/templates.html
