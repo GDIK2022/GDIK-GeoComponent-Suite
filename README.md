@@ -31,7 +31,7 @@ The recommended way to integrate the web component is to install the npm package
 | lon        | no       | string     | 448360.0   | yes      | center position |
 | lat        | no       | string     | 5888434.0  | yes      | center position |
 |layer       | no       | string     | 1001       | yes      | 
-| config-url | no       | string     | -          | no       | zoom level |
+| config-url | no       | string     | -          | no       | comfig file url |
 | map-height | no       | string     | 100%       | no       | height of the map, css value |
 | map-width  | no       | string     | 100%       | no       | width of the map, css value |
 
