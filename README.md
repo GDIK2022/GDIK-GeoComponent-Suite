@@ -1,13 +1,20 @@
 # MP Map
 Interactive map as a web component based on the master portal API
 
-## Usage
-### Development setup
+## Development
+### Setup
 To start a development environment for development purposes follow these steps:
 1. npm install
 2. add *import 'babel-polyfill'* to index.js
 3. npm run dev
 
+### Packaging
+1. remove *import babel-polyfill* from index.js
+2. commit all changes
+3. run *npm version | major | minor | patch |* to create a new Tag, [see also](https://docs.npmjs.com/cli/v8/commands/npm-version).
+4. push your changes to main
+
+## Usage
 ### Import web component as npm package
 The recommended way to integrate the web component is to install the npm package. To do this follow the steps below:
 1. If you still need a [personal access token](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html) for gitlab, create it now.
