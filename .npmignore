@@ -9,7 +9,5 @@ package-lock.json
 style.css
 index.html
 .gitignore
-babel.config.js
 README.md
-webpack.config.js
 .gitlab-ci.yml
