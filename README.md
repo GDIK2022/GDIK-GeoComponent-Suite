@@ -1,5 +1,5 @@
 # MP Map
-Interactive map as a web component based on the master portal API
+Interactive map as a web component based on the masterportal API
 
 ## Development
 ### Setup
