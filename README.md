@@ -24,7 +24,7 @@ The recommended way to integrate the web component is to install the npm package
 5. To use the component u have to import it with ``import '@lgln/waas-web-mpmap/src/index'``
 
 ### Attributes
-####Tag: <mp-map>
+#### Tag: <mp-map>
 
 | Name       | Required | Type       | Default    | Reactive | Description |
 |------------|----------|------------|------------|----------|-------------|
@@ -35,6 +35,6 @@ The recommended way to integrate the web component is to install the npm package
 | map-height | no       | string     | 100%       | no       | height of the map, css value |
 | map-width  | no       | string     | 100%       | no       | width of the map, css value |
 
-###Examples
+### Examples
 #### Example usage in Vue
 ```<mp-map config-url="data/config.json" :lon="center[0]" :lat="center[1]"></mp-map>```
