@@ -1,5 +1,6 @@
-import mpAPI from 'masterportalAPI/abstraction/map';
+import mpAPI from 'masterportalapi/abstraction/map'
 import * as defaultConfig from './config.json'
+// import 'babel-polyfill'
 
 export default class MPMap extends HTMLElement {
 
@@ -93,3 +94,5 @@ export default class MPMap extends HTMLElement {
           }
      }
 }
+
+customElements.define('mp-map', MPMap)
