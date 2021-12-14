@@ -1,4 +1,4 @@
-import mpAPI from 'masterportalapi/abstraction/map'
+import mpAPI from 'masterportalAPI/abstraction/map'
 import * as defaultConfig from './config.json'
 // import 'babel-polyfill'
 
