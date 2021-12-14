@@ -21,6 +21,7 @@ npm-publish:
   #      changes:
   #        - package.json
   script:
+    - npm version patch
     # If no .npmrc is included in the repo, generate a temporary one that is configured to publish to GitLab's NPM registry
     - |
       if [[ ! -f .npmrc ]]; then
