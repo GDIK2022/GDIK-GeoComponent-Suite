@@ -1,5 +1,5 @@
 # MP Map
-Interactive map as a web component based on the masterportal API
+Interactive map as a web component based on masterportal API
 
 ## Development
 ### Setup
@@ -21,14 +21,14 @@ The recommended way to integrate the web component is to install the npm package
 2. Create a .npmrc file in the root directory of your project if it does not already exist
 3. Add the following code to your .npmrc file:
     ```
-   @lgln-gitlab:registry=https://gitlab.com/api/v4/projects/31983335/packages/npm/
-   //gitlab.com/api/v4/projects/31983335/packages/npm/:_authToken=<Git-Token>
+   @lgln-gitlab:registry=https://gitlab.com/api/v4/projects/32732745/packages/npm/
+   //gitlab.com/api/v4/projects/32732745/packages/npm/:_authToken=<Git-Token>
    ```
 4. Now execute the following command in the root directory:
     ```
-    npm i @lgln/waas-web-mp-map
+    npm i @lgln/waas-web-map
     ```
-5. To use the component u have to import it with ``import '@lgln/waas-web-mpmap/src/index'``
+5. To use the component u have to import it with ``import '@lgln/waas-web-map/src/index'``
 
 ### Attributes
 #### Tag: <mp-map>
