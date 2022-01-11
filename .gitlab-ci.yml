@@ -26,8 +26,8 @@ npm-publish:
       if [[ ! -f .npmrc ]]; then
         echo 'No .npmrc found! Creating one now. Please review the following link for more information: https://docs.gitlab.com/ee/user/packages/npm_registry/index.html#project-level-npm-endpoint-1'
         {
-          echo "@${CI_PROJECT_ROOT_NAMESPACE}:registry=${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/npm/"
-          echo "${CI_API_V4_URL#http*:}/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=\${CI_JOB_TOKEN}"
+          echo "@${CI_PROJECT_ROOT_NAMESPACE}:registry=${CI_API_V4_URL}/projects/30836127/packages/npm/"
+          echo "${CI_API_V4_URL#http*:}/projects/30836127/packages/npm/:_authToken=\${CI_JOB_TOKEN}"
         } >> .npmrc
       fi
     - echo "Created the following .npmrc:"; cat .npmrc
