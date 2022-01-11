@@ -1,5 +1,5 @@
 {
-  "name": "@lgln/waas-web-mp-map",
+  "name": "@lgln/waas-web-map",
   "version": "0.0.5",
   "description": "",
   "main": "src/index.js",
@@ -8,10 +8,13 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "parcel src/index.html"
   },
+  "publishConfig": {
+    "@lgln:registry": "https://gitlab.com/api/v4/projects/32732745/packages/npm/"
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "masterportalAPI": "bitbucket:geowerkstatt-hamburg/masterportalapi"
+    "masterportalAPI": "bitbucket:geowerkstatt-hamburg/masterportalapi#b9e9b83"
   },
   "devDependencies": {
     "babel-polyfill": "6.26.0",
