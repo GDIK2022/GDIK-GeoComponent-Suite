@@ -3,6 +3,7 @@ node_modules
 dist
 .cache
 .parcel-cache
+coverage
 
 package-lock.json
 .npmrc
