@@ -31,7 +31,7 @@ The recommended way to integrate the web component is to install the npm package
 5. To use the component u have to import it with ``import '@lgln/waas-web-map/src/index'``
 
 ### Attributes
-#### Tag: <mp-map>
+#### Tag: <gdik-map>
 
 | Name       | Required | Type       | Default    | Reactive | Description |
 |------------|----------|------------|------------|----------|-------------|
@@ -44,4 +44,4 @@ The recommended way to integrate the web component is to install the npm package
 
 ### Examples
 #### Example usage in Vue
-```<mp-map config-url="data/config.json" :lon="center[0]" :lat="center[1]"></mp-map>```
+```<gdik-map config-url="data/config.json" :lon="center[0]" :lat="center[1]"></gdik-map>```
