@@ -1,4 +1,4 @@
-import { GDIKMap } from "../../../src/components";
+import GDIKMap from "../../../src/components/gdik-map/GDIKMap";
 
 describe("Init gdik-map", () => {
   it("can create gdik-map component", () => {
