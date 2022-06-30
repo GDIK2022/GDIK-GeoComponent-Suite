@@ -1,0 +1,47 @@
+{
+     "portal": {
+          "epsg": "EPSG:25832",
+          "namedProjections": [
+               ["EPSG:25832", "+title=ETRS89/UTM 32N +proj=utm +zone=32 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"]
+          ],
+          "extent": [400000.0, 5000000.0, 500000.0, 6000000.0],
+          "startCenter": [450000.0, 5500000.0],
+          "units": "m",
+          "layerConf": "",
+          "menu": {
+               "tree": "test"
+          },
+          "layers": [
+               {
+                    "id": "1002"
+
+               }
+          ]
+     },
+     "services": [
+          {
+               "id": "1001",
+               "typ": "WMS",
+               "name": "WebAtlasDe",
+               "url": "https://sg.geodatenzentrum.de/wms_webatlasde__54a30b0f-b92f-34ba-39c0-3af32cfa13d6",
+               "version": "1.1.1",
+               "layers": "webatlasde",
+               "transparent": true,
+               "singleTile": false,
+               "tilesize": 256,
+               "gutter": 0
+          },
+          {
+               "id": "1002",
+               "typ": "WMS",
+               "name": "TopPlusOpen - Farbe",
+               "url": "https://sgx.geodatenzentrum.de/wms_topplus_open",
+               "version": "1.1.1",
+               "layers": "web",
+               "transparent": true,
+               "singleTile": false,
+               "tilesize": 256,
+               "gutter": 20
+          }
+     ]
+}

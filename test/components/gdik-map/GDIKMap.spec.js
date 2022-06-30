@@ -1,7 +1,16 @@
+import { enableFetchMocks } from 'jest-fetch-mock';
+enableFetchMocks();
+
 import GDIKMap from "../../../src/components/gdik-map/GDIKMap";
 import * as defaultConfig from "../../../src/components/gdik-map/assets/config.json";
+import * as customConfig from "./assets/config.json";
 
 describe("Init gdik-map", () => {
+
+    beforeEach(() => {
+        fetch.resetMocks();
+    })
+
     it("can create gdik-map component", () => {
         expect(GDIKMap).toBeDefined();
 
@@ -10,7 +19,7 @@ describe("Init gdik-map", () => {
         expect(component).toBeDefined();
     });
 
-    it("use values from default config", async () => {
+    it("should use values from default config", async () => {
         const component = new GDIKMap();
 
         await component.connectedCallback();
@@ -21,5 +30,16 @@ describe("Init gdik-map", () => {
         expect(component.map.getView().getCenter()).toEqual(defaultConfig.portal.startCenter);
 
         expect(component.getAttribute("layer")).toBe("1001");
+    });
+
+    it("should use values from given config", async () => {
+        fetch.mockResponseOnce(JSON.stringify(customConfig));
+        const component = new GDIKMap(),
+            loadedConfig = await component.fetchConfig("https://www.heise.de");
+
+        expect(loadedConfig).not.toBe(false);
+        expect(loadedConfig.portal).not.toBe(undefined);
+        expect(loadedConfig.portal.startCenter).toEqual(customConfig.portal.startCenter);
+
     });
 });

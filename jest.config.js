@@ -1,5 +1,6 @@
 /* eslint-env node */
 module.exports = {
+    automock: false,
     /** ol prints errors without HTMLCanvasElement being available in test environment */
     setupFiles: ["jest-canvas-mock"],
     testEnvironment: "jsdom",
