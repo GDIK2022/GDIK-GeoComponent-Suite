@@ -15,6 +15,7 @@ export default class GDIKMap extends HTMLElement {
         this.container = undefined;
         this.configURL = undefined;
         this.config = undefined;
+        this.activeLayer = undefined;
         window.errorMessages = [];
     }
 
@@ -36,8 +37,6 @@ export default class GDIKMap extends HTMLElement {
 
         shadow.appendChild(this.container);
 
-        !this.hasAttribute("layer") && this.setAttribute("layer", "1001");
-
         // load defautconfig
         this.config = await this.fetchConfig();
 
@@ -52,6 +51,14 @@ export default class GDIKMap extends HTMLElement {
             this.center = this.map.getView().getCenter();
             this.setAttribute("lon", this.center[0]);
             this.setAttribute("lat", this.center[1]);
+        }
+        if (this.hasAttribute("layer")) {
+            // TODO implement
+        }
+        else {
+            // in default config we only have one layer defined atm
+            this.activeLayer = this.getVisibleLayers()[0].get("id");
+            this.setAttribute("layer", this.activeLayer);
         }
 
         this.map.on("moveend", () => {
@@ -94,27 +101,36 @@ export default class GDIKMap extends HTMLElement {
     }
 
     attributeChangedCallback (name, oldValue, newValue) {
-        if (this.map && this.container && (newValue !== oldValue)) {
-            switch (name) {
-                case "lon":
-                    this.map.getView().setCenter([newValue, this.center[1]]);
-                    break;
-                case "lat":
-                    this.map.getView().setCenter([this.center[0], newValue]);
-                    break;
-                case "layer":
-                    if (this.config.services.some(service => service.id === newValue)) {
-                        this.map.addLayer(newValue);
-                        this.map.removeLayer(this.getLayer(oldValue));
-                    }
-                    else {
-                        this.setAttribute("layer", oldValue);
-                    }
-                    break;
-                default:
-                    break;
-            }
+        if (!this.map || !this.container || !oldValue || newValue === oldValue) {
+            return;
         }
+
+        switch (name) {
+            case "lon":
+                this.map.getView().setCenter([newValue, this.center[1]]);
+                break;
+            case "lat":
+                this.map.getView().setCenter([this.center[0], newValue]);
+                break;
+            case "layer":
+                if (this.config.services.some(service => service.id === newValue)) {
+                    this.map.addLayer(newValue);
+                    this.map.removeLayer(this.getLayer(oldValue));
+                }
+                else {
+                    this.setAttribute("layer", oldValue);
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    getVisibleLayers () {
+        return this.map.getLayers().getArray()
+            .filter(layer => {
+                return layer.getVisible();
+            });
     }
 }
 
