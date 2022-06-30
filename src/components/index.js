@@ -1,1 +1,1 @@
-export { GDIKMap } from "./gdik-map/GDIKMap";
+export {GDIKMap} from "./gdik-map/GDIKMap";

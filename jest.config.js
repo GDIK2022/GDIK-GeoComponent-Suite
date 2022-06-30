@@ -14,5 +14,5 @@ module.exports = {
     testPathIgnorePatterns: ["<rootDir>/(node_modules|bin|build)"],
     transform: {
         "^.+\\.jsx?$": "babel-jest"
-    },
+    }
 };
