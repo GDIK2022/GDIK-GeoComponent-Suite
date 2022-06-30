@@ -17,6 +17,9 @@ describe("Init gdik-map", () => {
 
         expect(Number(component.getAttribute("lon"))).toBe(defaultConfig.portal.startCenter[0]);
         expect(Number(component.getAttribute("lat"))).toBe(defaultConfig.portal.startCenter[1]);
+
+        expect(component.map.getView().getCenter()).toEqual(defaultConfig.portal.startCenter);
+
         expect(component.getAttribute("layer")).toBe("1001");
     });
 });

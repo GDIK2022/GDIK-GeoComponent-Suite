@@ -22,10 +22,9 @@ export default class GDIKMap extends HTMLElement {
         // TODO set styling defaults in style file or block
         !this.hasAttribute("map-height") && this.setAttribute("map-height", "100%");
         !this.hasAttribute("map-width") && this.setAttribute("map-width", "100%");
-        !this.hasAttribute("lon") && this.setAttribute("lon", "448360.0");
-        !this.hasAttribute("lat") && this.setAttribute("lat", "5888434.0");
-        !this.hasAttribute("layer") && this.setAttribute("layer", "1001");
 
+        // init html container
+        // TODO move to template and style files
         this.configURL = this.getAttribute("config-url");
         this.container = document.createElement("div");
         this.container.id = "map-div-id";
@@ -37,10 +36,23 @@ export default class GDIKMap extends HTMLElement {
 
         shadow.appendChild(this.container);
 
-        this.center = [this.getAttribute("lon"), this.getAttribute("lat")];
+        !this.hasAttribute("layer") && this.setAttribute("layer", "1001");
+
+        // load defautconfig
         this.config = await this.fetchConfig();
+
         this.map = this.setupMap(this.config);
-        this.map.getView().setCenter(this.center);
+
+        // get attributes
+        if (this.hasAttribute("lon") && this.hasAttribute("lat")) {
+            this.center = [this.getAttribute("lon"), this.getAttribute("lat")];
+            this.map.getView().setCenter(this.center);
+        }
+        else {
+            this.center = this.map.getView().getCenter();
+            this.setAttribute("lon", this.center[0]);
+            this.setAttribute("lat", this.center[1]);
+        }
 
         this.map.on("moveend", () => {
             this.center = this.map.getView().getCenter();
@@ -59,11 +71,13 @@ export default class GDIKMap extends HTMLElement {
         let config = defaultConfig,
             response;
 
+        if (!this.configURL) {
+            return config;
+        }
+
         try {
-            if (this.configURL) {
-                response = await fetch(this.configURL);
-                config = await response.json();
-            }
+            response = await fetch(this.configURL);
+            config = await response.json();
         }
         catch (err) {
             window.errorMessages
