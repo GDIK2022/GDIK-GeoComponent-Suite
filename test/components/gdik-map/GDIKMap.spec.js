@@ -19,6 +19,22 @@ describe("Init gdik-map", () => {
         expect(component).toBeDefined();
     });
 
+    it("should render gdik-map component", async () => {
+        const component = new GDIKMap();
+
+        await component.connectedCallback();
+
+        const componentRoot = component.shadowRoot.firstChild;
+        expect(componentRoot.nodeName).toBe("DIV");
+        expect(componentRoot.getAttribute("id")).toBe("map-div-id");
+
+        expect(componentRoot.style.height).toBe("100%");
+        expect(componentRoot.style.width).toBe("100%");
+        expect(componentRoot.style.margin).toBe("auto");
+
+        expect(componentRoot.firstChild.className).toBe("ol-viewport");
+    })
+
     it("should use values from default config", async () => {
         const component = new GDIKMap();
 
