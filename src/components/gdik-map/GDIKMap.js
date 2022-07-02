@@ -38,26 +38,20 @@ export default class GDIKMap extends HTMLElement {
 
         // load defautconfig
         this.config = await this.fetchConfig(this.configURL);
+
+        if (this.hasAttribute("lon") && this.hasAttribute("lat")) {
+            this.config.portal.startCenter = [this.getAttribute("lon"), this.getAttribute("lat")];
+        }
+
+        if (this.hasAttribute("layer")) {
+            this.config.portal.layers = [{id: this.getAttribute("layer")}];
+        }
+
         this.map = this.setupMap(this.config);
 
-        // get attributes
-        if (this.hasAttribute("lon") && this.hasAttribute("lat")) {
-            this.center = [this.getAttribute("lon"), this.getAttribute("lat")];
-            this.map.getView().setCenter(this.center);
-        }
-        else {
-            this.center = this.map.getView().getCenter();
-            this.setAttribute("lon", this.center[0]);
-            this.setAttribute("lat", this.center[1]);
-        }
-        if (this.hasAttribute("layer")) {
-            // TODO implement
-        }
-        else {
-            // in default config we only have one layer defined atm
-            this.activeLayer = this.getVisibleLayers()[0].get("id");
-            this.setAttribute("layer", this.activeLayer);
-        }
+        this.setAttribute("lon", this.config.portal.startCenter[0]);
+        this.setAttribute("lat", this.config.portal.startCenter[1]);
+        this.setAttribute("layer", this.config.portal.layers[0].id);
 
         this.map.on("moveend", () => {
             this.center = this.map.getView().getCenter();
