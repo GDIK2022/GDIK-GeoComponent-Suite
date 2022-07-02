@@ -16,7 +16,6 @@ export default class GDIKMap extends HTMLElement {
         this.configURL = undefined;
         this.config = undefined;
         this.activeLayer = undefined;
-        window.errorMessages = [];
     }
 
     async connectedCallback () {
@@ -38,7 +37,7 @@ export default class GDIKMap extends HTMLElement {
         shadow.appendChild(this.container);
 
         // load defautconfig
-        this.config = await this.fetchConfig();
+        this.config = await this.fetchConfig(this.ConfigURL);
 
         this.map = this.setupMap(this.config);
 
@@ -74,24 +73,24 @@ export default class GDIKMap extends HTMLElement {
         return layers.find(layer => layer.getId() === id);
     }
 
-    async fetchConfig () {
-        let config = defaultConfig,
-            response;
+    async fetchConfig (configUrl) {
+        const config = Object.assign({}, defaultConfig);
+        let loadedConfig = {}; 
 
-        if (!this.configURL) {
+        if (!configUrl) {
             return config;
         }
 
         try {
-            response = await fetch(this.configURL);
-            config = await response.json();
+            const resp = await fetch(configUrl)
+            loadedConfig = await resp.json();
         }
         catch (err) {
-            window.errorMessages
-                .push(`Die angegebene URL: ${this.configURL} konnte nicht erreicht werden.`);
-            window.errorMessages.push(err);
+            console.error(`Cannot reach given url: ${configUrl}`);
+            console.debug(`Original error was ${err}`);
+            console.info(`Fall back to default config`);
         }
-        return config;
+        return Object.assign(config, loadedConfig);
     }
 
     setupMap (config) {
