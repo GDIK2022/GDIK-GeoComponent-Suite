@@ -102,10 +102,10 @@ export default class GDIKMap extends HTMLElement {
 
         switch (name) {
             case "lon":
-                this.map.getView().setCenter([newValue, this.center[1]]);
+                this.map.getView().setCenter([newValue, this.map.getView().getCenter()[1]]);
                 break;
             case "lat":
-                this.map.getView().setCenter([this.center[0], newValue]);
+                this.map.getView().setCenter([this.map.getView().getCenter()[0], newValue]);
                 break;
             case "layer":
                 if (this.config.services.some(service => service.id === newValue)) {
