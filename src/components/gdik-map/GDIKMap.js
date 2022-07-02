@@ -73,11 +73,9 @@ export default class GDIKMap extends HTMLElement {
     }
 
     async fetchConfig (configUrl) {
-        const config = Object.assign({}, defaultConfig);
-        let loadedConfig = {}; 
-
+        let loadedConfig;
         if (!configUrl) {
-            return config;
+            return defaultConfig;
         }
 
         try {
@@ -88,8 +86,9 @@ export default class GDIKMap extends HTMLElement {
             console.error(`Cannot reach given url: ${configUrl}`);
             console.debug(`Original error was ${err}`);
             console.info(`Fall back to default config`);
+            return defaultConfig;
         }
-        return Object.assign(config, loadedConfig);
+        return loadedConfig;
     }
 
     setupMap (config) {
