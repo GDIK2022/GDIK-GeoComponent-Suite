@@ -1,3 +1,5 @@
+const merge = require("deepmerge");
+
 import mapsAPI from "masterportalAPI/src/maps/api.js";
 
 // TODO remove default config file
@@ -70,7 +72,7 @@ export default class GDIKMap extends HTMLElement {
         let loadedConfig;
 
         if (!configUrl) {
-            return defaultConfig;
+            return merge({}, defaultConfig);
         }
 
         try {
@@ -82,7 +84,7 @@ export default class GDIKMap extends HTMLElement {
             console.error(`Cannot reach given url: ${configUrl}`);
             console.debug(`Original error was ${err}`);
             console.warn("Fall back to default config");
-            return defaultConfig;
+            return merge({}, defaultConfig);
         }
         return loadedConfig;
     }
