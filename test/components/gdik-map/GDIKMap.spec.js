@@ -1,4 +1,4 @@
-import { enableFetchMocks } from 'jest-fetch-mock';
+import {enableFetchMocks} from "jest-fetch-mock";
 enableFetchMocks();
 
 import GDIKMap from "../../../src/components/gdik-map/GDIKMap";
@@ -9,7 +9,7 @@ describe("Init gdik-map", () => {
 
     beforeEach(() => {
         fetch.resetMocks();
-    })
+    });
 
     it("can create gdik-map component", () => {
         expect(GDIKMap).toBeDefined();
@@ -24,16 +24,15 @@ describe("Init gdik-map", () => {
 
         await component.connectedCallback();
 
-        const componentRoot = component.shadowRoot.firstChild;
-        expect(componentRoot.nodeName).toBe("DIV");
-        expect(componentRoot.getAttribute("id")).toBe("map-div-id");
+        expect(component.shadowRoot.firstChild.nodeName).toBe("DIV");
+        expect(component.shadowRoot.firstChild.getAttribute("id")).toBe("map-div-id");
 
-        expect(componentRoot.style.height).toBe("100%");
-        expect(componentRoot.style.width).toBe("100%");
-        expect(componentRoot.style.margin).toBe("auto");
+        expect(component.shadowRoot.firstChild.style.height).toBe("100%");
+        expect(component.shadowRoot.firstChild.style.width).toBe("100%");
+        expect(component.shadowRoot.firstChild.style.margin).toBe("auto");
 
-        expect(componentRoot.firstChild.className).toBe("ol-viewport");
-    })
+        expect(component.shadowRoot.firstChild.firstChild.className).toBe("ol-viewport");
+    });
 
     it("should use values from default config", async () => {
         const component = new GDIKMap();
@@ -60,7 +59,8 @@ describe("Init gdik-map", () => {
 
     it("should apply loaded config values to element attributes", async () => {
         fetch.mockResponseOnce(JSON.stringify(customConfig));
-        const component = new GDIKMap()
+        const component = new GDIKMap();
+
         component.setAttribute("config-url", "http://config.service/config.json");
 
         await component.connectedCallback();
@@ -91,5 +91,5 @@ describe("Init gdik-map", () => {
         expect(component.map.getView().getCenter()).toEqual([lon, lat]);
 
         expect(component.getAttribute("layer")).toBe(layer);
-    })
+    });
 });

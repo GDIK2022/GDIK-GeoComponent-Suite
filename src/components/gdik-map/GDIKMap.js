@@ -74,18 +74,20 @@ export default class GDIKMap extends HTMLElement {
 
     async fetchConfig (configUrl) {
         let loadedConfig;
+
         if (!configUrl) {
             return defaultConfig;
         }
 
         try {
-            const resp = await fetch(configUrl)
+            const resp = await fetch(configUrl);
+
             loadedConfig = await resp.json();
         }
         catch (err) {
             console.error(`Cannot reach given url: ${configUrl}`);
             console.debug(`Original error was ${err}`);
-            console.info(`Fall back to default config`);
+            console.warn("Fall back to default config");
             return defaultConfig;
         }
         return loadedConfig;

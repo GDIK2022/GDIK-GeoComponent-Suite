@@ -4,11 +4,11 @@
         "browser": true,
         "node": true,
         "es6": true,
-        "jest": true,
-        "fetchMock": true
+        "jest": true
     },
     "globals": {
-        "Cesium": true
+        "Cesium": true,
+        "fetchMock": true
     },
     "parserOptions": {
         "ecmaVersion": 2020,
@@ -22,7 +22,7 @@
         "getter-return": "error",
         "no-compare-neg-zero": "error",
         "no-cond-assign": ["error", "always"],
-        "no-console": ["error", { "allow": ["warn", "error"] }],
+        "no-console": ["error", { "allow": ["warn", "error", "debug"] }],
         "no-constant-condition": "error",
         "no-debugger": "error",
         "no-dupe-args": "error",
