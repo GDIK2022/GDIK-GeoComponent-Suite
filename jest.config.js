@@ -10,7 +10,7 @@ module.exports = {
     moduleNameMapper: {
         "marker.svg": "<rootDir>node_modules/masterportalAPI/public/stringMarker.js"
     },
-    transformIgnorePatterns: ["/node_modules/(?!(masterportalAPI|ol|olcs|ol-mapbox-style|geotiff)/).*/"],
+    transformIgnorePatterns: ["/node_modules/(?!(masterportalAPI|ol|olcs|ol-mapbox-style|geotiff|quick-lru)/).*/"],
     testMatch: ["<rootDir>/test/**/?(*.)(spec|test).js"],
     testPathIgnorePatterns: ["<rootDir>/(node_modules|bin|build)"],
     transform: {

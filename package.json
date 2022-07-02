@@ -12,7 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "masterportalAPI": "bitbucket:geowerkstatt-hamburg/masterportalapi#v2.3.0"
+    "masterportalAPI": "bitbucket:geowerkstatt-hamburg/masterportalAPI#v2.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.16.7",

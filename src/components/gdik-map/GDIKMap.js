@@ -1,4 +1,4 @@
-import mpAPI from "masterportalAPI/abstraction/map";
+import mapsAPI from "masterportalAPI/src/maps/api.js";
 
 // TODO remove default config file
 import * as defaultConfig from "./assets/config.json";
@@ -96,7 +96,7 @@ export default class GDIKMap extends HTMLElement {
     setupMap (config) {
         config.portal.target = this.container;
         this.container.innerHTML = "";
-        return mpAPI.createMap({...config.portal, layerConf: config.services});
+        return mapsAPI.map.createMap({...config.portal, layerConf: config.services}, "2D");
     }
 
     attributeChangedCallback (name, oldValue, newValue) {
