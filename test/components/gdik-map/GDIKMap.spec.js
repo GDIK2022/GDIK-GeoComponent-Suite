@@ -114,4 +114,20 @@ describe("Init gdik-map", () => {
 
         expect(component.getVisibleLayers()[0].get("id")).toBe(layer);
     });
+
+    it("should change lon lat attributes when map center changed", async () => {
+        const component = new GDIKMap(),
+            center = [450000.0, 5500000.0];
+
+        await component.connectedCallback();
+
+        expect(Number(component.getAttribute("lon"))).toBe(defaultConfig.portal.startCenter[0]);
+        expect(Number(component.getAttribute("lat"))).toBe(defaultConfig.portal.startCenter[1]);
+
+        component.map.getView().setCenter(center);
+        component.map.dispatchEvent("moveend");
+
+        expect(Number(component.getAttribute("lon"))).toBe(center[0]);
+        expect(Number(component.getAttribute("lat"))).toBe(center[1]);
+    });
 });
