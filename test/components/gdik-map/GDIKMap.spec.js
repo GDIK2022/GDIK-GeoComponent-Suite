@@ -41,4 +41,19 @@ describe("Init gdik-map", () => {
         expect(loadedConfig.portal).not.toBe(undefined);
         expect(loadedConfig).toEqual(customConfig);
     });
+
+    it("should apply loaded config values to element attributes", async () => {
+        fetch.mockResponseOnce(JSON.stringify(customConfig));
+        const component = new GDIKMap()
+        component.setAttribute("config-url", "http://config.service/config.json");
+
+        await component.connectedCallback();
+
+        expect(Number(component.getAttribute("lon"))).toBe(customConfig.portal.startCenter[0]);
+        expect(Number(component.getAttribute("lat"))).toBe(customConfig.portal.startCenter[1]);
+
+        expect(component.map.getView().getCenter()).toEqual(customConfig.portal.startCenter);
+
+        expect(component.getAttribute("layer")).toBe(customConfig.portal.layers[0].id);
+    })
 });
