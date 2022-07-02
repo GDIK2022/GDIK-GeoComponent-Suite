@@ -47,7 +47,7 @@ describe("Init gdik-map", () => {
         expect(component.getAttribute("layer")).toBe("1001");
     });
 
-    it("should extent default config with values from given config", async () => {
+    it("should use values from given config", async () => {
         fetch.mockResponseOnce(JSON.stringify(customConfig));
         const component = new GDIKMap(),
             loadedConfig = await component.fetchConfig("http://config.service/config.json");
