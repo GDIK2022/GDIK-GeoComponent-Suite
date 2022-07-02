@@ -55,5 +55,25 @@ describe("Init gdik-map", () => {
         expect(component.map.getView().getCenter()).toEqual(customConfig.portal.startCenter);
 
         expect(component.getAttribute("layer")).toBe(customConfig.portal.layers[0].id);
+    });
+
+    it("should apply values given by element attributes", async () => {
+        const component = new GDIKMap(),
+            lon = 450000.0,
+            lat = 5500000.0,
+            layer = "1002";
+
+        component.setAttribute("lon", lon);
+        component.setAttribute("lat", lat);
+        component.setAttribute("layer", layer);
+
+        await component.connectedCallback();
+
+        expect(Number(component.getAttribute("lon"))).toBe(lon);
+        expect(Number(component.getAttribute("lat"))).toBe(lat);
+
+        expect(component.map.getView().getCenter()).toEqual([lon, lat]);
+
+        expect(component.getAttribute("layer")).toBe(layer);
     })
 });
