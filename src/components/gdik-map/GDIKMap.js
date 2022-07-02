@@ -37,8 +37,7 @@ export default class GDIKMap extends HTMLElement {
         shadow.appendChild(this.container);
 
         // load defautconfig
-        this.config = await this.fetchConfig(this.ConfigURL);
-
+        this.config = await this.fetchConfig(this.configURL);
         this.map = this.setupMap(this.config);
 
         // get attributes
