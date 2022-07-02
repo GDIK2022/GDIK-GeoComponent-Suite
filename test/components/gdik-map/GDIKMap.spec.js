@@ -92,4 +92,26 @@ describe("Init gdik-map", () => {
 
         expect(component.getVisibleLayers()[0].get("id")).toBe(layer);
     });
+
+    it("should change map content on component attribute change", async () => {
+        const component = new GDIKMap(),
+            lon = 450000.0,
+            lat = 5500000.0,
+            layer = "1001";
+
+        await component.connectedCallback();
+
+        expect(Number(component.getAttribute("lon"))).toBe(defaultConfig.portal.startCenter[0]);
+        expect(Number(component.getAttribute("lat"))).toBe(defaultConfig.portal.startCenter[1]);
+
+        expect(component.getAttribute("layer")).toBe(defaultConfig.portal.layers[0].id);
+
+        component.setAttribute("lon", lon);
+        component.setAttribute("lat", lat);
+        component.setAttribute("layer", layer);
+
+        expect(component.map.getView().getCenter()).toEqual([lon, lat]);
+
+        expect(component.getVisibleLayers()[0].get("id")).toBe(layer);
+    });
 });
