@@ -90,6 +90,6 @@ describe("Init gdik-map", () => {
 
         expect(component.map.getView().getCenter()).toEqual([lon, lat]);
 
-        expect(component.getAttribute("layer")).toBe(layer);
+        expect(component.getVisibleLayers()[0].get("id")).toBe(layer);
     });
 });
