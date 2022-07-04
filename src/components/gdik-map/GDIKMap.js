@@ -45,35 +45,11 @@ export default class GDIKMap extends HTMLElement {
             this.config.portal.layers = [{id: this.getAttribute("layer")}];
         }
 
-        this.map = this.setupMap(this.config);
-
-        if (this.hasAttribute("draw-type")) {
-            switch (this.getAttribute("draw-type")) {
-                case "point":
-                    this.drawInteraction = new Draw({type: "Point", source: this.featureSource});
-                    this.drawInteraction.setActive(true);
-                    this.map.addInteraction(this.drawInteraction);
-                    this.map.addLayer(this.featureLayer);
-                    break;
-                default:
-                    console.error(`Unsupported draw type "${this.getAttribute("draw-type")}"`);
-                    break;
-            }
-        }
+        this.map = this.setupMap(this.config, {drawType: this.getAttribute("draw-type")});
 
         this.setAttribute("lon", this.config.portal.startCenter[0]);
         this.setAttribute("lat", this.config.portal.startCenter[1]);
         this.setAttribute("layer", this.config.portal.layers[0].id);
-
-        this.map.on("moveend", () => {
-            this.center = this.map.getView().getCenter();
-            this.setAttribute("lon", `${this.center[0]}`);
-            this.setAttribute("lat", `${this.center[1]}`);
-        });
-
-        this.featureSource.on("addfeature", () => {
-            this.setAttribute("feature", new GeoJSON().writeFeatures(this.featureSource.getFeatures()));
-        });
     }
 
     renderComponent () {
@@ -115,10 +91,39 @@ export default class GDIKMap extends HTMLElement {
         return loadedConfig;
     }
 
-    setupMap (config) {
+    setupMap (config, options) {
+        let map = null;
+
         config.portal.target = this.container;
         this.container.innerHTML = "";
-        return mapsAPI.map.createMap({...config.portal, layerConf: config.services}, "2D");
+
+        map = mapsAPI.map.createMap({...config.portal, layerConf: config.services}, "2D");
+
+        map.on("moveend", () => {
+            this.center = map.getView().getCenter();
+            this.setAttribute("lon", `${this.center[0]}`);
+            this.setAttribute("lat", `${this.center[1]}`);
+        });
+
+        this.featureSource.on("addfeature", () => {
+            this.setAttribute("feature", new GeoJSON().writeFeatures(this.featureSource.getFeatures()));
+        });
+
+        if (options.drawType !== null) {
+            switch (options.drawType) {
+                case "point":
+                    this.drawInteraction = new Draw({type: "Point", source: this.featureSource});
+                    this.drawInteraction.setActive(true);
+                    map.addInteraction(this.drawInteraction);
+                    map.addLayer(this.featureLayer);
+                    break;
+                default:
+                    console.error(`Unsupported draw type "${this.getAttribute("draw-type")}"`);
+                    break;
+            }
+        }
+
+        return map;
     }
 
     attributeChangedCallback (name, oldValue, newValue) {
