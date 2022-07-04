@@ -1,6 +1,8 @@
 const merge = require("deepmerge");
 
 import Draw from "ol/interaction/Draw";
+import VectorSource from "ol/source/Vector";
+import VectorLayer from "ol/layer/Vector";
 
 import mapsAPI from "masterportalAPI/src/maps/api.js";
 
@@ -21,6 +23,8 @@ export default class GDIKMap extends HTMLElement {
         this.config = undefined;
         this.activeLayer = undefined;
         this.drawInteraction = undefined;
+        this.featureSource = new VectorSource();
+        this.featureLayer = new VectorLayer({source: this.featureSource});
     }
 
     async connectedCallback () {
@@ -57,9 +61,10 @@ export default class GDIKMap extends HTMLElement {
         if (this.hasAttribute("draw-type")) {
             switch (this.getAttribute("draw-type")) {
                 case "point":
-                    this.drawInteraction = new Draw({type: "Point"});
+                    this.drawInteraction = new Draw({type: "Point", source: this.featureSource});
                     this.drawInteraction.setActive(true);
                     this.map.addInteraction(this.drawInteraction);
+                    this.map.addLayer(this.featureLayer);
                     break;
                 default:
                     console.error(`Unsupported draw type "${this.getAttribute("draw-type")}"`);
