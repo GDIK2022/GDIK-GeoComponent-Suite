@@ -1,6 +1,7 @@
 const merge = require("deepmerge");
 
 import Draw from "ol/interaction/Draw";
+import GeoJSON from "ol/format/GeoJSON";
 import VectorSource from "ol/source/Vector";
 import VectorLayer from "ol/layer/Vector";
 
@@ -80,6 +81,10 @@ export default class GDIKMap extends HTMLElement {
             this.center = this.map.getView().getCenter();
             this.setAttribute("lon", `${this.center[0]}`);
             this.setAttribute("lat", `${this.center[1]}`);
+        });
+
+        this.featureSource.on("addfeature", () => {
+            this.setAttribute("feature", new GeoJSON().writeFeatures(this.featureSource.getFeatures()));
         });
     }
 
