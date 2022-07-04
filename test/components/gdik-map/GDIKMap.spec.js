@@ -130,4 +130,18 @@ describe("Init gdik-map", () => {
         expect(Number(component.getAttribute("lon"))).toBe(center[0]);
         expect(Number(component.getAttribute("lat"))).toBe(center[1]);
     });
+
+    it("should have active draw interaction when draw-type set", async () => {
+        const component = new GDIKMap();
+        let drawInteraction;
+
+        component.setAttribute("draw-type", "point");
+
+        await component.connectedCallback();
+
+        drawInteraction = component.map.getInteractions().getArray().filter((interaction) => interaction === component.drawInteraction);
+        expect(drawInteraction.length).toBe(1);
+        drawInteraction = drawInteraction[0];
+        expect(drawInteraction.getActive()).toBe(true);
+    });
 });
