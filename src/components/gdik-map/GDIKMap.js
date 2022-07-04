@@ -63,9 +63,9 @@ export default class GDIKMap extends HTMLElement {
     }
 
     getLayer (id) {
-        const layers = this.map.getLayers();
+        const layers = this.map.getLayers().getArray();
 
-        return layers.find(layer => layer.getId() === id);
+        return layers.filter(layer => layer.get("id") === id);
     }
 
     async fetchConfig (configUrl) {
@@ -108,13 +108,9 @@ export default class GDIKMap extends HTMLElement {
                 this.map.getView().setCenter([this.map.getView().getCenter()[0], newValue]);
                 break;
             case "layer":
-                if (this.config.services.some(service => service.id === newValue)) {
-                    this.map.addLayer(newValue);
-                    this.map.removeLayer(this.getLayer(oldValue));
-                }
-                else {
-                    this.setAttribute("layer", oldValue);
-                }
+                // remove all layers from map
+                [...this.map.getLayers().getArray()].forEach((layer) => this.map.removeLayer(layer));
+                this.map.addLayer(newValue);
                 break;
             default:
                 break;
