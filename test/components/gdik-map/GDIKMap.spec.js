@@ -28,7 +28,7 @@ describe("Init gdik-map", () => {
         await component.connectedCallback();
 
         expect(component.shadowRoot.firstChild.nodeName).toBe("DIV");
-        expect(component.shadowRoot.firstChild.getAttribute("id")).toBe("map-div-id");
+        expect(component.shadowRoot.firstChild.getAttribute("id")).toMatch(/^gdik-map-div-[a-zA-Z0-9]*$/);
 
         expect(component.shadowRoot.firstChild.style.height).toBe("100%");
         expect(component.shadowRoot.firstChild.style.width).toBe("100%");

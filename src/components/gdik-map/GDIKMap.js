@@ -1,4 +1,5 @@
-const merge = require("deepmerge");
+const merge = require("deepmerge"),
+    ID_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
 import Draw from "ol/interaction/Draw";
 import GeoJSON from "ol/format/GeoJSON";
@@ -10,6 +11,7 @@ import mapsAPI from "masterportalAPI/src/maps/api.js";
 // TODO remove default config file
 import * as defaultConfig from "./assets/config.json";
 // import 'babel-polyfill'
+
 
 export default class GDIKMap extends HTMLElement {
     static get observedAttributes () {
@@ -29,24 +31,10 @@ export default class GDIKMap extends HTMLElement {
     }
 
     async connectedCallback () {
-        // TODO set styling defaults in style file or block
-        !this.hasAttribute("map-height") && this.setAttribute("map-height", "100%");
-        !this.hasAttribute("map-width") && this.setAttribute("map-width", "100%");
-
-        // init html container
-        // TODO move to template and style files
-        this.configURL = this.getAttribute("config-url");
-        this.container = document.createElement("div");
-        this.container.id = "map-div-id";
-        this.container.style.height = this.getAttribute("map-height");
-        this.container.style.width = this.getAttribute("map-width");
-        this.container.style.margin = "auto";
-
-        const shadow = this.attachShadow({mode: "open"});
-
-        shadow.appendChild(this.container);
+        this.renderComponent();
 
         // load defautconfig
+        this.configURL = this.getAttribute("config-url");
         this.config = await this.fetchConfig(this.configURL);
 
         if (this.hasAttribute("lon") && this.hasAttribute("lat")) {
@@ -86,6 +74,18 @@ export default class GDIKMap extends HTMLElement {
         this.featureSource.on("addfeature", () => {
             this.setAttribute("feature", new GeoJSON().writeFeatures(this.featureSource.getFeatures()));
         });
+    }
+
+    renderComponent () {
+        this.container = document.createElement("div");
+        this.container.id = this.generateContainerId();
+        this.container.style.height = "100%";
+        this.container.style.width = "100%";
+        this.container.style.margin = "auto";
+
+        const shadow = this.attachShadow({mode: "open"});
+
+        shadow.appendChild(this.container);
     }
 
     getLayer (id) {
@@ -148,6 +148,16 @@ export default class GDIKMap extends HTMLElement {
             .filter(layer => {
                 return layer.getVisible();
             });
+    }
+
+    generateContainerId (len) {
+        const length = len || 6;
+        let result = "";
+
+        for (let i = 0; i < length; i++) {
+            result += ID_CHARS.charAt(Math.floor(Math.random() * ID_CHARS.length));
+        }
+        return `gdik-map-div-${result}`;
     }
 }
 
