@@ -1,5 +1,7 @@
 const merge = require("deepmerge");
 
+import Draw from "ol/interaction/Draw";
+
 import mapsAPI from "masterportalAPI/src/maps/api.js";
 
 // TODO remove default config file
@@ -18,6 +20,7 @@ export default class GDIKMap extends HTMLElement {
         this.configURL = undefined;
         this.config = undefined;
         this.activeLayer = undefined;
+        this.drawInteraction = undefined;
     }
 
     async connectedCallback () {
@@ -50,6 +53,19 @@ export default class GDIKMap extends HTMLElement {
         }
 
         this.map = this.setupMap(this.config);
+
+        if (this.hasAttribute("draw-type")) {
+            switch (this.getAttribute("draw-type")) {
+                case "point":
+                    this.drawInteraction = new Draw({type: "Point"});
+                    this.drawInteraction.setActive(true);
+                    this.map.addInteraction(this.drawInteraction);
+                    break;
+                default:
+                    console.error(`Unsupported draw type "${this.getAttribute("draw-type")}"`);
+                    break;
+            }
+        }
 
         this.setAttribute("lon", this.config.portal.startCenter[0]);
         this.setAttribute("lat", this.config.portal.startCenter[1]);
