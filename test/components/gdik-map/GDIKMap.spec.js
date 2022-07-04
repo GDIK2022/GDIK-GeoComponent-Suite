@@ -97,7 +97,7 @@ describe("Init gdik-map", () => {
         const component = new GDIKMap(),
             lon = 450000.0,
             lat = 5500000.0,
-            layer = "1001";
+            layer = "1002";
 
         await component.connectedCallback();
 
