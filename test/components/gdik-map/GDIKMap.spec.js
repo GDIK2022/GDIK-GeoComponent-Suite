@@ -1,6 +1,9 @@
 import {enableFetchMocks} from "jest-fetch-mock";
 enableFetchMocks();
 
+import Feature from "ol/Feature";
+import Point from "ol/geom/Point";
+
 import GDIKMap from "../../../src/components/gdik-map/GDIKMap";
 import * as defaultConfig from "../../../src/components/gdik-map/assets/config.json";
 import * as customConfig from "./assets/config.json";
@@ -143,5 +146,32 @@ describe("Init gdik-map", () => {
         expect(drawInteraction.length).toBe(1);
         drawInteraction = drawInteraction[0];
         expect(drawInteraction.getActive()).toBe(true);
+    });
+
+    it("should have feature attribute with FeatureCollection containing drawed feature when feature added to draw layer", async () => {
+        const component = new GDIKMap();
+
+        component.setAttribute("draw-type", "point");
+
+        await component.connectedCallback();
+
+        expect(component.hasAttribute("feature")).toBe(false);
+
+        component.featureSource.addFeature(new Feature({geometry: new Point([1, 1])}));
+
+        expect(component.hasAttribute("feature")).toBe(true);
+
+        expect(JSON.parse(component.getAttribute("feature"))).toEqual({
+            type: "FeatureCollection",
+            features: [
+                {
+                    geometry: {
+                        coordinates: [1, 1],
+                        type: "Point"
+                    },
+                    properties: null,
+                    type: "Feature"
+                }
+            ]});
     });
 });
