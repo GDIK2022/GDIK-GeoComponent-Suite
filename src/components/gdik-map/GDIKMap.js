@@ -23,6 +23,7 @@ export default class GDIKMap extends HTMLElement {
         this.drawControl = undefined;
     }
 
+    // Web Component Callback
     async connectedCallback () {
         this.renderComponent();
 
@@ -43,6 +44,29 @@ export default class GDIKMap extends HTMLElement {
         this.setAttribute("lon", this.config.portal.startCenter[0]);
         this.setAttribute("lat", this.config.portal.startCenter[1]);
         this.setAttribute("layer", this.config.portal.layers[0].id);
+    }
+
+    // Web Component Callback
+    attributeChangedCallback (name, oldValue, newValue) {
+        if (!this.map || !this.container || !oldValue || newValue === oldValue) {
+            return;
+        }
+
+        switch (name) {
+            case "lon":
+                this.map.getView().setCenter([newValue, this.map.getView().getCenter()[1]]);
+                break;
+            case "lat":
+                this.map.getView().setCenter([this.map.getView().getCenter()[0], newValue]);
+                break;
+            case "layer":
+                // remove all layers from map
+                [...this.map.getLayers().getArray()].forEach((layer) => this.map.removeLayer(layer));
+                this.map.addLayer(newValue);
+                break;
+            default:
+                break;
+        }
     }
 
     renderComponent () {
@@ -113,28 +137,6 @@ export default class GDIKMap extends HTMLElement {
         }
 
         return map;
-    }
-
-    attributeChangedCallback (name, oldValue, newValue) {
-        if (!this.map || !this.container || !oldValue || newValue === oldValue) {
-            return;
-        }
-
-        switch (name) {
-            case "lon":
-                this.map.getView().setCenter([newValue, this.map.getView().getCenter()[1]]);
-                break;
-            case "lat":
-                this.map.getView().setCenter([this.map.getView().getCenter()[0], newValue]);
-                break;
-            case "layer":
-                // remove all layers from map
-                [...this.map.getLayers().getArray()].forEach((layer) => this.map.removeLayer(layer));
-                this.map.addLayer(newValue);
-                break;
-            default:
-                break;
-        }
     }
 
     getVisibleLayers () {
