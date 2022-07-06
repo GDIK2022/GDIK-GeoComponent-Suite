@@ -1,16 +1,11 @@
 const merge = require("deepmerge"),
     ID_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-import Draw from "ol/interaction/Draw";
-import GeoJSON from "ol/format/GeoJSON";
-import VectorSource from "ol/source/Vector";
-import VectorLayer from "ol/layer/Vector";
-
 import mapsAPI from "masterportalAPI/src/maps/api.js";
 
 // TODO remove default config file
 import * as defaultConfig from "./assets/config.json";
-// import 'babel-polyfill'
+import DrawControl from "./controls/draw";
 
 
 export default class GDIKMap extends HTMLElement {
@@ -25,9 +20,7 @@ export default class GDIKMap extends HTMLElement {
         this.configURL = undefined;
         this.config = undefined;
         this.activeLayer = undefined;
-        this.drawInteraction = undefined;
-        this.featureSource = new VectorSource();
-        this.featureLayer = new VectorLayer({source: this.featureSource});
+        this.drawControl = undefined;
     }
 
     async connectedCallback () {
@@ -105,21 +98,17 @@ export default class GDIKMap extends HTMLElement {
             this.setAttribute("lat", `${this.center[1]}`);
         });
 
-        this.featureSource.on("addfeature", () => {
-            this.setAttribute("feature", new GeoJSON().writeFeatures(this.featureSource.getFeatures()));
-        });
-
         if (options.drawType !== null) {
-            switch (options.drawType) {
-                case "point":
-                    this.drawInteraction = new Draw({type: "Point", source: this.featureSource});
-                    this.drawInteraction.setActive(true);
-                    map.addInteraction(this.drawInteraction);
-                    map.addLayer(this.featureLayer);
-                    break;
-                default:
-                    console.error(`Unsupported draw type "${this.getAttribute("draw-type")}"`);
-                    break;
+            try {
+                this.drawControl = new DrawControl(options);
+                this.drawControl.on("addfeature", () => {
+                    this.setAttribute("feature", this.drawControl.getFeatureCollection());
+                });
+                map.addControl(this.drawControl);
+            }
+            catch (err) {
+                console.error("Failed to create DrawControl");
+                console.debug(`Original error was ${err}`);
             }
         }
 

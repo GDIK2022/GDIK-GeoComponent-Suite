@@ -134,30 +134,32 @@ describe("Init gdik-map", () => {
         expect(Number(component.getAttribute("lat"))).toBe(center[1]);
     });
 
-    it("should have active draw interaction when draw-type set", async () => {
+    it("should have draw control with inactive draw interaction added when draw-type set", async () => {
         const component = new GDIKMap();
         let drawInteraction;
 
-        component.setAttribute("draw-type", "point");
+        component.setAttribute("draw-type", "Point");
 
         await component.connectedCallback();
 
-        drawInteraction = component.map.getInteractions().getArray().filter((interaction) => interaction === component.drawInteraction);
+        drawInteraction = component.map.getInteractions().getArray().filter((interaction) => interaction === component.drawControl.drawInteraction);
         expect(drawInteraction.length).toBe(1);
         drawInteraction = drawInteraction[0];
         expect(drawInteraction.getActive()).toBe(true);
+
+        expect(component.shadowRoot.querySelector("ul").className).toBe("controls");
     });
 
     it("should have feature attribute with FeatureCollection containing drawed feature when feature added to draw layer", async () => {
         const component = new GDIKMap();
 
-        component.setAttribute("draw-type", "point");
+        component.setAttribute("draw-type", "Point");
 
         await component.connectedCallback();
 
         expect(component.hasAttribute("feature")).toBe(false);
 
-        component.featureSource.addFeature(new Feature({geometry: new Point([1, 1])}));
+        component.drawControl.featureSource.addFeature(new Feature({geometry: new Point([1, 1])}));
 
         expect(component.hasAttribute("feature")).toBe(true);
 
