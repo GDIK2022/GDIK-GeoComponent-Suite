@@ -13,8 +13,18 @@
     </div>
     <h2>Active point draw</h2>
     <div style="width: 300px; height:300px;">
-        <gdik-map draw-type="point"></gdik-map>
+        <gdik-map id="simple-draw" draw-type="Point"></gdik-map>
     </div>
     <script type="module" src="../src/index.js"></script>
+    <script type="text/javascript">
+        const observer = new MutationObserver((mutationList, observer) => {
+            mutationList.forEach((mutation) => {
+                if (mutation.type === "attributes" && mutation.attributeName === "feature") {
+                    console.log(JSON.parse(mutation.target.getAttribute("feature")));
+                }
+            });
+        });
+        observer.observe(document.getElementById("simple-draw"), {attributes: true, childList: false, subtree: false});
+    </script>
 </body>
 </html>
