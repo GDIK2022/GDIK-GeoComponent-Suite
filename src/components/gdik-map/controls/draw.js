@@ -1,5 +1,6 @@
 import {Control} from "ol/control";
 import Draw from "ol/interaction/Draw";
+import Modify from "ol/interaction/Modify";
 import GeoJSON from "ol/format/GeoJSON";
 import VectorSource from "ol/source/Vector";
 import VectorLayer from "ol/layer/Vector";
@@ -41,9 +42,12 @@ export default class DrawControl extends Control {
             source: this.featureSource
         });
 
-        this.featureSource.on("addfeature", () => {
-            this.dispatchEvent("addfeature");
+        this.modifyInteraction = new Modify({
+            source: this.featureSource
         });
+
+        this.featureSource.on("addfeature", this.handleAddFeature.bind(this));
+        this.modifyInteraction.on("modifyend", this.handleChangeFeature.bind(this));
 
         button.onclick = this.toggleDraw;
     }
@@ -52,7 +56,19 @@ export default class DrawControl extends Control {
         super.setMap(map);
         map.addInteraction(this.drawInteraction);
         this.drawInteraction.setActive(true);
+        map.addInteraction(this.modifyInteraction);
+        this.modifyInteraction.setActive(false);
         map.addLayer(this.featureLayer);
+    }
+
+    handleAddFeature () {
+        this.drawInteraction.setActive(false);
+        this.modifyInteraction.setActive(true);
+        this.dispatchEvent("featureupdate");
+    }
+
+    handleChangeFeature () {
+        this.dispatchEvent("featureupdate");
     }
 
     toggleDraw () {

@@ -125,7 +125,7 @@ export default class GDIKMap extends HTMLElement {
         if (options.drawType !== null) {
             try {
                 this.drawControl = new DrawControl(options);
-                this.drawControl.on("addfeature", () => {
+                this.drawControl.on("featureupdate", () => {
                     this.setAttribute("feature", this.drawControl.getFeatureCollection());
                 });
                 map.addControl(this.drawControl);

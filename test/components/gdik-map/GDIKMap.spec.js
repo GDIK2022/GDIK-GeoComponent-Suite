@@ -142,7 +142,7 @@ describe("Init gdik-map", () => {
 
         await component.connectedCallback();
 
-        drawInteraction = component.map.getInteractions().getArray().filter((interaction) => interaction === component.drawControl.drawInteraction);
+        drawInteraction = component.map.getInteractions().getArray().filter((interaction) => interaction.constructor.name === "Draw");
         expect(drawInteraction.length).toBe(1);
         drawInteraction = drawInteraction[0];
         expect(drawInteraction.getActive()).toBe(true);
@@ -175,5 +175,27 @@ describe("Init gdik-map", () => {
                     type: "Feature"
                 }
             ]});
+    });
+
+    it("should deactivate draw and activate modify after feature is added to layer", async () => {
+        const component = new GDIKMap();
+        let drawInteraction, modifyInteraction;
+
+        component.setAttribute("draw-type", "Point");
+
+        await component.connectedCallback();
+
+        drawInteraction = component.map.getInteractions().getArray().filter((interaction) => interaction.constructor.name === "Draw");
+        drawInteraction = drawInteraction[0];
+        modifyInteraction = component.map.getInteractions().getArray().filter((interaction) => interaction.constructor.name === "Modify");
+        modifyInteraction = modifyInteraction[0];
+
+        expect(drawInteraction.getActive()).toBe(true);
+        expect(modifyInteraction.getActive()).toBe(false);
+
+        component.drawControl.featureSource.addFeature(new Feature({geometry: new Point([1, 1])}));
+
+        expect(drawInteraction.getActive()).toBe(false);
+        expect(modifyInteraction.getActive()).toBe(true);
     });
 });
