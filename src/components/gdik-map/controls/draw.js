@@ -9,18 +9,26 @@ const DRAW_TYPES = ["Point", "Line", "Polygon"];
 
 export default class DrawControl extends Control {
 
+    /**
+
+        feature added -> disable draw -> enable edit, enable remove (changefeature, removefeature listener)
+        feature removed -> disable edit, disable remove -> enable draw (addfeature listerner)
+
+     */
+
     constructor (options) {
         const ul = document.createElement("ul"),
             li = document.createElement("li"),
             div = document.createElement("div"),
-            button = document.createElement("button");
+            clearDrawBtn = document.createElement("button");
 
         ul.className = "controls";
 
-        button.className = "control-icon";
-        button.innerHTML = options.drawType;
+        clearDrawBtn.className = "control-icon";
+        clearDrawBtn.innerHTML = "&#x1F6AE;";
+        clearDrawBtn.disabled = true;
 
-        div.appendChild(button);
+        div.appendChild(clearDrawBtn);
         li.appendChild(div);
         ul.appendChild(li);
 
@@ -49,7 +57,9 @@ export default class DrawControl extends Control {
         this.featureSource.on("addfeature", this.handleAddFeature.bind(this));
         this.modifyInteraction.on("modifyend", this.handleChangeFeature.bind(this));
 
-        button.onclick = this.toggleDraw;
+        clearDrawBtn.onclick = this.handleRemoveFeature.bind(this);
+
+        this.clearDrawBtn = clearDrawBtn;
     }
 
     setMap (map) {
@@ -64,10 +74,19 @@ export default class DrawControl extends Control {
     handleAddFeature () {
         this.drawInteraction.setActive(false);
         this.modifyInteraction.setActive(true);
+        this.clearDrawBtn.disabled = false;
         this.dispatchEvent("featureupdate");
     }
 
     handleChangeFeature () {
+        this.dispatchEvent("featureupdate");
+    }
+
+    handleRemoveFeature () {
+        this.featureSource.clear();
+        this.clearDrawBtn.disabled = true;
+        this.modifyInteraction.setActive(false);
+        this.drawInteraction.setActive(true);
         this.dispatchEvent("featureupdate");
     }
 
