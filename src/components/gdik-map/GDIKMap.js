@@ -104,7 +104,6 @@ export default class GDIKMap extends HTMLElement {
 
             .gdik-delete button:disabled {
                 background-color: #888;
-                color: #888;
             }
         `;
 
