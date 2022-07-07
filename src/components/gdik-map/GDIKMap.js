@@ -1,6 +1,8 @@
 const merge = require("deepmerge"),
     ID_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
+import olCss from "bundle-text:../../../node_modules/ol/ol.css";
+
 import DoubleClickZoom from "ol/interaction/DoubleClickZoom";
 import Zoom from "ol/control/Zoom";
 import FullScreen from "ol/control/FullScreen";
@@ -79,8 +81,12 @@ export default class GDIKMap extends HTMLElement {
         this.container.style.width = "100%";
         this.container.style.margin = "auto";
 
-        const shadow = this.attachShadow({mode: "open"});
+        const shadow = this.attachShadow({mode: "open"}),
+            style = document.createElement("style");
 
+        style.textContent = olCss;
+
+        shadow.appendChild(style);
         shadow.appendChild(this.container);
     }
 
