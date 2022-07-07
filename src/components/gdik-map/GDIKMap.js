@@ -2,8 +2,8 @@ const merge = require("deepmerge"),
     ID_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
 import DoubleClickZoom from "ol/interaction/DoubleClickZoom";
-import Zoom from 'ol/control/Zoom';
-import FullScreen from 'ol/control/FullScreen';
+import Zoom from "ol/control/Zoom";
+import FullScreen from "ol/control/FullScreen";
 
 import mapsAPI from "masterportalAPI/src/maps/api.js";
 
@@ -121,7 +121,7 @@ export default class GDIKMap extends HTMLElement {
         map = mapsAPI.map.createMap({...config.portal, layerConf: config.services}, "2D");
 
         map.addControl(new Zoom());
-        map.addControl(new FullScreen())
+        map.addControl(new FullScreen());
 
         dobleClickZoom = this.getInteractionByClass(map, DoubleClickZoom);
         map.removeInteraction(dobleClickZoom);
