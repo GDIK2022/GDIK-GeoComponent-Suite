@@ -8,12 +8,23 @@
 <body>
     <h1>GDIK Map examples</h1>
     <h2>Default behavior</h2>
-    <div style="width: 300px; height:300px;">
+    <div class="map-container">
         <gdik-map ></gdik-map>
     </div>
-    <h2>Active point draw</h2>
-    <div style="width: 300px; height:300px;">
-        <gdik-map id="simple-draw" draw-type="Point"></gdik-map>
+    <h2>Active draw</h2>
+    <div>
+        <div class="map-container">
+            <h3>Point</h3>
+            <gdik-map id="simple-draw" draw-type="Point"></gdik-map>
+        </div>
+        <div class="map-container">
+            <h3>Line</h3>
+            <gdik-map id="simple-draw" draw-type="LineString"></gdik-map>
+        </div>
+        <div class="map-container">
+            <h3>Polygon</h3>
+            <gdik-map id="simple-draw" draw-type="Polygon"></gdik-map>
+        </div>
     </div>
     <script type="module" src="../src/index.js"></script>
     <script type="text/javascript">
