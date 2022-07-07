@@ -22,7 +22,7 @@ export default class DrawControl extends Control {
 
         div.className = "ol-control gdik-delete";
 
-        clearDrawBtn.innerHTML = "&#x1F6AE;";
+        clearDrawBtn.innerHTML = "&#x1F5D1;";
         clearDrawBtn.disabled = true;
 
         div.appendChild(clearDrawBtn);

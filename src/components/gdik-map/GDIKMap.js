@@ -86,6 +86,28 @@ export default class GDIKMap extends HTMLElement {
 
         style.textContent = olCss;
 
+        style.textContent += `
+            .ol-full-screen {
+                top: auto;
+                bottom: 0.5em;
+            }
+
+            .ol-zoom {
+                left: auto;
+                right: 0.5em;
+            }
+
+            .gdik-delete {
+                left: 0.5em;
+                top: 0.5em;
+            }
+
+            .gdik-delete button:disabled {
+                background-color: #888;
+                color: #888;
+            }
+        `;
+
         shadow.appendChild(style);
         shadow.appendChild(this.container);
     }
