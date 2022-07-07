@@ -15,15 +15,15 @@
     <div>
         <div class="map-container">
             <h3>Point</h3>
-            <gdik-map id="simple-draw" draw-type="Point"></gdik-map>
+            <gdik-map id="draw-point" draw-type="Point"></gdik-map>
         </div>
         <div class="map-container">
             <h3>Line</h3>
-            <gdik-map id="simple-draw" draw-type="LineString"></gdik-map>
+            <gdik-map id="draw-line" draw-type="LineString"></gdik-map>
         </div>
         <div class="map-container">
             <h3>Polygon</h3>
-            <gdik-map id="simple-draw" draw-type="Polygon"></gdik-map>
+            <gdik-map id="draw-polygon" draw-type="Polygon"></gdik-map>
         </div>
     </div>
     <script type="module" src="../src/index.js"></script>
@@ -31,11 +31,13 @@
         const observer = new MutationObserver((mutationList, observer) => {
             mutationList.forEach((mutation) => {
                 if (mutation.type === "attributes" && mutation.attributeName === "feature") {
-                    console.log(JSON.parse(mutation.target.getAttribute("feature")));
+                    console.log(mutation.target.id, JSON.parse(mutation.target.getAttribute("feature")));
                 }
             });
         });
-        observer.observe(document.getElementById("simple-draw"), {attributes: true, childList: false, subtree: false});
+        observer.observe(document.getElementById("draw-point"), {attributes: true, childList: false, subtree: false});
+        observer.observe(document.getElementById("draw-line"), {attributes: true, childList: false, subtree: false});
+        observer.observe(document.getElementById("draw-polygon"), {attributes: true, childList: false, subtree: false});
     </script>
 </body>
 </html>
