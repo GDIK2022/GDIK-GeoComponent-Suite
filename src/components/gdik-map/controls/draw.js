@@ -5,7 +5,7 @@ import GeoJSON from "ol/format/GeoJSON";
 import VectorSource from "ol/source/Vector";
 import VectorLayer from "ol/layer/Vector";
 
-const DRAW_TYPES = ["Point", "Line", "Polygon"];
+const DRAW_TYPES = ["Point", "LineString", "Polygon"];
 
 export default class DrawControl extends Control {
 
