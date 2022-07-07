@@ -17,22 +17,17 @@ export default class DrawControl extends Control {
      */
 
     constructor (options) {
-        const ul = document.createElement("ul"),
-            li = document.createElement("li"),
-            div = document.createElement("div"),
+        const div = document.createElement("div"),
             clearDrawBtn = document.createElement("button");
 
-        ul.className = "controls";
+        div.className = "ol-control gdik-delete";
 
-        clearDrawBtn.className = "control-icon";
         clearDrawBtn.innerHTML = "&#x1F6AE;";
         clearDrawBtn.disabled = true;
 
         div.appendChild(clearDrawBtn);
-        li.appendChild(div);
-        ul.appendChild(li);
 
-        super({element: ul});
+        super({element: div});
 
         this.featureSource = new VectorSource();
         this.featureLayer = new VectorLayer({source: this.featureSource});
