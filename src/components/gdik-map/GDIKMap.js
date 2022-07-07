@@ -1,12 +1,13 @@
 const merge = require("deepmerge"),
     ID_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
+import DoubleClickZoom from "ol/interaction/DoubleClickZoom";
+
 import mapsAPI from "masterportalAPI/src/maps/api.js";
 
 // TODO remove default config file
 import * as defaultConfig from "./assets/config.json";
 import DrawControl from "./controls/draw";
-
 
 export default class GDIKMap extends HTMLElement {
     static get observedAttributes () {
@@ -109,12 +110,16 @@ export default class GDIKMap extends HTMLElement {
     }
 
     setupMap (config, options) {
-        let map = null;
+        let map = null,
+            dobleClickZoom = null;
 
         config.portal.target = this.container;
         this.container.innerHTML = "";
 
         map = mapsAPI.map.createMap({...config.portal, layerConf: config.services}, "2D");
+
+        dobleClickZoom = this.getInteractionByClass(map, DoubleClickZoom);
+        map.removeInteraction(dobleClickZoom);
 
         map.on("moveend", () => {
             this.center = map.getView().getCenter();
@@ -154,6 +159,15 @@ export default class GDIKMap extends HTMLElement {
             result += ID_CHARS.charAt(Math.floor(Math.random() * ID_CHARS.length));
         }
         return `gdik-map-div-${result}`;
+    }
+
+    getInteractionByClass (map, c) {
+        const founds = map.getInteractions().getArray().filter((interaction) => interaction instanceof c);
+
+        if (founds.length === 0) {
+            return undefined;
+        }
+        return founds[0];
     }
 }
 
