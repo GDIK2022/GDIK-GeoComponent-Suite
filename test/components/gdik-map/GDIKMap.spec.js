@@ -27,14 +27,16 @@ describe("Init gdik-map", () => {
 
         await component.connectedCallback();
 
-        expect(component.shadowRoot.firstChild.nodeName).toBe("DIV");
-        expect(component.shadowRoot.firstChild.getAttribute("id")).toMatch(/^gdik-map-div-[a-zA-Z0-9]*$/);
+        expect(component.shadowRoot.childNodes.length).toBe(2);
+        expect(component.shadowRoot.childNodes[0].nodeName).toBe("STYLE");
+        expect(component.shadowRoot.childNodes[1].nodeName).toBe("DIV");
+        expect(component.shadowRoot.childNodes[1].getAttribute("id")).toMatch(/^gdik-map-div-[a-zA-Z0-9]*$/);
 
-        expect(component.shadowRoot.firstChild.style.height).toBe("100%");
-        expect(component.shadowRoot.firstChild.style.width).toBe("100%");
-        expect(component.shadowRoot.firstChild.style.margin).toBe("auto");
+        expect(component.shadowRoot.childNodes[1].style.height).toBe("100%");
+        expect(component.shadowRoot.childNodes[1].style.width).toBe("100%");
+        expect(component.shadowRoot.childNodes[1].style.margin).toBe("auto");
 
-        expect(component.shadowRoot.firstChild.firstChild.className).toBe("ol-viewport");
+        expect(component.shadowRoot.childNodes[1].firstChild.className).toBe("ol-viewport");
     });
 
     it("should use values from default config", async () => {
@@ -147,7 +149,7 @@ describe("Init gdik-map", () => {
         drawInteraction = drawInteraction[0];
         expect(drawInteraction.getActive()).toBe(true);
 
-        expect(component.shadowRoot.querySelector("ul").className).toBe("controls");
+        expect(component.shadowRoot.querySelector(".gdik-delete")).toBeDefined();
     });
 
     it("should have feature attribute with FeatureCollection containing drawed feature when feature added to draw layer", async () => {
