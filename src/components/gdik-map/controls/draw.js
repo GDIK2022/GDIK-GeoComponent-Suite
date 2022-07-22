@@ -32,7 +32,7 @@ export default class DrawControl extends Control {
         this.featureSource = new VectorSource();
         this.featureLayer = new VectorLayer({source: this.featureSource});
 
-        if (options.drawType === null) {
+        if (!options?.drawType) {
             throw Error("Missing draw type");
         }
 
