@@ -50,9 +50,10 @@ export default class DrawControl extends Control {
         });
 
         this.featureSource.on("addfeature", this.handleAddFeature.bind(this));
+        this.featureSource.on("removefeature", this.handleRemoveFeature.bind(this));
         this.modifyInteraction.on("modifyend", this.handleChangeFeature.bind(this));
 
-        clearDrawBtn.onclick = this.handleRemoveFeature.bind(this);
+        clearDrawBtn.onclick = this.handleClearDrawBtnClick.bind(this);
 
         this.clearDrawBtn = clearDrawBtn;
     }
@@ -78,11 +79,14 @@ export default class DrawControl extends Control {
     }
 
     handleRemoveFeature () {
-        this.featureSource.clear();
         this.clearDrawBtn.disabled = true;
         this.modifyInteraction.setActive(false);
         this.drawInteraction.setActive(true);
         this.dispatchEvent("featureupdate");
+    }
+
+    handleClearDrawBtnClick () {
+        this.featureSource.clear();
     }
 
     toggleDraw () {
