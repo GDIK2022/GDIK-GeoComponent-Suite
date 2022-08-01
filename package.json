@@ -1,7 +1,14 @@
 {
-  "name": "@lgln/gdik-map",
+  "name": "@kaiCu/map",
   "version": "0.0.1",
   "description": "",
+  "publishConfig": {
+    "registry":"https://npm.pkg.github.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kaiCu/GDIK-Map.git"
+  },
   "main": "src/index.js",
   "scripts": {
     "test": "jest --config ./jest.config.js --collectCoverage",

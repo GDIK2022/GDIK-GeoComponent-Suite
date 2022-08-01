@@ -5,5 +5,4 @@ dist
 .parcel-cache
 coverage
 
-package-lock.json
 .npmrc
