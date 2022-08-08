@@ -74,4 +74,12 @@ describe("Draw Control", () => {
         expect(control.modifyInteraction.getActive()).toBe(false);
 
     });
+
+    it("should add features of given feature collection to feature source", () => {
+        const control = new DrawControl({featureCollection: {"type": "FeatureCollection", "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [1, 1]}}]}});
+
+        expect(control.featureSource.getFeatures().length).toBe(1);
+        expect(control.featureSource.getFeatures()[0].getGeometry().getType()).toBe("Point");
+        expect(control.featureSource.getFeatures()[0].getGeometry().getCoordinates()).toEqual([1, 1]);
+    });
 });
