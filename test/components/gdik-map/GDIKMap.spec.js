@@ -216,7 +216,7 @@ describe("Init gdik-map", () => {
         expect(modifyInteraction.getActive()).toBe(true);
     });
 
-    it("should not allow mixed geometry types", async() => {
+    it("should not allow mixed geometry types", async () => {
         const inputFeature = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[1, 1]}}, {\"type\":\"Feature\",\"geometry\":{\"type\":\"LineString\",\"coordinates\":[[1, 1],[2, 1], [2, 2]]}}]}",
             component = new GDIKMap();
 
