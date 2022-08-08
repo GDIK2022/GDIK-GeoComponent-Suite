@@ -34,7 +34,7 @@ export default class DrawControl extends Control {
 
         if (options?.featureCollection) {
             features = format.readFeatures(options.featureCollection);
-            options.drawType = this.determineDrawType(features);
+            options.drawType = this.determineDrawType(features) || options.drawType;
         }
 
         if (!options?.drawType) {
