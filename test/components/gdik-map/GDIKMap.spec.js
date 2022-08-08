@@ -200,4 +200,25 @@ describe("Init gdik-map", () => {
         expect(drawInteraction.getActive()).toBe(false);
         expect(modifyInteraction.getActive()).toBe(true);
     });
+
+    it("should have active modify control when passing feature collection with point feature", async () => {
+        const inputFeature = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[1, 1]}}]}",
+            component = new GDIKMap();
+        let modifyInteraction, feature;
+
+        component.setAttribute("feature", inputFeature);
+
+        await component.connectedCallback();
+
+        modifyInteraction = component.map.getInteractions().getArray().filter((interaction) => interaction.constructor.name === "Modify");
+
+        modifyInteraction = modifyInteraction[0];
+        expect(modifyInteraction.getActive()).toBe(true);
+
+        feature = component.drawControl.featureSource.getFeatures();
+        feature = feature[0];
+
+        expect(feature.getGeometry().getType()).toBe("Point");
+        expect(feature.getGeometry().getCoordinates()).toEqual([1, 1]);
+    });
 });
