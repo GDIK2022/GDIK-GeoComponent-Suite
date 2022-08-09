@@ -26,6 +26,11 @@
             <gdik-map id="draw-polygon" draw-type="Polygon"></gdik-map>
         </div>
     </div>
+    <h2>Prepopulated feature</h2>
+        <div class="map-container">
+            <h3>Point</h3>
+            <gdik-map id="prepopulate-point" feature='{"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Point","coordinates":[447994.8751971674,5888450.37108491]}}]}'></gdik-map>
+        </div>
     <script type="module" src="../src/index.js"></script>
     <script type="text/javascript">
         const observer = new MutationObserver((mutationList, observer) => {
@@ -35,9 +40,9 @@
                 }
             });
         });
-        observer.observe(document.getElementById("draw-point"), {attributes: true, childList: false, subtree: false});
-        observer.observe(document.getElementById("draw-line"), {attributes: true, childList: false, subtree: false});
-        observer.observe(document.getElementById("draw-polygon"), {attributes: true, childList: false, subtree: false});
+        Array.prototype.slice.call(document.getElementsByTagName("gdik-map")).forEach((element) => {
+            observer.observe(element, {attributes: true, childList: false, subtree: false});
+        });
     </script>
 </body>
 </html>

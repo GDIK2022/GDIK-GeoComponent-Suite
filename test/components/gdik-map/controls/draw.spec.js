@@ -74,4 +74,34 @@ describe("Draw Control", () => {
         expect(control.modifyInteraction.getActive()).toBe(false);
 
     });
+
+    it("should add features of given feature collection to feature source", () => {
+        const control = new DrawControl({featureCollection: {"type": "FeatureCollection", "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [1, 1]}}]}});
+
+        expect(control.featureSource.getFeatures().length).toBe(1);
+        expect(control.featureSource.getFeatures()[0].getGeometry().getType()).toBe("Point");
+        expect(control.featureSource.getFeatures()[0].getGeometry().getCoordinates()).toEqual([1, 1]);
+    });
+
+    it("should not allow mixed geometry types", () => {
+        expect(() => {
+            new DrawControl({featureCollection: {"type": "FeatureCollection", "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [1, 1]}}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[1, 1], [2, 1], [2, 2]]}}]}});
+        })
+            .toThrow("Inhomogeneous feature collection given");
+    });
+
+    it("should raise a missing draw type error when only empty feature collection given", () => {
+        expect(() => {
+            new DrawControl({featureCollection: {"type": "FeatureCollection", "features": []}});
+        })
+            .toThrow("Missing draw type");
+    });
+
+    it("should ignore empty feature collections", () => {
+        const control = new DrawControl({
+            drawType: "Point",
+            featureCollection: {"type": "FeatureCollection", "features": []}});
+
+        expect(control.featureSource.getFeatures().length).toBe(0);
+    });
 });

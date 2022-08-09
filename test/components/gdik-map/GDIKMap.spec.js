@@ -200,4 +200,34 @@ describe("Init gdik-map", () => {
         expect(drawInteraction.getActive()).toBe(false);
         expect(modifyInteraction.getActive()).toBe(true);
     });
+
+    it("should have active modify control when passing feature collection with point feature", async () => {
+        const inputFeature = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[1, 1]}}]}",
+            component = new GDIKMap();
+        let modifyInteraction;
+
+        component.setAttribute("feature", inputFeature);
+
+        await component.connectedCallback();
+
+        modifyInteraction = component.map.getInteractions().getArray().filter((interaction) => interaction.constructor.name === "Modify");
+
+        modifyInteraction = modifyInteraction[0];
+        expect(modifyInteraction.getActive()).toBe(true);
+    });
+
+    it("should not allow mixed geometry types", async () => {
+        const inputFeature = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[1, 1]}}, {\"type\":\"Feature\",\"geometry\":{\"type\":\"LineString\",\"coordinates\":[[1, 1],[2, 1], [2, 2]]}}]}",
+            component = new GDIKMap();
+
+        console.error = jest.fn();
+        console.debug = jest.fn();
+
+        component.setAttribute("feature", inputFeature);
+
+        await component.connectedCallback();
+
+        expect(console.error.mock.calls[0][0]).toBe("Failed to create DrawControl");
+        expect(console.debug.mock.calls[0][0]).toBe("Original error was Error: Inhomogeneous feature collection given");
+    });
 });

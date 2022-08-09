@@ -44,11 +44,21 @@ export default class GDIKMap extends HTMLElement {
             this.config.portal.layers = [{id: this.getAttribute("layer")}];
         }
 
-        this.map = this.setupMap(this.config, {drawType: this.getAttribute("draw-type")});
+        let featureCollection;
+
+        if (this.hasAttribute("feature")) {
+            featureCollection = JSON.parse(this.getAttribute("feature"));
+        }
+
+        this.map = this.setupMap(this.config, {
+            drawType: this.getAttribute("draw-type"),
+            featureCollection: featureCollection
+        });
 
         this.setAttribute("lon", this.config.portal.startCenter[0]);
         this.setAttribute("lat", this.config.portal.startCenter[1]);
         this.setAttribute("layer", this.config.portal.layers[0].id);
+
     }
 
     // Web Component Callback
@@ -159,7 +169,7 @@ export default class GDIKMap extends HTMLElement {
             this.setAttribute("lat", `${this.center[1]}`);
         });
 
-        if (options.drawType !== null) {
+        if (options.drawType !== null || options.featureCollection !== undefined) {
             try {
                 this.drawControl = new DrawControl(options);
                 this.drawControl.on("featureupdate", () => {

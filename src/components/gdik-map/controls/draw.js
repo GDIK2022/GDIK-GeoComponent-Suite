@@ -5,7 +5,8 @@ import GeoJSON from "ol/format/GeoJSON";
 import VectorSource from "ol/source/Vector";
 import VectorLayer from "ol/layer/Vector";
 
-const DRAW_TYPES = ["Point", "LineString", "Polygon"];
+const DRAW_TYPES = ["Point", "LineString", "Polygon"],
+    format = new GeoJSON();
 
 export default class DrawControl extends Control {
 
@@ -20,6 +21,8 @@ export default class DrawControl extends Control {
         const div = document.createElement("div"),
             clearDrawBtn = document.createElement("button");
 
+        let features;
+
         div.className = "ol-control gdik-delete";
 
         clearDrawBtn.innerHTML = "&#x1F5D1;";
@@ -29,8 +32,10 @@ export default class DrawControl extends Control {
 
         super({element: div});
 
-        this.featureSource = new VectorSource();
-        this.featureLayer = new VectorLayer({source: this.featureSource});
+        if (options?.featureCollection) {
+            features = format.readFeatures(options.featureCollection);
+            options.drawType = this.determineDrawType(features) || options.drawType;
+        }
 
         if (!options?.drawType) {
             throw Error("Missing draw type");
@@ -40,14 +45,19 @@ export default class DrawControl extends Control {
             throw Error(`Unsupported draw type "${options.drawType}"`);
         }
 
+        this.featureSource = new VectorSource({features: features});
+        this.featureLayer = new VectorLayer({source: this.featureSource});
+
         this.drawInteraction = new Draw({
             type: options.drawType,
             source: this.featureSource
         });
+        this.drawInteraction.setActive(true);
 
         this.modifyInteraction = new Modify({
             source: this.featureSource
         });
+        this.modifyInteraction.setActive(false);
 
         this.featureSource.on("addfeature", this.handleAddFeature.bind(this));
         this.featureSource.on("removefeature", this.handleRemoveFeature.bind(this));
@@ -56,14 +66,16 @@ export default class DrawControl extends Control {
         clearDrawBtn.onclick = this.handleClearDrawBtnClick.bind(this);
 
         this.clearDrawBtn = clearDrawBtn;
+
+        if (features !== undefined && features.length > 0) {
+            this.handleAddFeature();
+        }
     }
 
     setMap (map) {
         super.setMap(map);
         map.addInteraction(this.drawInteraction);
-        this.drawInteraction.setActive(true);
         map.addInteraction(this.modifyInteraction);
-        this.modifyInteraction.setActive(false);
         map.addLayer(this.featureLayer);
     }
 
@@ -94,7 +106,21 @@ export default class DrawControl extends Control {
     }
 
     getFeatureCollection () {
-        return new GeoJSON().writeFeatures(this.featureSource.getFeatures());
+        return format.writeFeatures(this.featureSource.getFeatures());
+    }
+
+    determineDrawType (features) {
+        let drawType;
+
+        features.forEach((f) => {
+            const featureType = f.getGeometry().getType();
+
+            if (drawType !== undefined && drawType !== featureType) {
+                throw Error("Inhomogeneous feature collection given");
+            }
+            drawType = featureType;
+        });
+        return drawType;
     }
 
 }
