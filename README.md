@@ -11,6 +11,7 @@ Interactive map as a web component based on masterportal API
 | lat        | no       | string     | 5888434.0  | yes      | center position |
 | layer      | no       | string     | 1001       | yes      |
 | draw-type  | no       | string     | -          | no       | One of "Point", "LineString", "Polygon" |
+| feature    | no       | string     | -          | yes      | Feature Collection with feature (currently one feature is supported), added to draw mode
 
 ### Examples
 #### Example usage in Vue
