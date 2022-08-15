@@ -19,6 +19,34 @@ describe("Layerswitcher", () => {
         expect(control.element.firstChild.nodeName).toBe("UL");
     });
 
+    it("should render layer entry as expected", () => {
+        const backgroundLayers = ["1001"],
+            map = new Map(),
+            control = new LayerswitcherControl({backgroundLayers: backgroundLayers});
+
+        let layerEntry = null;
+
+        map.addLayer(bgLayer1);
+
+        control.setMap(map);
+
+        expect(control.element.firstChild.childElementCount).toBe(1);
+
+        layerEntry = control.element.firstChild.childNodes[0];
+
+
+
+        expect(layerEntry.nodeName).toBe("LI");
+        expect(layerEntry.firstChild.nodeName).toBe("INPUT");
+        expect(layerEntry.firstChild.type).toBe("radio");
+        expect(layerEntry.firstChild.name).toBe("bg-layer");
+        expect(layerEntry.firstChild.id).toBe("bg-layer-1001");
+
+        expect(layerEntry.lastChild.nodeName).toBe("LABEL");
+        expect(layerEntry.lastChild.for).toBe("bg-layer-1001");
+        expect(layerEntry.lastChild.innerHTML).toBe(customConfig.services[0].name);
+    });
+
     it("should show correct names for background layer", () => {
         const backgroundLayers = ["1001", "1002"],
             map = new Map(),
@@ -33,7 +61,7 @@ describe("Layerswitcher", () => {
 
         for (let i = 0; i < 2; i++) {
             expect(control.element.firstChild.childNodes[i].nodeName).toBe("LI");
-            expect(control.element.firstChild.childNodes[i].innerHTML).toBe(customConfig.services[i].name);
+            expect(control.element.firstChild.childNodes[i].lastChild.innerHTML).toBe(customConfig.services[i].name);
         }
     });
 });
