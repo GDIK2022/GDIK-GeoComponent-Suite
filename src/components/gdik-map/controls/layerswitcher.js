@@ -22,9 +22,23 @@ export default class LayerswitcherControl extends Control {
         super.setMap(map);
 
         olLayers.forEach((layer) => {
-            const li = document.createElement("li");
+            const li = document.createElement("li"),
+                input = document.createElement("input"),
+                label = document.createElement("label"),
+                elementId = "bg-layer-" + layer.get("id");
 
-            li.innerHTML = layer.get("name");
+
+
+            input.id = elementId;
+            input.name = "bg-layer";
+            input.type = "radio";
+            input.checked = layer.getVisible();
+            li.appendChild(input);
+
+            label.for = elementId;
+            label.innerHTML = layer.get("name");
+            li.appendChild(label);
+
             this.layerContainer.appendChild(li);
         });
     }
