@@ -54,6 +54,11 @@ export default class GDIKMap extends HTMLElement {
             featureCollection: featureCollection
         });
 
+        if (!this.getLayer(this.activeBackgroundLayer)) {
+            console.error(`Background layer ${this.activeBackgroundLayer} cannot be found. Fall back to default background layer`);
+            this.changeBackgroundLayer(this.config.portal.backgroundLayers[0]);
+        }
+
         this.setAttribute("lon", this.config.portal.startCenter[0]);
         this.setAttribute("lat", this.config.portal.startCenter[1]);
         this.setAttribute("active-bg", this.activeBackgroundLayer);
@@ -93,8 +98,9 @@ export default class GDIKMap extends HTMLElement {
             console.error(`Background layer with id ${id} not found`);
             return;
         }
-
-        currentBackgroundLayer.setVisible(false);
+        if (currentBackgroundLayer) {
+            currentBackgroundLayer.setVisible(false);
+        }
         newBackgroundLayer.setVisible(true);
         this.activeBackgroundLayer = id;
 
