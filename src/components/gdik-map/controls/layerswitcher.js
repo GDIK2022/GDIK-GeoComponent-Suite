@@ -2,25 +2,30 @@ import {Control} from "ol/control";
 export default class LayerswitcherControl extends Control {
 
     constructor (options) {
-        const div = document.createElement("div"),
-            layerContainer = document.createElement("ul");
-
+        const div = document.createElement("div");
 
         div.className = "ol-control gdik-layerswitcher";
 
-        div.appendChild(layerContainer);
-
         super({element: div});
 
-        options.backgroundLayers.forEach((lId) => {
-            const li = document.createElement("li");
-
-            li.innerHTML = lId;
-            layerContainer.appendChild(li);
-        });
+        this.backgroundLayers = options.backgroundLayers;
+        this.layerContainer = document.createElement("ul");
+        div.appendChild(this.layerContainer);
     }
 
     setMap (map) {
+        const olLayers = map.getLayers().getArray()
+            .filter((layer) => {
+                return this.backgroundLayers.indexOf(layer.get("id")) !== -1;
+            });
+
         super.setMap(map);
+
+        olLayers.forEach((layer) => {
+            const li = document.createElement("li");
+
+            li.innerHTML = layer.get("name");
+            this.layerContainer.appendChild(li);
+        });
     }
 }
