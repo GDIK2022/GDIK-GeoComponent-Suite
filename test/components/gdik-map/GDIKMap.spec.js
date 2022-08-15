@@ -81,12 +81,10 @@ describe("Init gdik-map", () => {
     it("should apply values given by element attributes", async () => {
         const component = new GDIKMap(),
             lon = 450000.0,
-            lat = 5500000.0,
-            backgroundLayer = "1002";
+            lat = 5500000.0;
 
         component.setAttribute("lon", lon);
         component.setAttribute("lat", lat);
-        component.setAttribute("active-bg", backgroundLayer);
 
         await component.connectedCallback();
 
@@ -94,8 +92,73 @@ describe("Init gdik-map", () => {
         expect(Number(component.getAttribute("lat"))).toBe(lat);
 
         expect(component.map.getView().getCenter()).toEqual([lon, lat]);
+    });
+});
+
+describe("Attribute active-bg", () => {
+    beforeAll(() => {
+        jest.spyOn(console, "error").mockImplementation(() => {});
+    });
+
+    afterAll(() => {
+        console.error.mockRestore();
+    });
+
+    afterEach(() => {
+        console.error.mockClear();
+    });
+
+    it("should use background layer given by attribute for init", async () => {
+        const component = new GDIKMap(),
+            backgroundLayer = "1002";
+
+        component.setAttribute("active-bg", backgroundLayer);
+        await component.connectedCallback();
 
         expect(component.getBackgroundLayer().get("id")).toBe(backgroundLayer);
+    });
+
+    it("should change background layer when attribute changes", async () => {
+        const component = new GDIKMap(),
+            backgroundLayer = "1002";
+
+        await component.connectedCallback();
+        expect(component.getBackgroundLayer().get("id")).toBe("1001");
+
+        component.setAttribute("active-bg", backgroundLayer);
+
+        expect(component.getBackgroundLayer().get("id")).toBe(backgroundLayer);
+    });
+
+    it("should log an error when background layer cannot be found on init", async () => {
+        const component = new GDIKMap(),
+            backgroundLayer = "1003";
+
+        console.error = jest.fn();
+
+        component.setAttribute("active-bg", backgroundLayer);
+        await component.connectedCallback();
+        expect(console.error.mock.calls[0][0]).toBe("Layer with id '1003' not found. No layer added to map.");
+        expect(console.error.mock.calls[1][0]).toBe("Background layer 1003 cannot be found. Fall back to default background layer");
+
+        expect(component.getAttribute("active-bg", "1001"));
+        expect(component.getBackgroundLayer().get("id")).toBe("1001");
+    });
+
+    it("should log an error when background layer cannot be found on attribute change", async () => {
+        const component = new GDIKMap(),
+            backgroundLayer = "1003";
+
+        console.error = jest.fn();
+
+        await component.connectedCallback();
+
+        component.setAttribute("active-bg", backgroundLayer);
+        expect(console.error.mock.calls[0][0]).toBe("Layer with id '1003' not found. No layer added to map.");
+        expect(console.error.mock.calls[1][0]).toBe("Background layer with id 1003 not found");
+
+        expect(component.getAttribute("active-bg", "1001"));
+        expect(component.getBackgroundLayer().get("id")).toBe("1001");
     });
 });
 
