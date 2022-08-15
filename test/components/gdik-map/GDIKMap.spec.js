@@ -97,7 +97,9 @@ describe("Init gdik-map", () => {
 
 describe("Attribute active-bg", () => {
     beforeAll(() => {
-        jest.spyOn(console, "error").mockImplementation(() => {});
+        jest.spyOn(console, "error").mockImplementation(() => {
+            // noop
+        });
     });
 
     afterAll(() => {
