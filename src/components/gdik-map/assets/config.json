@@ -91,12 +91,7 @@
           "menu": {
                "tree": "test"
           },
-          "layers": [
-               {
-                    "id": "1001"
-
-               }
-          ]
+          "backgroundLayers": ["1001"]
      },
      "services": [
           {

@@ -11,12 +11,7 @@
           "menu": {
                "tree": "test"
           },
-          "layers": [
-               {
-                    "id": "1002"
-
-               }
-          ]
+          "backgroundLayers": ["1002"]
      },
      "services": [
           {
