@@ -27,8 +27,6 @@ export default class LayerswitcherControl extends Control {
                 label = document.createElement("label"),
                 elementId = "bg-layer-" + layer.get("id");
 
-
-
             input.id = elementId;
             input.name = "bg-layer";
             input.type = "radio";
