@@ -162,16 +162,17 @@ export default class GDIKMap extends HTMLElement {
         config.portal.layers = [];
         map = mapsAPI.map.createMap({...config.portal, layerConf: config.services}, "2D");
 
-        const rawLayer = getLayerWhere({id: this.activeBackgroundLayer});
+        config.portal.backgroundLayers.forEach(layerId => {
+            const rawLayer = getLayerWhere({id: layerId});
 
-        if (!rawLayer) {
-            console.error("Layer with id '" + this.activeBackgroundLayer + "' not found. No layer added to map.");
-        }
-        else {
+            if (!rawLayer) {
+                console.error("Background layer with id '" + layerId + "' not found. Skipped.");
+                return;
+            }
 
-            layer = map.addLayer(this.activeBackgroundLayer);
+            layer = map.addLayer(layerId);
             layer.set("name", rawLayer.name);
-        }
+        });
 
         map.addControl(new Zoom());
         map.addControl(new FullScreen());

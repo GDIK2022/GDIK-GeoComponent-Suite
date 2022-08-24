@@ -107,8 +107,11 @@ describe("Attribute active-bg", () => {
     });
 
     it("should use background layer given by attribute for init", async () => {
+        fetch.mockResponseOnce(JSON.stringify(customConfig));
         const component = new GDIKMap(),
             backgroundLayer = "1002";
+
+        component.setAttribute("config-url", "http://config.service/config.json");
 
         component.setAttribute("active-bg", backgroundLayer);
         await component.connectedCallback();
@@ -117,8 +120,11 @@ describe("Attribute active-bg", () => {
     });
 
     it("should change background layer when attribute changes", async () => {
+        fetch.mockResponseOnce(JSON.stringify(customConfig));
         const component = new GDIKMap(),
             backgroundLayer = "1002";
+
+        component.setAttribute("config-url", "http://config.service/config.json");
 
         await component.connectedCallback();
         expect(component.getBackgroundLayer().get("id")).toBe("1001");
@@ -136,8 +142,7 @@ describe("Attribute active-bg", () => {
 
         component.setAttribute("active-bg", backgroundLayer);
         await component.connectedCallback();
-        expect(console.error.mock.calls[0][0]).toBe("Layer with id '1003' not found. No layer added to map.");
-        expect(console.error.mock.calls[1][0]).toBe("Background layer 1003 cannot be found. Fall back to default background layer");
+        expect(console.error.mock.calls[0][0]).toBe("Background layer 1003 cannot be found. Fall back to default background layer");
 
         expect(component.getAttribute("active-bg", "1001"));
         expect(component.getBackgroundLayer().get("id")).toBe("1001");
