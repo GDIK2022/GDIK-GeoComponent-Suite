@@ -319,4 +319,17 @@ describe("Layerswitcher related", () => {
 
         expect(bgLayers[0].innerHTML).toBe("WebAtlasDe");
     });
+
+    it("should render all given background layers", async () => {
+        const component = new GDIKMap();
+        let bgLayers = null;
+
+        await component.connectedCallback();
+
+        bgLayers = component.shadowRoot.querySelectorAll(".gdik-layerswitcher ul li label");
+        expect(bgLayers.length).toBe(2);
+
+        expect(bgLayers[0].innerHTML).toBe("WebAtlasDe");
+        expect(bgLayers[1].innerHTML).toBe("TopPlusOpen - Farbe");
+    });
 });
