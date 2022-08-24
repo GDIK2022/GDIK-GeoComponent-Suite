@@ -297,3 +297,20 @@ describe("Draw related", () => {
         expect(console.debug.mock.calls[0][0]).toBe("Original error was Error: Inhomogeneous feature collection given");
     });
 });
+
+describe("Layerswitcher related", () => {
+    it("should have added layerswitcher control", async () => {
+        const component = new GDIKMap();
+        let layerswitcherElement, bgLayers;
+
+        await component.connectedCallback();
+
+        layerswitcherElement = component.shadowRoot.querySelector(".gdik-layerswitcher");
+        expect(layerswitcherElement).not.toBeNull();
+
+        bgLayers = layerswitcherElement.querySelectorAll("ul li label");
+        expect(bgLayers.length).toBe(1);
+
+        expect(bgLayers[0].innerHTML).toBe("WebAtlasDe");
+    });
+});
