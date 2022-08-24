@@ -8,6 +8,11 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '16.x'
+      - uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: npm-${{ hashFiles('package-lock.json') }}
+          restore-keys: npm-
       - run: npm ci
       - run: npm run test
   lint:
@@ -17,16 +22,25 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '16.x'
+      - uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: npm-${{ hashFiles('package-lock.json') }}
+          restore-keys: npm-
       - run: npm ci
       - run: npm run lint
   audit:
-    needs: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: '16.x'
+      - uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: npm-${{ hashFiles('package-lock.json') }}
+          restore-keys: npm-
       - run: npm ci
       - run: npm audit --omit=dev
   build:
