@@ -25,6 +25,11 @@ template.innerHTML = `<style>
         .gdik-delete button:disabled {
             background-color: #888;
         }
+
+        .gdik-layerswitcher {
+            left: 0.5em;
+            bottom: 0.5em;
+        }
     </style>`;
 
 template.innerHTML += "<div class=\"gdik-map-container\"></div>";
