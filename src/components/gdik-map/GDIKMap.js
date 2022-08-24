@@ -8,10 +8,12 @@ import Zoom from "ol/control/Zoom";
 import FullScreen from "ol/control/FullScreen";
 
 import mapsAPI from "masterportalAPI/src/maps/api.js";
+import {getLayerWhere} from "masterportalAPI/src/rawLayerList";
 
 // TODO remove default config file
 import * as defaultConfig from "./assets/config.json";
 import DrawControl from "./controls/draw";
+import LayerswitcherControl from "./controls/layerswitcher";
 
 import template from "./templates/GDIKMap.tmpl";
 
@@ -151,19 +153,34 @@ export default class GDIKMap extends HTMLElement {
 
     setupMap (config, options) {
         let map = null,
-            dobleClickZoom = null;
+            dobleClickZoom = null,
+            layer = null;
 
         config.portal.target = this.container;
         this.container.innerHTML = "";
 
-        config.portal.layers = [{"id": this.activeBackgroundLayer}];
+        config.portal.layers = [];
         map = mapsAPI.map.createMap({...config.portal, layerConf: config.services}, "2D");
+
+        const rawLayer = getLayerWhere({id: this.activeBackgroundLayer});
+
+        if (!rawLayer) {
+            console.error("Layer with id '" + this.activeBackgroundLayer + "' not found. No layer added to map.");
+        }
+        else {
+
+            layer = map.addLayer(this.activeBackgroundLayer);
+            layer.set("name", rawLayer.name);
+        }
 
         map.addControl(new Zoom());
         map.addControl(new FullScreen());
 
         dobleClickZoom = this.getInteractionByClass(map, DoubleClickZoom);
         map.removeInteraction(dobleClickZoom);
+
+        this.layerswitcher = new LayerswitcherControl(config.portal);
+        map.addControl(this.layerswitcher);
 
         map.on("moveend", () => {
             this.center = map.getView().getCenter();
