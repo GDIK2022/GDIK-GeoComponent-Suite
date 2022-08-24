@@ -32,10 +32,6 @@ describe("Init gdik-map", () => {
         expect(component.shadowRoot.childNodes[1].nodeName).toBe("DIV");
         expect(component.shadowRoot.childNodes[1].getAttribute("id")).toMatch(/^gdik-map-div-[a-zA-Z0-9]*$/);
 
-        expect(component.shadowRoot.childNodes[1].style.height).toBe("100%");
-        expect(component.shadowRoot.childNodes[1].style.width).toBe("100%");
-        expect(component.shadowRoot.childNodes[1].style.margin).toBe("auto");
-
         expect(component.shadowRoot.childNodes[1].firstChild.className).toBe("ol-viewport");
     });
 
