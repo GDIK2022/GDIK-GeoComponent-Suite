@@ -27,7 +27,7 @@ jobs:
           path: ~/.npm
           key: npm-${{ hashFiles('package-lock.json') }}
           restore-keys: npm-
-      - run: npm ci
+      - run: npm i
       - run: npm run test
   lint:
     needs: init
@@ -42,7 +42,7 @@ jobs:
           path: ~/.npm
           key: npm-${{ hashFiles('package-lock.json') }}
           restore-keys: npm-
-      - run: npm ci
+      - run: npm i
       - run: npm run lint
   audit:
     needs: init
@@ -57,7 +57,7 @@ jobs:
           path: ~/.npm
           key: npm-${{ hashFiles('package-lock.json') }}
           restore-keys: npm-
-      - run: npm ci
+      - run: npm i
       - run: npm audit --omit=dev
   build:
     needs: [test, audit]
