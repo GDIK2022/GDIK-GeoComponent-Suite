@@ -301,7 +301,8 @@ describe("Draw related", () => {
 describe("Layerswitcher related", () => {
     it("should have added layerswitcher control", async () => {
         const component = new GDIKMap();
-        let layerswitcherElement, bgLayers;
+        let layerswitcherElement = null,
+            bgLayers = null;
 
         await component.connectedCallback();
 
