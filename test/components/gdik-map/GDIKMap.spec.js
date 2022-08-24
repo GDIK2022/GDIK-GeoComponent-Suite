@@ -215,7 +215,7 @@ describe("Draw related", () => {
         drawInteraction = drawInteraction[0];
         expect(drawInteraction.getActive()).toBe(true);
 
-        expect(component.shadowRoot.querySelector(".gdik-delete")).toBeDefined();
+        expect(component.shadowRoot.querySelector(".gdik-delete")).not.toBeNull();
     });
 
     it("should have feature attribute with FeatureCollection containing drawed feature when feature added to draw layer", async () => {
