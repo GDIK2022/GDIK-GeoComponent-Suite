@@ -34,8 +34,6 @@ describe("Layerswitcher", () => {
 
         layerEntry = control.element.firstChild.childNodes[0];
 
-
-
         expect(layerEntry.nodeName).toBe("LI");
         expect(layerEntry.firstChild.nodeName).toBe("INPUT");
         expect(layerEntry.firstChild.type).toBe("radio");
