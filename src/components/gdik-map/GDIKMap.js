@@ -13,6 +13,8 @@ import mapsAPI from "masterportalAPI/src/maps/api.js";
 import * as defaultConfig from "./assets/config.json";
 import DrawControl from "./controls/draw";
 
+import template from "./templates/GDIKMap.tmpl";
+
 export default class GDIKMap extends HTMLElement {
     static get observedAttributes () {
         return ["lon", "lat", "layer"];
@@ -85,40 +87,16 @@ export default class GDIKMap extends HTMLElement {
     }
 
     renderComponent () {
-        this.container = document.createElement("div");
+        const shadow = this.attachShadow({mode: "open"});
+
+        shadow.appendChild(template.content.cloneNode(true));
+
+        shadow.children[0].textContent = olCss + shadow.children[0].textContent;
+
+        this.container = shadow.children[1];
+
         this.container.id = this.generateContainerId();
-        this.container.style.height = "100%";
-        this.container.style.width = "100%";
-        this.container.style.margin = "auto";
 
-        const shadow = this.attachShadow({mode: "open"}),
-            style = document.createElement("style");
-
-        style.textContent = olCss;
-
-        style.textContent += `
-            .ol-full-screen {
-                top: auto;
-                bottom: 0.5em;
-            }
-
-            .ol-zoom {
-                left: auto;
-                right: 0.5em;
-            }
-
-            .gdik-delete {
-                left: 0.5em;
-                top: 0.5em;
-            }
-
-            .gdik-delete button:disabled {
-                background-color: #888;
-            }
-        `;
-
-        shadow.appendChild(style);
-        shadow.appendChild(this.container);
     }
 
     getLayer (id) {
