@@ -304,6 +304,10 @@ describe("Draw related", () => {
 });
 
 describe("Layerswitcher related", () => {
+    beforeEach(() => {
+        fetch.resetMocks();
+    });
+
     it("should have added layerswitcher control", async () => {
         const component = new GDIKMap();
         let layerswitcherElement = null,
@@ -314,22 +318,26 @@ describe("Layerswitcher related", () => {
         layerswitcherElement = component.shadowRoot.querySelector(".gdik-layerswitcher");
         expect(layerswitcherElement).not.toBeNull();
 
-        bgLayers = layerswitcherElement.querySelectorAll("ul li label");
+        bgLayers = layerswitcherElement.querySelectorAll("ul li");
         expect(bgLayers.length).toBe(1);
 
-        expect(bgLayers[0].innerHTML).toBe("WebAtlasDe");
+        expect(bgLayers[0].querySelector("label").innerHTML).toBe("WebAtlasDe");
     });
 
     it("should render all given background layers", async () => {
+        fetch.mockResponseOnce(JSON.stringify(customConfig));
         const component = new GDIKMap();
+
+        component.setAttribute("config-url", "http://config.service/config.json");
+
         let bgLayers = null;
 
         await component.connectedCallback();
 
-        bgLayers = component.shadowRoot.querySelectorAll(".gdik-layerswitcher ul li label");
+        bgLayers = component.shadowRoot.querySelector(".gdik-layerswitcher").querySelectorAll("ul li");
         expect(bgLayers.length).toBe(2);
 
-        expect(bgLayers[0].innerHTML).toBe("WebAtlasDe");
-        expect(bgLayers[1].innerHTML).toBe("TopPlusOpen - Farbe");
+        expect(bgLayers[0].querySelector("label").innerHTML).toBe("WebAtlasDe");
+        expect(bgLayers[1].querySelector("label").innerHTML).toBe("TopPlusOpen - Farbe");
     });
 });
