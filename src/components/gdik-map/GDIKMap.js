@@ -152,6 +152,7 @@ export default class GDIKMap extends HTMLElement {
     }
 
     setupMap (config, options) {
+        const olBackgroundLayer = [];
         let map = null,
             dobleClickZoom = null;
 
@@ -172,7 +173,11 @@ export default class GDIKMap extends HTMLElement {
 
             layer = map.addLayer(layerId);
             layer.set("name", rawLayer.name);
+            olBackgroundLayer.push(layer);
         });
+
+        this.layerswitcher = new LayerswitcherControl(olBackgroundLayer);
+        map.addControl(this.layerswitcher);
 
         map.addControl(new Zoom());
         map.addControl(new FullScreen());
@@ -180,8 +185,6 @@ export default class GDIKMap extends HTMLElement {
         dobleClickZoom = this.getInteractionByClass(map, DoubleClickZoom);
         map.removeInteraction(dobleClickZoom);
 
-        this.layerswitcher = new LayerswitcherControl(config.portal);
-        map.addControl(this.layerswitcher);
 
         map.on("moveend", () => {
             this.center = map.getView().getCenter();

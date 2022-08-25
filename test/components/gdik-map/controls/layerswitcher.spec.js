@@ -13,16 +13,15 @@ describe("Layerswitcher", () => {
     it("should init layerswitcher", () => {
         expect(LayerswitcherControl).toBeDefined();
 
-        const control = new LayerswitcherControl({backgroundLayers: ["1001", "1002"]});
+        const control = new LayerswitcherControl([bgLayer1, bgLayer2]);
 
         expect(control.element.className).toBe("ol-control gdik-layerswitcher");
         expect(control.element.firstChild.nodeName).toBe("UL");
     });
 
     it("should render layer entry as expected", () => {
-        const backgroundLayers = ["1001"],
-            map = new Map(),
-            control = new LayerswitcherControl({backgroundLayers: backgroundLayers});
+        const map = new Map(),
+            control = new LayerswitcherControl([bgLayer1]);
 
         let layerEntry = null;
 
@@ -46,9 +45,8 @@ describe("Layerswitcher", () => {
     });
 
     it("should show correct names for background layer", () => {
-        const backgroundLayers = ["1001", "1002"],
-            map = new Map(),
-            control = new LayerswitcherControl({backgroundLayers: backgroundLayers});
+        const map = new Map(),
+            control = new LayerswitcherControl([bgLayer1, bgLayer2]);
 
         map.addLayer(bgLayer1);
         map.addLayer(bgLayer2);
