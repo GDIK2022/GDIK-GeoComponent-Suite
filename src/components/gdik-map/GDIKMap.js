@@ -153,8 +153,7 @@ export default class GDIKMap extends HTMLElement {
 
     setupMap (config, options) {
         let map = null,
-            dobleClickZoom = null,
-            layer = null;
+            dobleClickZoom = null;
 
         config.portal.target = this.container;
         this.container.innerHTML = "";
@@ -164,6 +163,7 @@ export default class GDIKMap extends HTMLElement {
 
         config.portal.backgroundLayers.forEach(layerId => {
             const rawLayer = getLayerWhere({id: layerId});
+            let layer = null;
 
             if (!rawLayer) {
                 console.error("Background layer with id '" + layerId + "' not found. Skipped.");
