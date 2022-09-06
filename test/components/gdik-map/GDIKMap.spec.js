@@ -116,7 +116,7 @@ describe("Attribute active-bg", () => {
         component.setAttribute("active-bg", backgroundLayer);
         await component.connectedCallback();
 
-        expect(component.getBackgroundLayer().get("id")).toBe(backgroundLayer);
+        expect(component.layerManager.activeBackgroundLayer.get("id")).toBe(backgroundLayer);
     });
 
     it("should change background layer when attribute changes", async () => {
@@ -127,11 +127,11 @@ describe("Attribute active-bg", () => {
         component.setAttribute("config-url", "http://config.service/config.json");
 
         await component.connectedCallback();
-        expect(component.getBackgroundLayer().get("id")).toBe("1001");
+        expect(component.layerManager.activeBackgroundLayer.get("id")).toBe("1001");
 
         component.setAttribute("active-bg", backgroundLayer);
 
-        expect(component.getBackgroundLayer().get("id")).toBe(backgroundLayer);
+        expect(component.layerManager.activeBackgroundLayer.get("id")).toBe(backgroundLayer);
     });
 
     it("should log an error when background layer cannot be found on init", async () => {
@@ -142,10 +142,10 @@ describe("Attribute active-bg", () => {
 
         component.setAttribute("active-bg", backgroundLayer);
         await component.connectedCallback();
-        expect(console.error.mock.calls[0][0]).toBe("Background layer 1003 cannot be found. Fall back to default background layer");
+        expect(console.error.mock.calls[0][0]).toBe("Background layer with id 1003 not found");
 
         expect(component.getAttribute("active-bg", "1001"));
-        expect(component.getBackgroundLayer().get("id")).toBe("1001");
+        expect(component.layerManager.activeBackgroundLayer.get("id")).toBe("1001");
     });
 
     it("should log an error when background layer cannot be found on attribute change", async () => {
@@ -157,11 +157,10 @@ describe("Attribute active-bg", () => {
         await component.connectedCallback();
 
         component.setAttribute("active-bg", backgroundLayer);
-        expect(console.error.mock.calls[0][0]).toBe("Layer with id '1003' not found. No layer added to map.");
-        expect(console.error.mock.calls[1][0]).toBe("Background layer with id 1003 not found");
+        expect(console.error.mock.calls[0][0]).toBe("Background layer with id 1003 not found");
 
         expect(component.getAttribute("active-bg", "1001"));
-        expect(component.getBackgroundLayer().get("id")).toBe("1001");
+        expect(component.layerManager.activeBackgroundLayer.get("id")).toBe("1001");
     });
 });
 
@@ -185,7 +184,7 @@ describe("Attribute change related", () => {
 
         expect(component.map.getView().getCenter()).toEqual([lon, lat]);
 
-        expect(component.getBackgroundLayer().get("id")).toBe(backgroundLayer);
+        expect(component.layerManager.activeBackgroundLayer.get("id")).toBe(backgroundLayer);
     });
 
     it("should change lon lat attributes when map center changed", async () => {
@@ -319,7 +318,7 @@ describe("Layerswitcher related", () => {
         expect(layerswitcherElement).not.toBeNull();
 
         bgLayers = layerswitcherElement.querySelectorAll("ul li");
-        expect(bgLayers.length).toBe(1);
+        expect(bgLayers.length).toBe(2);
 
         expect(bgLayers[0].querySelector("label").innerHTML).toBe("WebAtlasDe");
     });
