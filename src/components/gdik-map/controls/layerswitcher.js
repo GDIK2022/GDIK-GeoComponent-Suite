@@ -1,16 +1,18 @@
 import {Control} from "ol/control";
 export default class LayerswitcherControl extends Control {
 
-    constructor (olLayers) {
+    constructor (layerManager) {
         const div = document.createElement("div");
 
         div.className = "ol-control gdik-layerswitcher";
 
         super({element: div});
 
-        this.olLayers = olLayers;
+        this.layerManager = layerManager;
+
         this.layerContainer = document.createElement("ul");
-        this.olLayers.forEach((layer) => {
+
+        this.layerManager.olBackgroundLayer.forEach((layer) => {
             const li = document.createElement("li"),
                 input = document.createElement("input"),
                 label = document.createElement("label"),
