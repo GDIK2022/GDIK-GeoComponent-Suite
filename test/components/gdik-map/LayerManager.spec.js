@@ -1,4 +1,6 @@
-import { initializeLayerList } from "masterportalAPI/src/rawLayerList";
+import VectorLayer from "ol/layer/Vector";
+
+import {initializeLayerList} from "masterportalAPI/src/rawLayerList";
 import mapsAPI from "masterportalAPI/src/maps/api.js";
 
 import LayerManager from "../../../src/components/gdik-map/LayerManager";
@@ -110,5 +112,23 @@ describe("LayerManager", () => {
         layerManager.changeBackgroundLayer("1003");
 
         expect(console.error.mock.calls[0][0]).toBe("Background layer with id 1003 not found");
+    });
+
+    it("should add layer on top", () => {
+        const map = mapsAPI.map.createMap(),
+            backgroundLayers = ["1001", "1002"],
+            layerManager = new LayerManager(map, backgroundLayers),
+            layerOne = new VectorLayer(),
+            layerTwo = new VectorLayer();
+
+        layerOne.set("name", "layerOne");
+        layerTwo.set("name", "layerTwo");
+
+        layerManager.addLayerOnTop(layerOne);
+
+        expect(map.getLayers().item(map.getLayers().getLength() - 1).get("name")).toBe("layerOne");
+
+        layerManager.addLayerOnTop(layerTwo);
+        expect(map.getLayers().item(map.getLayers().getLength() - 1).get("name")).toBe("layerTwo");
     });
 });

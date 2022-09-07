@@ -7,6 +7,7 @@ export default class LayerManager {
         this.map = map;
         this.backgroundLayerIds = [];
         this.olBackgroundLayer = [];
+        this.olTopLayer = [];
         this.activeBackgroundLayer = null;
 
         backgroundLayers.forEach(layerId => {
@@ -44,6 +45,11 @@ export default class LayerManager {
         }
         newBackgroundLayer.setVisible(true);
         this.activeBackgroundLayer = newBackgroundLayer;
+    }
+
+    addLayerOnTop (layer) {
+        this.olTopLayer.push(layer);
+        this.map.addLayer(layer);
     }
 
 }

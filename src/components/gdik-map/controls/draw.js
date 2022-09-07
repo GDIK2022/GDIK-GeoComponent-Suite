@@ -48,6 +48,8 @@ export default class DrawControl extends Control {
         this.featureSource = new VectorSource({features: features});
         this.featureLayer = new VectorLayer({source: this.featureSource});
 
+        layerManager.addLayerOnTop(this.featureLayer);
+
         this.drawInteraction = new Draw({
             type: options.drawType,
             source: this.featureSource
@@ -76,7 +78,6 @@ export default class DrawControl extends Control {
         super.setMap(map);
         map.addInteraction(this.drawInteraction);
         map.addInteraction(this.modifyInteraction);
-        map.addLayer(this.featureLayer);
     }
 
     handleAddFeature () {
