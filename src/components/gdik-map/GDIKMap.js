@@ -147,12 +147,12 @@ export default class GDIKMap extends HTMLElement {
 
         if (options.drawType !== null || options.featureCollection !== undefined) {
             try {
-                const drawControl = new DrawControl(this.layerManager, options);
+                this.drawControl = new DrawControl(this.layerManager, options);
 
-                drawControl.on("featureupdate", () => {
-                    this.setAttribute("feature", drawControl.getFeatureCollection());
+                this.drawControl.on("featureupdate", () => {
+                    this.setAttribute("feature", this.drawControl.getFeatureCollection());
                 });
-                map.addControl(drawControl);
+                map.addControl(this.drawControl);
             }
             catch (err) {
                 console.error("Failed to create DrawControl");

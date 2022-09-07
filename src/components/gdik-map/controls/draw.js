@@ -17,7 +17,7 @@ export default class DrawControl extends Control {
 
      */
 
-    constructor (options) {
+    constructor (layerManager, options) {
         const div = document.createElement("div"),
             clearDrawBtn = document.createElement("button");
 
