@@ -87,4 +87,23 @@ describe("Layerswitcher", () => {
             expect(control.element.firstChild.childNodes[i].lastChild.innerHTML).toBe(rawLayers[i].name);
         }
     });
+
+    it("should change visible background layer", () => {
+        const control = new LayerswitcherControl(layerManager);
+
+        control.setMap(map);
+
+        expect(control.element.firstChild.childNodes[0].firstChild.checked).toBe(true);
+        expect(map.getLayers().item(0).getVisible()).toBe(true);
+        expect(control.element.firstChild.childNodes[1].firstChild.checked).toBe(false);
+        expect(map.getLayers().item(1).getVisible()).toBe(false);
+
+        control.element.firstChild.childNodes[1].firstChild.click();
+
+        expect(control.element.firstChild.childNodes[0].firstChild.checked).toBe(false);
+        expect(map.getLayers().item(0).getVisible()).toBe(false);
+        expect(control.element.firstChild.childNodes[1].firstChild.checked).toBe(true);
+        expect(map.getLayers().item(1).getVisible()).toBe(true);
+
+    })
 });
