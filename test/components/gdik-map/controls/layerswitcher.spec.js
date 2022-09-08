@@ -129,5 +129,5 @@ describe("Layerswitcher", () => {
         expect(opener.className).toBe("");
         expect(listContainer.className).toBe("list-container hidden");
         expect(closer.className).toBe("closer");
-    })
+    });
 });
