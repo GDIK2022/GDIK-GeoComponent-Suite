@@ -1,11 +1,20 @@
 import Feature from "ol/Feature";
 import Point from "ol/geom/Point";
 
+import mapsAPI from "masterportalAPI/src/maps/api.js";
+
 import DrawControl from "../../../../src/components/gdik-map/controls/draw";
 
-import Map from "ol/Map";
+import LayerManager from "../../../../src/components/gdik-map/LayerManager";
 
 describe("Draw Control", () => {
+
+    let map, layerManager;
+
+    beforeEach(() => {
+        map = mapsAPI.map.createMap();
+        layerManager = new LayerManager(map, []);
+    });
 
     it("should raise an error when no draw type is given or draw type is not supported", () => {
         expect(DrawControl).toBeDefined();
@@ -21,8 +30,9 @@ describe("Draw Control", () => {
 
         expect(thrownError.toString()).toBe("Error: Missing draw type");
 
+
         try {
-            new DrawControl({drawType: "Punkt"});
+            new DrawControl(layerManager, {drawType: "Punkt"});
         }
         catch (err) {
             thrownError = err;
@@ -33,7 +43,7 @@ describe("Draw Control", () => {
     });
 
     it("should init draw control", () => {
-        const control = new DrawControl({drawType: "Point"});
+        const control = new DrawControl(layerManager, {drawType: "Point"});
 
         expect(control.element.className).toBe("ol-control gdik-delete");
         expect(control.element.firstChild.nodeName).toBe("BUTTON");
@@ -44,8 +54,7 @@ describe("Draw Control", () => {
     });
 
     it("should toggle controls depending on feature source", () => {
-        const control = new DrawControl({drawType: "Point"}),
-            map = new Map(),
+        const control = new DrawControl(layerManager, {drawType: "Point"}),
             feature = new Feature({geometry: new Point([1, 1])}),
             addInteractionSpy = jest.spyOn(map, "addInteraction");
 
@@ -76,7 +85,7 @@ describe("Draw Control", () => {
     });
 
     it("should add features of given feature collection to feature source", () => {
-        const control = new DrawControl({featureCollection: {"type": "FeatureCollection", "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [1, 1]}}]}});
+        const control = new DrawControl(layerManager, {featureCollection: {"type": "FeatureCollection", "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [1, 1]}}]}});
 
         expect(control.featureSource.getFeatures().length).toBe(1);
         expect(control.featureSource.getFeatures()[0].getGeometry().getType()).toBe("Point");
@@ -85,20 +94,20 @@ describe("Draw Control", () => {
 
     it("should not allow mixed geometry types", () => {
         expect(() => {
-            new DrawControl({featureCollection: {"type": "FeatureCollection", "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [1, 1]}}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[1, 1], [2, 1], [2, 2]]}}]}});
+            new DrawControl(layerManager, {featureCollection: {"type": "FeatureCollection", "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [1, 1]}}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[1, 1], [2, 1], [2, 2]]}}]}});
         })
             .toThrow("Inhomogeneous feature collection given");
     });
 
     it("should raise a missing draw type error when only empty feature collection given", () => {
         expect(() => {
-            new DrawControl({featureCollection: {"type": "FeatureCollection", "features": []}});
+            new DrawControl(layerManager, {featureCollection: {"type": "FeatureCollection", "features": []}});
         })
             .toThrow("Missing draw type");
     });
 
     it("should ignore empty feature collections", () => {
-        const control = new DrawControl({
+        const control = new DrawControl(layerManager, {
             drawType: "Point",
             featureCollection: {"type": "FeatureCollection", "features": []}});
 

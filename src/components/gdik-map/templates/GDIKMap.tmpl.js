@@ -25,6 +25,40 @@ template.innerHTML = `<style>
         .gdik-delete button:disabled {
             background-color: #888;
         }
+
+        .gdik-layerswitcher {
+            left: 0.5em;
+            bottom: 0.5em;
+            display: flex;
+            flex-direction: row;
+            align-items: flex-end;
+        }
+
+        .gdik-layerswitcher.ol-control .hidden {
+            display: none;
+        }
+
+        .gdik-layerswitcher .closer {
+            display: inline-block;
+        }
+
+        .gdik-layerswitcher ul {
+            padding: 0;
+            margin: 0;
+            display: inline-block;
+            background-color: ghostwhite;
+        }
+
+        .gdik-layerswitcher ul li {
+            display: block;
+            border: 1px solid rgba(0, 0, 0, .125);
+            white-space: nowrap;
+            padding: 0.2em 0.4em;
+        }
+
+        .gdik-layerswitcher ul li.active {
+            background-color: #003c8880;
+        }
     </style>`;
 
 template.innerHTML += "<div class=\"gdik-map-container\"></div>";

@@ -13,7 +13,7 @@ jobs:
           path: ~/.npm
           key: npm-${{ hashFiles('package-lock.json') }}
           restore-keys: npm-
-      - run: npm ci
+      - run: npm i
   test:
     needs: init
     runs-on: ubuntu-latest

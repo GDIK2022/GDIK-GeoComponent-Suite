@@ -12,8 +12,10 @@ import mapsAPI from "masterportalAPI/src/maps/api.js";
 // TODO remove default config file
 import * as defaultConfig from "./assets/config.json";
 import DrawControl from "./controls/draw";
+import LayerswitcherControl from "./controls/layerswitcher";
 
 import template from "./templates/GDIKMap.tmpl";
+import LayerManager from "./LayerManager";
 
 export default class GDIKMap extends HTMLElement {
     static get observedAttributes () {
@@ -23,10 +25,10 @@ export default class GDIKMap extends HTMLElement {
     constructor () {
         super();
         this.map = undefined;
+        this.layerManager = undefined;
         this.container = undefined;
         this.configURL = undefined;
         this.config = undefined;
-        this.activeBackgroundLayer = undefined;
         this.drawControl = undefined;
     }
 
@@ -42,9 +44,6 @@ export default class GDIKMap extends HTMLElement {
             this.config.portal.startCenter = [this.getAttribute("lon"), this.getAttribute("lat")];
         }
 
-        this.activeBackgroundLayer = this.hasAttribute("active-bg") ?
-            this.getAttribute("active-bg") : this.config.portal.backgroundLayers[0];
-
         let featureCollection;
 
         if (this.hasAttribute("feature")) {
@@ -56,14 +55,15 @@ export default class GDIKMap extends HTMLElement {
             featureCollection: featureCollection
         });
 
-        if (!this.getLayer(this.activeBackgroundLayer)) {
-            console.error(`Background layer ${this.activeBackgroundLayer} cannot be found. Fall back to default background layer`);
-            this.changeBackgroundLayer(this.config.portal.backgroundLayers[0]);
+        if (this.hasAttribute("active-bg")) {
+            this.layerManager.changeBackgroundLayer(this.getAttribute("active-bg")).catch(() => {
+                // TODO implement
+            });
         }
 
         this.setAttribute("lon", this.config.portal.startCenter[0]);
         this.setAttribute("lat", this.config.portal.startCenter[1]);
-        this.setAttribute("active-bg", this.activeBackgroundLayer);
+        this.setAttribute("active-bg", this.layerManager.activeBackgroundLayer.get("id"));
 
     }
 
@@ -81,31 +81,13 @@ export default class GDIKMap extends HTMLElement {
                 this.map.getView().setCenter([this.map.getView().getCenter()[0], newValue]);
                 break;
             case "active-bg":
-                this.changeBackgroundLayer(newValue);
+                this.layerManager.changeBackgroundLayer(newValue).catch(() => {
+                    // TODO implement
+                });
                 break;
             default:
                 break;
         }
-    }
-
-    changeBackgroundLayer (id) {
-        const currentBackgroundLayer = this.getBackgroundLayer();
-        let newBackgroundLayer = this.getLayer(id);
-
-        if (!newBackgroundLayer) {
-            newBackgroundLayer = this.map.addLayer(id);
-        }
-
-        if (!newBackgroundLayer) {
-            console.error(`Background layer with id ${id} not found`);
-            return;
-        }
-        if (currentBackgroundLayer) {
-            currentBackgroundLayer.setVisible(false);
-        }
-        newBackgroundLayer.setVisible(true);
-        this.activeBackgroundLayer = id;
-
     }
 
     renderComponent () {
@@ -119,13 +101,6 @@ export default class GDIKMap extends HTMLElement {
 
         this.container.id = this.generateContainerId();
 
-    }
-
-    getLayer (id) {
-        const layers = this.map.getLayers().getArray(),
-            founds = layers.filter(layer => layer.get("id") === id);
-
-        return founds.length === 0 ? undefined : founds[0];
     }
 
     async fetchConfig (configUrl) {
@@ -156,9 +131,12 @@ export default class GDIKMap extends HTMLElement {
         config.portal.target = this.container;
         this.container.innerHTML = "";
 
-        config.portal.layers = [{"id": this.activeBackgroundLayer}];
+        config.portal.layers = [];
         map = mapsAPI.map.createMap({...config.portal, layerConf: config.services}, "2D");
 
+        this.layerManager = new LayerManager(map, config.portal.backgroundLayers);
+
+        map.addControl(new LayerswitcherControl(this.layerManager));
         map.addControl(new Zoom());
         map.addControl(new FullScreen());
 
@@ -173,7 +151,8 @@ export default class GDIKMap extends HTMLElement {
 
         if (options.drawType !== null || options.featureCollection !== undefined) {
             try {
-                this.drawControl = new DrawControl(options);
+                this.drawControl = new DrawControl(this.layerManager, options);
+
                 this.drawControl.on("featureupdate", () => {
                     this.setAttribute("feature", this.drawControl.getFeatureCollection());
                 });
@@ -186,21 +165,6 @@ export default class GDIKMap extends HTMLElement {
         }
 
         return map;
-    }
-
-    getVisibleLayers () {
-        return this.map.getLayers().getArray()
-            .filter(layer => {
-                return layer.getVisible();
-            });
-    }
-
-    getBackgroundLayer () {
-        const founds = this.getVisibleLayers().filter(layer => {
-            return this.activeBackgroundLayer === layer.get("id");
-        });
-
-        return founds.length === 0 ? undefined : founds[0];
     }
 
     generateContainerId (len) {
