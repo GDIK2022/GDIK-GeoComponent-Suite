@@ -22,6 +22,9 @@ export default class LayerswitcherControl extends Control {
             input.name = "bg-layer";
             input.type = "radio";
             input.checked = layer.getVisible();
+            input.onclick = () => {
+                this.layerManager.changeBackgroundLayer(layer.get("id"));
+            };
             li.appendChild(input);
 
             label.for = elementId;
