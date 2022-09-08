@@ -320,7 +320,7 @@ describe("Layerswitcher related", () => {
         bgLayers = layerswitcherElement.querySelectorAll("ul li");
         expect(bgLayers.length).toBe(2);
 
-        expect(bgLayers[0].querySelector("label").innerHTML).toBe("WebAtlasDe");
+        expect(bgLayers[0].innerHTML).toBe("WebAtlasDe");
     });
 
     it("should render all given background layers", async () => {
@@ -336,7 +336,7 @@ describe("Layerswitcher related", () => {
         bgLayers = component.shadowRoot.querySelector(".gdik-layerswitcher").querySelectorAll("ul li");
         expect(bgLayers.length).toBe(2);
 
-        expect(bgLayers[0].querySelector("label").innerHTML).toBe("WebAtlasDe");
-        expect(bgLayers[1].querySelector("label").innerHTML).toBe("TopPlusOpen - Farbe");
+        expect(bgLayers[0].innerHTML).toBe("WebAtlasDe");
+        expect(bgLayers[1].innerHTML).toBe("TopPlusOpen - Farbe");
     });
 });
