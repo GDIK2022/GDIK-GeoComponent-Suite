@@ -56,7 +56,9 @@ export default class GDIKMap extends HTMLElement {
         });
 
         if (this.hasAttribute("active-bg")) {
-            this.layerManager.changeBackgroundLayer(this.getAttribute("active-bg"));
+            this.layerManager.changeBackgroundLayer(this.getAttribute("active-bg")).catch(() => {
+                // TODO implement
+            });
         }
 
         this.setAttribute("lon", this.config.portal.startCenter[0]);
@@ -79,7 +81,9 @@ export default class GDIKMap extends HTMLElement {
                 this.map.getView().setCenter([this.map.getView().getCenter()[0], newValue]);
                 break;
             case "active-bg":
-                this.layerManager.changeBackgroundLayer(newValue);
+                this.layerManager.changeBackgroundLayer(newValue).catch(() => {
+                    // TODO implement
+                });
                 break;
             default:
                 break;

@@ -30,13 +30,16 @@ export default class LayerswitcherControl extends Control {
             li.className = "list-group-item";
             li.className += layer.getVisible() ? " active" : "";
 
-            li.onclick = () => {
-                this.layerManager.changeBackgroundLayer(layer.get("id"))
-            };
+            li.addEventListener("click", this.handleBackgroundLayerChange.bind(this, layer.get("id")));
             li.innerHTML = layer.get("name");
 
             this.layerContainer.appendChild(li);
         });
 
+    }
+
+    handleBackgroundLayerChange (id) {
+        return this.layerManager.changeBackgroundLayer(id)
+            .then(this.render.bind(this));
     }
 }

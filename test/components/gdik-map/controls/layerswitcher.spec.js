@@ -86,11 +86,24 @@ describe("Layerswitcher", () => {
         expect(control.element.firstChild.childNodes[1].className).toBe("list-group-item");
     });
 
-    it("should change visible background layer", () => {
+    it("should change visible background layer", (done) => {
         const control = new LayerswitcherControl(layerManager);
 
         control.setMap(map);
 
-        control.element.firstChild.childNodes[1].click();
+        expect(control.element.firstChild.childNodes[0].className).toBe("list-group-item active");
+        expect(map.getLayers().item(0).getVisible()).toBe(true);
+        expect(control.element.firstChild.childNodes[1].className).toBe("list-group-item");
+        expect(map.getLayers().item(1).getVisible()).toBe(false);
+
+        control.handleBackgroundLayerChange("1002").then(() => {
+
+            expect(control.element.firstChild.childNodes[0].className).toBe("list-group-item");
+            expect(map.getLayers().item(0).getVisible()).toBe(false);
+            expect(control.element.firstChild.childNodes[1].className).toBe("list-group-item active");
+            expect(map.getLayers().item(1).getVisible()).toBe(true);
+            done();
+        });
+
     });
 });

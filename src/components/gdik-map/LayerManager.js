@@ -35,7 +35,7 @@ export default class LayerManager {
     changeBackgroundLayer (id) {
         if (!this.backgroundLayerIds.includes(id)) {
             console.error(`Background layer with id ${id} not found`);
-            return;
+            return Promise.reject(`Background layer with id ${id} not found`);
         }
 
         const newBackgroundLayer = this.olBackgroundLayer.filter(l => l.get("id") === id)[0];
@@ -45,6 +45,8 @@ export default class LayerManager {
         }
         newBackgroundLayer.setVisible(true);
         this.activeBackgroundLayer = newBackgroundLayer;
+
+        return Promise.resolve();
     }
 
     addLayerOnTop (layer) {

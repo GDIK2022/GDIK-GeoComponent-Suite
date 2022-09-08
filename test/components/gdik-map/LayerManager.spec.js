@@ -102,14 +102,16 @@ describe("LayerManager", () => {
         expect(console.error.mock.calls[0][0]).toBe("Background layer with id '1003' not found. Skipped.");
     });
 
-    it("should log an error when changing background layer to a not present id", () => {
+    it("should log an error when changing background layer to a not present id", async () => {
         const map = mapsAPI.map.createMap(),
             backgroundLayers = ["1002"],
             layerManager = new LayerManager(map, backgroundLayers);
 
         console.error = jest.fn();
 
-        layerManager.changeBackgroundLayer("1003");
+        await layerManager.changeBackgroundLayer("1003").catch((err) => {
+            expect(err).toEqual("Background layer with id 1003 not found");
+        });
 
         expect(console.error.mock.calls[0][0]).toBe("Background layer with id 1003 not found");
     });
