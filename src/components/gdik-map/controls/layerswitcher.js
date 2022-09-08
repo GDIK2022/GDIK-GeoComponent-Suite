@@ -11,29 +11,32 @@ export default class LayerswitcherControl extends Control {
         this.layerManager = layerManager;
 
         this.layerContainer = document.createElement("ul");
+        this.layerContainer.className = "list-group";
+
+        div.appendChild(this.layerContainer);
+    }
+
+    setMap (map) {
+        this.render();
+        super.setMap(map);
+    }
+
+    render () {
+        this.layerContainer.querySelectorAll("*").forEach(n => n.remove());
 
         this.layerManager.olBackgroundLayer.forEach((layer) => {
-            const li = document.createElement("li"),
-                input = document.createElement("input"),
-                label = document.createElement("label"),
-                elementId = "bg-layer-" + layer.get("id");
+            const li = document.createElement("li");
 
-            input.id = elementId;
-            input.name = "bg-layer";
-            input.type = "radio";
-            input.checked = layer.getVisible();
-            input.onclick = () => {
-                this.layerManager.changeBackgroundLayer(layer.get("id"));
+            li.className = "list-group-item";
+            li.className += layer.getVisible() ? " active" : "";
+
+            li.onclick = () => {
+                this.layerManager.changeBackgroundLayer(layer.get("id"))
             };
-            li.appendChild(input);
-
-            label.for = elementId;
-            label.innerHTML = layer.get("name");
-            li.appendChild(label);
+            li.innerHTML = layer.get("name");
 
             this.layerContainer.appendChild(li);
         });
 
-        div.appendChild(this.layerContainer);
     }
 }
