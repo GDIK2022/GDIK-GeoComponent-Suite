@@ -2,18 +2,41 @@ import {Control} from "ol/control";
 export default class LayerswitcherControl extends Control {
 
     constructor (layerManager) {
-        const div = document.createElement("div");
+        const containerDiv = document.createElement("div"),
+            open = document.createElement("div"),
+            closed = document.createElement("button"),
+            closer = document.createElement("button");
 
-        div.className = "ol-control gdik-layerswitcher";
+        containerDiv.className = "ol-control gdik-layerswitcher";
+        super({element: containerDiv});
 
-        super({element: div});
+        closed.className = "";
+        closed.innerHTML = "&#x2C3;";
+        closed.addEventListener("click", () => {
+            open.classList.remove("hidden");
+            closed.classList.add("hidden");
+        });
+
+        open.className = "list-container hidden";
 
         this.layerManager = layerManager;
 
         this.layerContainer = document.createElement("ul");
         this.layerContainer.className = "list-group";
 
-        div.appendChild(this.layerContainer);
+        open.appendChild(this.layerContainer);
+
+        closer.className = "closer";
+        closer.innerHTML = "&#x2C2;";
+        closer.addEventListener("click", () => {
+            closed.classList.remove("hidden");
+            open.classList.add("hidden");
+        });
+
+        open.appendChild(closer);
+
+        containerDiv.appendChild(closed);
+        containerDiv.appendChild(open);
     }
 
     setMap (map) {
