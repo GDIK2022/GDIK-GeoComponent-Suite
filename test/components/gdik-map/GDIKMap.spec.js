@@ -249,6 +249,25 @@ describe("Draw related", () => {
             ]});
     });
 
+    it("shouldn't have feature attrubute when drawed feature was removed", async () => {
+        const component = new GDIKMap(),
+            feature = new Feature({geometry: new Point([1, 1])});
+
+        component.setAttribute("draw-type", "Point");
+
+        await component.connectedCallback();
+
+        expect(component.hasAttribute("feature")).toBe(false);
+
+        component.drawControl.featureSource.addFeature(feature);
+
+        expect(component.hasAttribute("feature")).toBe(true);
+
+        component.drawControl.featureSource.removeFeature(feature);
+
+        expect(component.hasAttribute("feature")).toBe(false);
+    });
+
     it("should deactivate draw and activate modify after feature is added to layer", async () => {
         const component = new GDIKMap();
         let drawInteraction, modifyInteraction;
