@@ -99,7 +99,8 @@ export default class DrawControl extends Control {
     }
 
     handleClearDrawBtnClick () {
-        this.featureSource.clear();
+        this.featureSource.clear(true);
+        this.featureSource.dispatchEvent("removefeature");
     }
 
     toggleDraw () {
@@ -107,7 +108,7 @@ export default class DrawControl extends Control {
     }
 
     getFeatureCollection () {
-        return format.writeFeatures(this.featureSource.getFeatures());
+        return this.featureSource.getFeatures().length === 0 ? undefined : format.writeFeatures(this.featureSource.getFeatures());
     }
 
     determineDrawType (features) {
