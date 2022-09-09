@@ -154,7 +154,13 @@ export default class GDIKMap extends HTMLElement {
                 this.drawControl = new DrawControl(this.layerManager, options);
 
                 this.drawControl.on("featureupdate", () => {
-                    this.setAttribute("feature", this.drawControl.getFeatureCollection());
+                    const fc = this.drawControl.getFeatureCollection();
+
+                    if (fc === undefined) {
+                        this.removeAttribute("feature");
+                        return;
+                    }
+                    this.setAttribute("feature", fc);
                 });
                 map.addControl(this.drawControl);
             }
