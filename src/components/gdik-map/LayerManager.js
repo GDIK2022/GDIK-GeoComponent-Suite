@@ -1,9 +1,11 @@
 
 import {getLayerWhere} from "masterportalAPI/src/rawLayerList";
+import Observable from "ol/Observable";
 
-export default class LayerManager {
+export default class LayerManager extends Observable {
 
     constructor (map, backgroundLayers) {
+        super();
         this.map = map;
         this.backgroundLayerIds = [];
         this.olBackgroundLayer = [];
@@ -45,7 +47,7 @@ export default class LayerManager {
         }
         newBackgroundLayer.setVisible(true);
         this.activeBackgroundLayer = newBackgroundLayer;
-
+        this.dispatchEvent("backgroudchange");
         return Promise.resolve();
     }
 

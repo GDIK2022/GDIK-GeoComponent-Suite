@@ -202,6 +202,19 @@ describe("Attribute change related", () => {
         expect(Number(component.getAttribute("lon"))).toBe(center[0]);
         expect(Number(component.getAttribute("lat"))).toBe(center[1]);
     });
+
+    it("shoud change background layer attribute when background layer changes", async () => {
+        const component = new GDIKMap(),
+            backgroundLayer = "1002";
+
+        await component.connectedCallback();
+
+        expect(component.getAttribute("active-bg")).toBe(defaultConfig.portal.backgroundLayers[0]);
+
+        component.layerManager.changeBackgroundLayer(backgroundLayer);
+
+        expect(component.getAttribute("active-bg")).toBe(backgroundLayer);
+    });
 });
 
 describe("Draw related", () => {

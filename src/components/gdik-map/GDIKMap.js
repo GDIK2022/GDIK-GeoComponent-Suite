@@ -135,6 +135,9 @@ export default class GDIKMap extends HTMLElement {
         map = mapsAPI.map.createMap({...config.portal, layerConf: config.services}, "2D");
 
         this.layerManager = new LayerManager(map, config.portal.backgroundLayers);
+        this.layerManager.on("backgroudchange", () => {
+            this.setAttribute("active-bg", this.layerManager.activeBackgroundLayer.get("id"));
+        });
 
         map.addControl(new LayerswitcherControl(this.layerManager));
         map.addControl(new Zoom());
