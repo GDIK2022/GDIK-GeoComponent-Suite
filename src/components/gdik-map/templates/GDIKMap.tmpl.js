@@ -67,6 +67,6 @@ template.innerHTML = `<style>
         }
     </style>`;
 
-template.innerHTML += "<div class=\"gdik-map-container\"><div class=\"gdik-map\"></div><slot><gdik-layerswitcher></gdik-layerswitcher></slot></div>";
+template.innerHTML += "<div class=\"gdik-map-container\"><div class=\"gdik-map\"></div><slot><gdik-layerswitcher></gdik-layerswitcher><gdik-draw></gdik-draw></slot></div>";
 
 export default template;

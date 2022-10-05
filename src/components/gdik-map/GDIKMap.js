@@ -11,8 +11,6 @@ import mapsAPI from "masterportalAPI/src/maps/api.js";
 
 // TODO remove default config file
 import * as defaultConfig from "./assets/config.json";
-import DrawControl from "./controls/draw";
-// import LayerswitcherControl from "./controls/layerswitcher";
 
 import template from "./templates/GDIKMap.tmpl";
 import LayerManager from "./LayerManager";
@@ -29,7 +27,6 @@ export default class GDIKMap extends HTMLElement {
         this.container = undefined;
         this.configURL = undefined;
         this.config = undefined;
-        this.drawControl = undefined;
     }
 
     // Web Component Callback
@@ -44,16 +41,7 @@ export default class GDIKMap extends HTMLElement {
             this.config.portal.startCenter = [this.getAttribute("lon"), this.getAttribute("lat")];
         }
 
-        let featureCollection;
-
-        if (this.hasAttribute("feature")) {
-            featureCollection = JSON.parse(this.getAttribute("feature"));
-        }
-
-        this.map = this.setupMap(this.config, {
-            drawType: this.getAttribute("draw-type"),
-            featureCollection: featureCollection
-        });
+        this.map = this.setupMap(this.config);
 
         if (this.hasAttribute("active-bg")) {
             this.layerManager.changeBackgroundLayer(this.getAttribute("active-bg")).catch(() => {
@@ -68,6 +56,8 @@ export default class GDIKMap extends HTMLElement {
         const slot = this.shadowRoot.querySelector("slot");
 
         slot.childNodes.forEach((child) => {
+            // TODO remove Q&D workaround
+            child.setAttribute("draw-type", this.getAttribute("draw-type"));
             child.registerGDIKMap(this.map, this.layerManager);
         });
 
@@ -137,7 +127,7 @@ export default class GDIKMap extends HTMLElement {
         return loadedConfig;
     }
 
-    setupMap (config, options) {
+    setupMap (config) {
         let map = null,
             dobleClickZoom = null;
 
@@ -155,6 +145,7 @@ export default class GDIKMap extends HTMLElement {
         map.addControl(new Zoom());
         map.addControl(new FullScreen());
 
+        // TODO move to draw?
         dobleClickZoom = this.getInteractionByClass(map, DoubleClickZoom);
         map.removeInteraction(dobleClickZoom);
 
@@ -164,30 +155,10 @@ export default class GDIKMap extends HTMLElement {
             this.setAttribute("lat", `${this.center[1]}`);
         });
 
-        if (options.drawType !== null || options.featureCollection !== undefined) {
-            try {
-                this.drawControl = new DrawControl(this.layerManager, options);
-
-                this.drawControl.on("featureupdate", () => {
-                    const fc = this.drawControl.getFeatureCollection();
-
-                    if (fc === undefined) {
-                        this.removeAttribute("feature");
-                        return;
-                    }
-                    this.setAttribute("feature", fc);
-                });
-                map.addControl(this.drawControl);
-            }
-            catch (err) {
-                console.error("Failed to create DrawControl");
-                console.debug(`Original error was ${err}`);
-            }
-        }
-
         return map;
     }
 
+    // TODO remove
     generateContainerId (len) {
         const length = len || 6;
         let result = "";
