@@ -12,7 +12,7 @@ import mapsAPI from "masterportalAPI/src/maps/api.js";
 // TODO remove default config file
 import * as defaultConfig from "./assets/config.json";
 import DrawControl from "./controls/draw";
-import LayerswitcherControl from "./controls/layerswitcher";
+// import LayerswitcherControl from "./controls/layerswitcher";
 
 import template from "./templates/GDIKMap.tmpl";
 import LayerManager from "./LayerManager";
@@ -65,6 +65,19 @@ export default class GDIKMap extends HTMLElement {
         this.setAttribute("lat", this.config.portal.startCenter[1]);
         this.setAttribute("active-bg", this.layerManager.activeBackgroundLayer.get("id"));
 
+        const slot = this.shadowRoot.querySelector("slot");
+
+        slot.childNodes.forEach((child) => {
+            child.registerGDIKMap(this.map, this.layerManager);
+        });
+
+        slot.addEventListener("slotchange", (event) => {
+            const children = event.target.assignedElements();
+
+            children.forEach((child) => {
+                child.registerGDIKMap(this.map, this.layerManager);
+            });
+        });
     }
 
     // Web Component Callback
@@ -97,7 +110,7 @@ export default class GDIKMap extends HTMLElement {
 
         shadow.children[0].textContent = olCss + shadow.children[0].textContent;
 
-        this.container = shadow.children[1];
+        this.container = this.shadowRoot.querySelector(".gdik-map");
 
         this.container.id = this.generateContainerId();
 
@@ -139,7 +152,6 @@ export default class GDIKMap extends HTMLElement {
             this.setAttribute("active-bg", this.layerManager.activeBackgroundLayer.get("id"));
         });
 
-        map.addControl(new LayerswitcherControl(this.layerManager));
         map.addControl(new Zoom());
         map.addControl(new FullScreen());
 

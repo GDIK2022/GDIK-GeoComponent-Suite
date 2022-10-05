@@ -1,5 +1,6 @@
 import {Control} from "ol/control";
-export default class LayerswitcherControl extends Control {
+
+class LayerswitcherControl extends Control {
 
     constructor (layerManager) {
         const containerDiv = document.createElement("div"),
@@ -66,3 +67,18 @@ export default class LayerswitcherControl extends Control {
             .then(this.render.bind(this));
     }
 }
+
+export default class GDIKLayerSwitcher extends HTMLElement {
+
+    constructor () {
+        super();
+        this.control = null;
+    }
+
+    registerGDIKMap (map, layerManager) {
+        this.control = new LayerswitcherControl(layerManager);
+        map.addControl(this.control);
+    }
+}
+
+customElements.define("gdik-layerswitcher", GDIKLayerSwitcher);

@@ -17,6 +17,12 @@ template.innerHTML = `<style>
             margin: auto;
         }
 
+        .gdik-map {
+            height: 100%;
+            width: 100%;
+            margin: auto;
+        }
+
         .gdik-delete {
             left: 0.5em;
             top: 0.5em;
@@ -61,6 +67,6 @@ template.innerHTML = `<style>
         }
     </style>`;
 
-template.innerHTML += "<div class=\"gdik-map-container\"></div>";
+template.innerHTML += "<div class=\"gdik-map-container\"><div class=\"gdik-map\"></div><slot><gdik-layerswitcher></gdik-layerswitcher></slot></div>";
 
 export default template;
