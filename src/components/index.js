@@ -1,2 +1,3 @@
 export {GDIKMap} from "./gdik-map/GDIKMap";
-export {GDIKLayerSwitcher} from "./gdik-map/controls/layerswitcher";
+export {GDIKDraw} from "./gdik-draw/GDIKDraw";
+export {GDIKLayerSwitcher} from "./gdik-layerswitcher/GDIKLayerswitcher";
