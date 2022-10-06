@@ -9,27 +9,27 @@
     <h1>GDIK Map examples</h1>
     <h2>Default behavior</h2>
     <div class="map-container">
-        <gdik-map ></gdik-map>
+        <gdik-input ></gdik-input>
     </div>
     <h2>Active draw</h2>
     <div>
         <div class="map-container">
             <h3>Point</h3>
-            <gdik-map id="draw-point" draw-type="Point"></gdik-map>
+            <gdik-input id="draw-point" draw-type="Point"></gdik-input>
         </div>
         <div class="map-container">
             <h3>Line</h3>
-            <gdik-map id="draw-line" draw-type="LineString"></gdik-map>
+            <gdik-input id="draw-line" draw-type="LineString"></gdik-input>
         </div>
         <div class="map-container">
             <h3>Polygon</h3>
-            <gdik-map id="draw-polygon" draw-type="Polygon"></gdik-map>
+            <gdik-input id="draw-polygon" draw-type="Polygon"></gdik-input>
         </div>
     </div>
     <h2>Prepopulated feature</h2>
         <div class="map-container">
             <h3>Point</h3>
-            <gdik-map id="prepopulate-point" feature='{"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Point","coordinates":[447994.8751971674,5888450.37108491]}}]}'></gdik-map>
+            <gdik-input id="prepopulate-point" feature='{"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Point","coordinates":[447994.8751971674,5888450.37108491]}}]}'></gdik-input>
         </div>
     <script type="module" src="../src/index.js"></script>
     <script type="text/javascript">
@@ -40,7 +40,7 @@
                 }
             });
         });
-        Array.prototype.slice.call(document.getElementsByTagName("gdik-map")).forEach((element) => {
+        Array.prototype.slice.call(document.getElementsByTagName("gdik-input")).forEach((element) => {
             observer.observe(element, {attributes: true, childList: false, subtree: false});
         });
     </script>

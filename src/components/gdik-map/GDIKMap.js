@@ -1,5 +1,4 @@
-const merge = require("deepmerge"),
-    ID_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+const merge = require("deepmerge");
 
 import olCss from "bundle-text:../../../node_modules/ol/ol.css";
 
@@ -23,6 +22,10 @@ export default class GDIKMap extends HTMLElement {
     constructor () {
         super();
         this.map = undefined;
+        this.mapPromise = new Promise((resolve, reject) => {
+            this.resolveMapPromise = resolve;
+            this.rejectMapPromise = reject;
+        });
         this.layerManager = undefined;
         this.container = undefined;
         this.configURL = undefined;
@@ -53,21 +56,7 @@ export default class GDIKMap extends HTMLElement {
         this.setAttribute("lat", this.config.portal.startCenter[1]);
         this.setAttribute("active-bg", this.layerManager.activeBackgroundLayer.get("id"));
 
-        const slot = this.shadowRoot.querySelector("slot");
-
-        slot.childNodes.forEach((child) => {
-            // TODO remove Q&D workaround
-            child.setAttribute("draw-type", this.getAttribute("draw-type"));
-            child.registerGDIKMap(this.map, this.layerManager);
-        });
-
-        slot.addEventListener("slotchange", (event) => {
-            const children = event.target.assignedElements();
-
-            children.forEach((child) => {
-                child.registerGDIKMap(this.map, this.layerManager);
-            });
-        });
+        this.resolveMapPromise(this.map);
     }
 
     // Web Component Callback
@@ -102,7 +91,7 @@ export default class GDIKMap extends HTMLElement {
 
         this.container = this.shadowRoot.querySelector(".gdik-map");
 
-        this.container.id = this.generateContainerId();
+        shadow.querySelector("slot").addEventListener("slotchange", this.handleSlotChange.bind(this));
 
     }
 
@@ -125,6 +114,16 @@ export default class GDIKMap extends HTMLElement {
             return merge({}, defaultConfig);
         }
         return loadedConfig;
+    }
+
+    handleSlotChange (event) {
+        const children = event.target.assignedElements();
+
+        this.mapPromise.then((map) => {
+            children.forEach((child) => {
+                child.registerGDIKMap(map, this.layerManager);
+            });
+        });
     }
 
     setupMap (config) {
@@ -156,17 +155,6 @@ export default class GDIKMap extends HTMLElement {
         });
 
         return map;
-    }
-
-    // TODO remove
-    generateContainerId (len) {
-        const length = len || 6;
-        let result = "";
-
-        for (let i = 0; i < length; i++) {
-            result += ID_CHARS.charAt(Math.floor(Math.random() * ID_CHARS.length));
-        }
-        return `gdik-map-div-${result}`;
     }
 
     getInteractionByClass (map, c) {
