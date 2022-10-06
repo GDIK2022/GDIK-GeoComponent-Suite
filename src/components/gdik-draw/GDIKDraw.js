@@ -1,4 +1,4 @@
-import {DrawControl} from "./drawControl";
+import DrawControl from "./drawControl";
 
 export default class GDIKDraw extends HTMLElement {
     constructor () {
