@@ -27,10 +27,10 @@ describe("Init gdik-map", () => {
 
         await component.connectedCallback();
 
-        expect(component.shadowRoot.childNodes.length).toBe(2);
+        expect(component.shadowRoot.childNodes.length).toBe(3);
         expect(component.shadowRoot.childNodes[0].nodeName).toBe("STYLE");
         expect(component.shadowRoot.childNodes[1].nodeName).toBe("DIV");
-        expect(component.shadowRoot.childNodes[1].getAttribute("id")).toMatch(/^gdik-map-div-[a-zA-Z0-9]*$/);
+        expect(component.shadowRoot.childNodes[2].nodeName).toBe("SLOT");
 
         expect(component.shadowRoot.childNodes[1].firstChild.className).toBe("ol-viewport");
     });
