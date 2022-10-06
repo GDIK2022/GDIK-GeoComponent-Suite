@@ -11,7 +11,7 @@
   },
   "main": "src/index.js",
   "scripts": {
-    "test": "jest --config ./jest.config.js --collectCoverage",
+    "test": "jest --config ./jest.config.js --collectCoverage --collectCoverageFrom=src/**/*.js",
     "test:watch": "jest --config ./jest.config.js --watch",
     "lint": "eslint ./src/** ./test/**",
     "audit": "npm audit --prod",
