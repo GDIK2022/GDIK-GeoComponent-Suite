@@ -3,9 +3,9 @@ import Point from "ol/geom/Point";
 
 import mapsAPI from "masterportalAPI/src/maps/api.js";
 
-import DrawControl from "../../../../src/components/gdik-map/controls/draw";
+import DrawControl from "../../../src/components/gdik-draw/drawControl";
 
-import LayerManager from "../../../../src/components/gdik-map/LayerManager";
+import LayerManager from "../../../src/components/gdik-map/LayerManager";
 
 describe("Draw Control", () => {
 
