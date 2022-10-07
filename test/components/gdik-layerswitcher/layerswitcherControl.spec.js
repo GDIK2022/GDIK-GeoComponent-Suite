@@ -1,9 +1,9 @@
 import mapsAPI from "masterportalAPI/src/maps/api.js";
 import {initializeLayerList} from "masterportalAPI/src/rawLayerList";
 
-import LayerswitcherControl from "../../../../src/components/gdik-map/controls/layerswitcher";
+import LayerswitcherControl from "../../../src/components/gdik-layerswitcher/layerswitcherControl";
 
-import LayerManager from "../../../../src/components/gdik-map/LayerManager";
+import LayerManager from "../../../src/components/gdik-map/LayerManager";
 
 describe("Layerswitcher", () => {
 

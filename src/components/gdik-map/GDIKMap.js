@@ -1,5 +1,4 @@
-const merge = require("deepmerge"),
-    ID_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+const merge = require("deepmerge");
 
 import olCss from "bundle-text:../../../node_modules/ol/ol.css";
 
@@ -11,8 +10,6 @@ import mapsAPI from "masterportalAPI/src/maps/api.js";
 
 // TODO remove default config file
 import * as defaultConfig from "./assets/config.json";
-import DrawControl from "./controls/draw";
-import LayerswitcherControl from "./controls/layerswitcher";
 
 import template from "./templates/GDIKMap.tmpl";
 import LayerManager from "./LayerManager";
@@ -25,11 +22,14 @@ export default class GDIKMap extends HTMLElement {
     constructor () {
         super();
         this.map = undefined;
+        this.mapPromise = new Promise((resolve, reject) => {
+            this.resolveMapPromise = resolve;
+            this.rejectMapPromise = reject;
+        });
         this.layerManager = undefined;
         this.container = undefined;
         this.configURL = undefined;
         this.config = undefined;
-        this.drawControl = undefined;
     }
 
     // Web Component Callback
@@ -44,16 +44,7 @@ export default class GDIKMap extends HTMLElement {
             this.config.portal.startCenter = [this.getAttribute("lon"), this.getAttribute("lat")];
         }
 
-        let featureCollection;
-
-        if (this.hasAttribute("feature")) {
-            featureCollection = JSON.parse(this.getAttribute("feature"));
-        }
-
-        this.map = this.setupMap(this.config, {
-            drawType: this.getAttribute("draw-type"),
-            featureCollection: featureCollection
-        });
+        this.map = this.setupMap(this.config);
 
         if (this.hasAttribute("active-bg")) {
             this.layerManager.changeBackgroundLayer(this.getAttribute("active-bg")).catch(() => {
@@ -65,6 +56,7 @@ export default class GDIKMap extends HTMLElement {
         this.setAttribute("lat", this.config.portal.startCenter[1]);
         this.setAttribute("active-bg", this.layerManager.activeBackgroundLayer.get("id"));
 
+        this.resolveMapPromise(this.map);
     }
 
     // Web Component Callback
@@ -97,9 +89,9 @@ export default class GDIKMap extends HTMLElement {
 
         shadow.children[0].textContent = olCss + shadow.children[0].textContent;
 
-        this.container = shadow.children[1];
+        this.container = this.shadowRoot.querySelector(".gdik-map");
 
-        this.container.id = this.generateContainerId();
+        shadow.querySelector("slot").addEventListener("slotchange", this.handleSlotChange.bind(this));
 
     }
 
@@ -124,7 +116,17 @@ export default class GDIKMap extends HTMLElement {
         return loadedConfig;
     }
 
-    setupMap (config, options) {
+    handleSlotChange (event) {
+        const children = event.target.assignedElements();
+
+        this.mapPromise.then((map) => {
+            children.forEach((child) => {
+                child.registerGDIKMap(map, this.layerManager);
+            });
+        });
+    }
+
+    setupMap (config) {
         let map = null,
             dobleClickZoom = null;
 
@@ -139,10 +141,10 @@ export default class GDIKMap extends HTMLElement {
             this.setAttribute("active-bg", this.layerManager.activeBackgroundLayer.get("id"));
         });
 
-        map.addControl(new LayerswitcherControl(this.layerManager));
         map.addControl(new Zoom());
         map.addControl(new FullScreen());
 
+        // TODO move to draw?
         dobleClickZoom = this.getInteractionByClass(map, DoubleClickZoom);
         map.removeInteraction(dobleClickZoom);
 
@@ -152,38 +154,7 @@ export default class GDIKMap extends HTMLElement {
             this.setAttribute("lat", `${this.center[1]}`);
         });
 
-        if (options.drawType !== null || options.featureCollection !== undefined) {
-            try {
-                this.drawControl = new DrawControl(this.layerManager, options);
-
-                this.drawControl.on("featureupdate", () => {
-                    const fc = this.drawControl.getFeatureCollection();
-
-                    if (fc === undefined) {
-                        this.removeAttribute("feature");
-                        return;
-                    }
-                    this.setAttribute("feature", fc);
-                });
-                map.addControl(this.drawControl);
-            }
-            catch (err) {
-                console.error("Failed to create DrawControl");
-                console.debug(`Original error was ${err}`);
-            }
-        }
-
         return map;
-    }
-
-    generateContainerId (len) {
-        const length = len || 6;
-        let result = "";
-
-        for (let i = 0; i < length; i++) {
-            result += ID_CHARS.charAt(Math.floor(Math.random() * ID_CHARS.length));
-        }
-        return `gdik-map-div-${result}`;
     }
 
     getInteractionByClass (map, c) {

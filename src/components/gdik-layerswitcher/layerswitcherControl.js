@@ -1,4 +1,5 @@
 import {Control} from "ol/control";
+
 export default class LayerswitcherControl extends Control {
 
     constructor (layerManager) {

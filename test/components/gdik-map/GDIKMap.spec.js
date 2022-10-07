@@ -1,9 +1,6 @@
 import {enableFetchMocks} from "jest-fetch-mock";
 enableFetchMocks();
 
-import Feature from "ol/Feature";
-import Point from "ol/geom/Point";
-
 import GDIKMap from "../../../src/components/gdik-map/GDIKMap";
 import * as defaultConfig from "../../../src/components/gdik-map/assets/config.json";
 import * as customConfig from "./assets/config.json";
@@ -27,10 +24,10 @@ describe("Init gdik-map", () => {
 
         await component.connectedCallback();
 
-        expect(component.shadowRoot.childNodes.length).toBe(2);
+        expect(component.shadowRoot.childNodes.length).toBe(3);
         expect(component.shadowRoot.childNodes[0].nodeName).toBe("STYLE");
         expect(component.shadowRoot.childNodes[1].nodeName).toBe("DIV");
-        expect(component.shadowRoot.childNodes[1].getAttribute("id")).toMatch(/^gdik-map-div-[a-zA-Z0-9]*$/);
+        expect(component.shadowRoot.childNodes[2].nodeName).toBe("SLOT");
 
         expect(component.shadowRoot.childNodes[1].firstChild.className).toBe("ol-viewport");
     });
@@ -214,161 +211,5 @@ describe("Attribute change related", () => {
         component.layerManager.changeBackgroundLayer(backgroundLayer);
 
         expect(component.getAttribute("active-bg")).toBe(backgroundLayer);
-    });
-});
-
-describe("Draw related", () => {
-
-    it("should have draw control with inactive draw interaction added when draw-type set", async () => {
-        const component = new GDIKMap();
-        let drawInteraction;
-
-        component.setAttribute("draw-type", "Point");
-
-        await component.connectedCallback();
-
-        drawInteraction = component.map.getInteractions().getArray().filter((interaction) => interaction.constructor.name === "Draw");
-        expect(drawInteraction.length).toBe(1);
-        drawInteraction = drawInteraction[0];
-        expect(drawInteraction.getActive()).toBe(true);
-
-        expect(component.shadowRoot.querySelector(".gdik-delete")).not.toBeNull();
-    });
-
-    it("should have feature attribute with FeatureCollection containing drawed feature when feature added to draw layer", async () => {
-        const component = new GDIKMap();
-
-        component.setAttribute("draw-type", "Point");
-
-        await component.connectedCallback();
-
-        expect(component.hasAttribute("feature")).toBe(false);
-
-        component.drawControl.featureSource.addFeature(new Feature({geometry: new Point([1, 1])}));
-
-        expect(component.hasAttribute("feature")).toBe(true);
-
-        expect(JSON.parse(component.getAttribute("feature"))).toEqual({
-            type: "FeatureCollection",
-            features: [
-                {
-                    geometry: {
-                        coordinates: [1, 1],
-                        type: "Point"
-                    },
-                    properties: null,
-                    type: "Feature"
-                }
-            ]});
-    });
-
-    it("shouldn't have feature attrubute when drawed feature was removed", async () => {
-        const component = new GDIKMap(),
-            feature = new Feature({geometry: new Point([1, 1])});
-
-        component.setAttribute("draw-type", "Point");
-
-        await component.connectedCallback();
-
-        expect(component.hasAttribute("feature")).toBe(false);
-
-        component.drawControl.featureSource.addFeature(feature);
-
-        expect(component.hasAttribute("feature")).toBe(true);
-
-        component.drawControl.featureSource.removeFeature(feature);
-
-        expect(component.hasAttribute("feature")).toBe(false);
-    });
-
-    it("should deactivate draw and activate modify after feature is added to layer", async () => {
-        const component = new GDIKMap();
-        let drawInteraction, modifyInteraction;
-
-        component.setAttribute("draw-type", "Point");
-
-        await component.connectedCallback();
-
-        drawInteraction = component.map.getInteractions().getArray().filter((interaction) => interaction.constructor.name === "Draw");
-        drawInteraction = drawInteraction[0];
-        modifyInteraction = component.map.getInteractions().getArray().filter((interaction) => interaction.constructor.name === "Modify");
-        modifyInteraction = modifyInteraction[0];
-
-        expect(drawInteraction.getActive()).toBe(true);
-        expect(modifyInteraction.getActive()).toBe(false);
-
-        component.drawControl.featureSource.addFeature(new Feature({geometry: new Point([1, 1])}));
-
-        expect(drawInteraction.getActive()).toBe(false);
-        expect(modifyInteraction.getActive()).toBe(true);
-    });
-
-    it("should have active modify control when passing feature collection with point feature", async () => {
-        const inputFeature = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[1, 1]}}]}",
-            component = new GDIKMap();
-        let modifyInteraction;
-
-        component.setAttribute("feature", inputFeature);
-
-        await component.connectedCallback();
-
-        modifyInteraction = component.map.getInteractions().getArray().filter((interaction) => interaction.constructor.name === "Modify");
-
-        modifyInteraction = modifyInteraction[0];
-        expect(modifyInteraction.getActive()).toBe(true);
-    });
-
-    it("should not allow mixed geometry types", async () => {
-        const inputFeature = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[1, 1]}}, {\"type\":\"Feature\",\"geometry\":{\"type\":\"LineString\",\"coordinates\":[[1, 1],[2, 1], [2, 2]]}}]}",
-            component = new GDIKMap();
-
-        console.error = jest.fn();
-        console.debug = jest.fn();
-
-        component.setAttribute("feature", inputFeature);
-
-        await component.connectedCallback();
-
-        expect(console.error.mock.calls[0][0]).toBe("Failed to create DrawControl");
-        expect(console.debug.mock.calls[0][0]).toBe("Original error was Error: Inhomogeneous feature collection given");
-    });
-});
-
-describe("Layerswitcher related", () => {
-    beforeEach(() => {
-        fetch.resetMocks();
-    });
-
-    it("should have added layerswitcher control", async () => {
-        const component = new GDIKMap();
-        let layerswitcherElement = null,
-            bgLayers = null;
-
-        await component.connectedCallback();
-
-        layerswitcherElement = component.shadowRoot.querySelector(".gdik-layerswitcher");
-        expect(layerswitcherElement).not.toBeNull();
-
-        bgLayers = layerswitcherElement.querySelectorAll("ul li");
-        expect(bgLayers.length).toBe(2);
-
-        expect(bgLayers[0].innerHTML).toBe("WebAtlasDe");
-    });
-
-    it("should render all given background layers", async () => {
-        fetch.mockResponseOnce(JSON.stringify(customConfig));
-        const component = new GDIKMap();
-
-        component.setAttribute("config-url", "http://config.service/config.json");
-
-        let bgLayers = null;
-
-        await component.connectedCallback();
-
-        bgLayers = component.shadowRoot.querySelector(".gdik-layerswitcher").querySelectorAll("ul li");
-        expect(bgLayers.length).toBe(2);
-
-        expect(bgLayers[0].innerHTML).toBe("WebAtlasDe");
-        expect(bgLayers[1].innerHTML).toBe("TopPlusOpen - Farbe");
     });
 });

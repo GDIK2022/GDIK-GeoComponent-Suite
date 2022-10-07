@@ -103,10 +103,6 @@ export default class DrawControl extends Control {
         this.featureSource.dispatchEvent("removefeature");
     }
 
-    toggleDraw () {
-        // TODO
-    }
-
     getFeatureCollection () {
         return this.featureSource.getFeatures().length === 0 ? undefined : format.writeFeatures(this.featureSource.getFeatures());
     }

@@ -1,8 +1,10 @@
 .idea
 node_modules
 dist
+.bash_history
 .cache
 .parcel-cache
 coverage
 
 .npmrc
+.npm
