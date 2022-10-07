@@ -54,6 +54,12 @@ export default class GDIKInput extends HTMLElement {
     }
 
     attributeChangedCallback (name, oldValue, newValue) {
+        if (oldValue === newValue) {
+            return;
+        }
+        if (this.mapElement === undefined) {
+            return;
+        }
         switch (name) {
             case "lon":
             case "lat":
@@ -61,6 +67,9 @@ export default class GDIKInput extends HTMLElement {
                 this.mapElement.setAttribute(name, newValue);
                 break;
             case "feature":
+                if (this.drawElement === undefined) {
+                    return;
+                }
                 this.drawElement.setAttribute(name, newValue);
                 break;
             default:
