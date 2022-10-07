@@ -1,5 +1,9 @@
 export default class GDIKInput extends HTMLElement {
 
+    static get observedAttributes () {
+        return ["lon", "lat", "active-bg", "feature"];
+    }
+
     // Web Component Callback
     connectedCallback () {
         const shadow = this.attachShadow({mode: "open"});
