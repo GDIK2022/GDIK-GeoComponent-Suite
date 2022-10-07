@@ -18,17 +18,7 @@ export default class GDIKInput extends HTMLElement {
             }
         });
 
-        this.observer = new MutationObserver((mutationList) => {
-            mutationList.forEach((mutation) => {
-                if (mutation.type !== "attributes") {
-                    return;
-                }
-
-                if (["lat", "lon", "active-bg", "feature"].includes(mutation.attributeName)) {
-                    this.setAttribute(mutation.attributeName, mutation.target.getAttribute(mutation.attributeName));
-                }
-            });
-        });
+        this.observer = new MutationObserver(this.handleObservedAttributeCallback.bind(this));
         this.observer.observe(this.mapElement, {attributes: true, childList: false, subtree: false});
 
         if (this.hasAttribute("draw-type")) {
@@ -44,6 +34,23 @@ export default class GDIKInput extends HTMLElement {
             this.observer.observe(this.drawElement, {attributes: true, childList: false, subtree: false});
 
         }
+    }
+
+    handleObservedAttributeCallback (mutationList) {
+        mutationList.forEach((mutation) => {
+            if (mutation.type !== "attributes") {
+                return;
+            }
+
+            if (["lat", "lon", "active-bg", "feature"].includes(mutation.attributeName)) {
+                const newValue = mutation.target.getAttribute(mutation.attributeName);
+
+                if (this.getAttribute(mutation.attributeName) === newValue) {
+                    return;
+                }
+                this.setAttribute(mutation.attributeName, newValue);
+            }
+        });
     }
 
     attributeChangedCallback (name, oldValue, newValue) {
