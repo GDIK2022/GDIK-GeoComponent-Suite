@@ -53,6 +53,10 @@ export default class GDIKInput extends HTMLElement {
         });
     }
 
+    detachedCallback () {
+        this.observer.disconnect();
+    }
+
     attributeChangedCallback (name, oldValue, newValue) {
         if (oldValue === newValue) {
             return;
