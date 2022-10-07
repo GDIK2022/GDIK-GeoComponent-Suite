@@ -42,12 +42,14 @@ describe("Init gdik-input", () => {
         const component = new GDIKInput(),
             lon = "1",
             lat = "2",
+            zoom = "8",
             activeBg = "1002",
             drawType = "Point",
             feature = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[1, 1]}}]}";
 
         component.setAttribute("lon", lon);
         component.setAttribute("lat", lat);
+        component.setAttribute("zoom", zoom);
         component.setAttribute("active-bg", activeBg);
         component.setAttribute("draw-type", drawType);
         component.setAttribute("feature", feature);
@@ -57,6 +59,7 @@ describe("Init gdik-input", () => {
         expect(component.shadowRoot.childNodes[0].nodeName).toBe("GDIK-MAP");
         expect(component.shadowRoot.childNodes[0].getAttribute("lon")).toBe(lon);
         expect(component.shadowRoot.childNodes[0].getAttribute("lat")).toBe(lat);
+        expect(component.shadowRoot.childNodes[0].getAttribute("zoom")).toBe(zoom);
         expect(component.shadowRoot.childNodes[0].getAttribute("active-bg")).toBe(activeBg);
 
         expect(component.shadowRoot.childNodes[0].childNodes[1].nodeName).toBe("GDIK-DRAW");
@@ -68,6 +71,7 @@ describe("Init gdik-input", () => {
         const component = new GDIKInput(),
             lon = "1",
             lat = "2",
+            zoom = "8",
             activeBg = "1002",
             feature = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[1, 1]}}]}";
 
@@ -77,12 +81,14 @@ describe("Init gdik-input", () => {
 
         component.setAttribute("lon", lon);
         component.setAttribute("lat", lat);
+        component.setAttribute("zoom", zoom);
         component.setAttribute("active-bg", activeBg);
         component.setAttribute("feature", feature);
 
         expect(component.shadowRoot.childNodes[0].nodeName).toBe("GDIK-MAP");
         expect(component.shadowRoot.childNodes[0].getAttribute("lon")).toBe(lon);
         expect(component.shadowRoot.childNodes[0].getAttribute("lat")).toBe(lat);
+        expect(component.shadowRoot.childNodes[0].getAttribute("zoom")).toBe(zoom);
         expect(component.shadowRoot.childNodes[0].getAttribute("active-bg")).toBe(activeBg);
 
         expect(component.shadowRoot.childNodes[0].childNodes[1].nodeName).toBe("GDIK-DRAW");
@@ -98,6 +104,7 @@ describe("Init gdik-input", () => {
             changedAttributes = {
                 lon: "1",
                 lat: "2",
+                zoom: "8",
                 "active-bg": "1002",
                 feature: "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[1, 1]}}]}"
             };
@@ -121,6 +128,7 @@ describe("Init gdik-input", () => {
         expect(component.nodeName).toBe("GDIK-INPUT");
         expect(component.getAttribute("lon")).toBe(changedAttributes.lon);
         expect(component.getAttribute("lat")).toBe(changedAttributes.lat);
+        expect(component.getAttribute("zoom")).toBe(changedAttributes.zoom);
         expect(component.getAttribute("active-bg")).toBe(changedAttributes["active-bg"]);
         expect(component.getAttribute("feature")).toBe(changedAttributes.feature);
 

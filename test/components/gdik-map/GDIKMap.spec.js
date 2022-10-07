@@ -40,6 +40,8 @@ describe("Init gdik-map", () => {
         expect(Number(component.getAttribute("lon"))).toBe(defaultConfig.portal.startCenter[0]);
         expect(Number(component.getAttribute("lat"))).toBe(defaultConfig.portal.startCenter[1]);
 
+        expect(Number(component.getAttribute("zoom")).toBe(defaultConfig.portal.startZoom));
+
         expect(component.map.getView().getCenter()).toEqual(defaultConfig.portal.startCenter);
 
         expect(component.getAttribute("active-bg")).toBe("1001");
@@ -65,6 +67,7 @@ describe("Init gdik-map", () => {
 
         expect(Number(component.getAttribute("lon"))).toBe(customConfig.portal.startCenter[0]);
         expect(Number(component.getAttribute("lat"))).toBe(customConfig.portal.startCenter[1]);
+        expect(Number(component.getAttribute("zoom"))).toBe(customConfig.portal.startZoom);
 
         expect(component.map.getView().getCenter()).toEqual(customConfig.portal.startCenter);
 
@@ -74,10 +77,12 @@ describe("Init gdik-map", () => {
     it("should apply values given by element attributes", async () => {
         const component = new GDIKMap(),
             lon = 450000.0,
-            lat = 5500000.0;
+            lat = 5500000.0,
+            zoom = 8;
 
         component.setAttribute("lon", lon);
         component.setAttribute("lat", lat);
+        component.setAttribute("zoom", zoom);
 
         await component.connectedCallback();
 
@@ -85,6 +90,7 @@ describe("Init gdik-map", () => {
         expect(Number(component.getAttribute("lat"))).toBe(lat);
 
         expect(component.map.getView().getCenter()).toEqual([lon, lat]);
+        expect(component.map.getView().getZoom()).toBe(zoom);
     });
 });
 
@@ -166,20 +172,24 @@ describe("Attribute change related", () => {
         const component = new GDIKMap(),
             lon = 450000.0,
             lat = 5500000.0,
+            zoom = 8,
             backgroundLayer = "1002";
 
         await component.connectedCallback();
 
         expect(Number(component.getAttribute("lon"))).toBe(defaultConfig.portal.startCenter[0]);
         expect(Number(component.getAttribute("lat"))).toBe(defaultConfig.portal.startCenter[1]);
+        expect(Number(component.getAttribute("zoom"))).toBe(defaultConfig.portal.startZoom);
 
         expect(component.getAttribute("active-bg")).toBe(defaultConfig.portal.backgroundLayers[0]);
 
         component.setAttribute("lon", lon);
         component.setAttribute("lat", lat);
+        component.setAttribute("zoom", zoom);
         component.setAttribute("active-bg", backgroundLayer);
 
         expect(component.map.getView().getCenter()).toEqual([lon, lat]);
+        expect(component.map.getView().getZoom()).toBe(zoom);
 
         expect(component.layerManager.activeBackgroundLayer.get("id")).toBe(backgroundLayer);
     });
@@ -198,6 +208,19 @@ describe("Attribute change related", () => {
 
         expect(Number(component.getAttribute("lon"))).toBe(center[0]);
         expect(Number(component.getAttribute("lat"))).toBe(center[1]);
+    });
+
+    it("should change zoom attribte when map zoom changes", async () => {
+        const component = new GDIKMap(),
+            zoom = 8;
+
+        await component.connectedCallback();
+
+        expect(Number(component.getAttribute("zoom"))).toBe(defaultConfig.portal.startZoom);
+
+        component.map.getView().setZoom(zoom);
+
+        expect(Number(component.getAttribute("zoom"))).toBe(zoom);
     });
 
     it("shoud change background layer attribute when background layer changes", async () => {

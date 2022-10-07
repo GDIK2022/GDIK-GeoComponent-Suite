@@ -6,6 +6,7 @@
           ],
           "extent": [400000.0, 5000000.0, 500000.0, 6000000.0],
           "startCenter": [450000.0, 5500000.0],
+          "startZoom": 5,
           "units": "m",
           "layerConf": "",
           "menu": {
