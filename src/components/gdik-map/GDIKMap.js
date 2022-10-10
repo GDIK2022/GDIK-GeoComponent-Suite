@@ -16,7 +16,7 @@ import LayerManager from "./LayerManager";
 
 export default class GDIKMap extends HTMLElement {
     static get observedAttributes () {
-        return ["lon", "lat", "active-bg"];
+        return ["lon", "lat", "active-bg", "zoom"];
     }
 
     constructor () {
@@ -44,6 +44,10 @@ export default class GDIKMap extends HTMLElement {
             this.config.portal.startCenter = [this.getAttribute("lon"), this.getAttribute("lat")];
         }
 
+        if (this.hasAttribute("zoom")) {
+            this.config.portal.startZoomLevel = this.getAttribute("zoom");
+        }
+
         this.map = this.setupMap(this.config);
 
         if (this.hasAttribute("active-bg")) {
@@ -54,6 +58,7 @@ export default class GDIKMap extends HTMLElement {
 
         this.setAttribute("lon", this.config.portal.startCenter[0]);
         this.setAttribute("lat", this.config.portal.startCenter[1]);
+        this.setAttribute("zoom", this.config.portal.startZoomLevel);
         this.setAttribute("active-bg", this.layerManager.activeBackgroundLayer.get("id"));
 
         this.resolveMapPromise(this.map);
@@ -71,6 +76,9 @@ export default class GDIKMap extends HTMLElement {
                 break;
             case "lat":
                 this.map.getView().setCenter([this.map.getView().getCenter()[0], newValue]);
+                break;
+            case "zoom":
+                this.map.getView().setZoom(newValue);
                 break;
             case "active-bg":
                 this.layerManager.changeBackgroundLayer(newValue).catch(() => {
@@ -152,6 +160,7 @@ export default class GDIKMap extends HTMLElement {
             this.center = map.getView().getCenter();
             this.setAttribute("lon", `${this.center[0]}`);
             this.setAttribute("lat", `${this.center[1]}`);
+            this.setAttribute("zoom", map.getView().getZoom());
         });
 
         return map;

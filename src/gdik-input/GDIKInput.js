@@ -1,7 +1,7 @@
 export default class GDIKInput extends HTMLElement {
 
     static get observedAttributes () {
-        return ["lon", "lat", "active-bg", "feature"];
+        return ["lon", "lat", "zoom", "active-bg", "feature"];
     }
 
     // Web Component Callback
@@ -16,7 +16,7 @@ export default class GDIKInput extends HTMLElement {
 
         this.mapElement.appendChild(this.layerswitcherElement);
 
-        ["config-url", "lat", "lon", "active-bg"].forEach((attrName) => {
+        GDIKInput.observedAttributes.concat(["config-url"]).forEach((attrName) => {
             if (this.hasAttribute(attrName)) {
                 this.mapElement.setAttribute(attrName, this.getAttribute(attrName));
             }
@@ -46,7 +46,7 @@ export default class GDIKInput extends HTMLElement {
                 return;
             }
 
-            if (["lat", "lon", "active-bg", "feature"].includes(mutation.attributeName)) {
+            if (GDIKInput.observedAttributes.includes(mutation.attributeName)) {
                 const newValue = mutation.target.getAttribute(mutation.attributeName);
 
                 if (this.getAttribute(mutation.attributeName) === newValue) {
@@ -71,6 +71,7 @@ export default class GDIKInput extends HTMLElement {
         switch (name) {
             case "lon":
             case "lat":
+            case "zoom":
             case "active-bg":
                 this.mapElement.setAttribute(name, newValue);
                 break;
