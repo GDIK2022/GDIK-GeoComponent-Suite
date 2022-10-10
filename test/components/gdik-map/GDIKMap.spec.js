@@ -40,7 +40,7 @@ describe("Init gdik-map", () => {
         expect(Number(component.getAttribute("lon"))).toBe(defaultConfig.portal.startCenter[0]);
         expect(Number(component.getAttribute("lat"))).toBe(defaultConfig.portal.startCenter[1]);
 
-        expect(Number(component.getAttribute("zoom")).toBe(defaultConfig.portal.startZoom));
+        expect(Number(component.getAttribute("zoom"))).toBe(defaultConfig.portal.startZoomLevel);
 
         expect(component.map.getView().getCenter()).toEqual(defaultConfig.portal.startCenter);
 
@@ -67,7 +67,7 @@ describe("Init gdik-map", () => {
 
         expect(Number(component.getAttribute("lon"))).toBe(customConfig.portal.startCenter[0]);
         expect(Number(component.getAttribute("lat"))).toBe(customConfig.portal.startCenter[1]);
-        expect(Number(component.getAttribute("zoom"))).toBe(customConfig.portal.startZoom);
+        expect(Number(component.getAttribute("zoom"))).toBe(customConfig.portal.startZoomLevel);
 
         expect(component.map.getView().getCenter()).toEqual(customConfig.portal.startCenter);
 
@@ -90,7 +90,7 @@ describe("Init gdik-map", () => {
         expect(Number(component.getAttribute("lat"))).toBe(lat);
 
         expect(component.map.getView().getCenter()).toEqual([lon, lat]);
-        expect(component.map.getView().getZoom()).toBe(zoom);
+        expect(Number(component.map.getView().getZoom())).toBe(zoom);
     });
 });
 
@@ -179,7 +179,7 @@ describe("Attribute change related", () => {
 
         expect(Number(component.getAttribute("lon"))).toBe(defaultConfig.portal.startCenter[0]);
         expect(Number(component.getAttribute("lat"))).toBe(defaultConfig.portal.startCenter[1]);
-        expect(Number(component.getAttribute("zoom"))).toBe(defaultConfig.portal.startZoom);
+        expect(Number(component.getAttribute("zoom"))).toBe(defaultConfig.portal.startZoomLevel);
 
         expect(component.getAttribute("active-bg")).toBe(defaultConfig.portal.backgroundLayers[0]);
 
@@ -216,7 +216,7 @@ describe("Attribute change related", () => {
 
         await component.connectedCallback();
 
-        expect(Number(component.getAttribute("zoom"))).toBe(defaultConfig.portal.startZoom);
+        expect(Number(component.getAttribute("zoom"))).toBe(defaultConfig.portal.startZoomLevel);
 
         component.map.getView().setZoom(zoom);
 

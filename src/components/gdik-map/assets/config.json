@@ -86,7 +86,7 @@
                }
           ],
           "startCenter": [448360.0, 5888434.0],
-          "startZoom": 10,
+          "startZoomLevel": 6,
           "units": "m",
           "layerConf": "",
           "menu": {
