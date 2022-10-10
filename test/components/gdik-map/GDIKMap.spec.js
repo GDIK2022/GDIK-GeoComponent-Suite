@@ -219,6 +219,7 @@ describe("Attribute change related", () => {
         expect(Number(component.getAttribute("zoom"))).toBe(defaultConfig.portal.startZoomLevel);
 
         component.map.getView().setZoom(zoom);
+        component.map.dispatchEvent("moveend");
 
         expect(Number(component.getAttribute("zoom"))).toBe(zoom);
     });
