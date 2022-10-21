@@ -9,13 +9,23 @@
     "type": "git",
     "url": "https://github.com/GDIK2022/GDIK-Map.git"
   },
-  "main": "src/index.js",
+
   "scripts": {
     "test": "jest --config ./jest.config.js --collectCoverage --collectCoverageFrom=src/**/*.js",
     "test:watch": "jest --config ./jest.config.js --watch",
     "lint": "eslint ./src/** ./test/**",
     "audit": "npm audit --prod",
-    "examples": "parcel example/index.html"
+    "examples": "parcel example/index.html",
+    "build": "parcel build"
+  },
+  "source": "src/index.js",
+  "cdn": "dist/geosuite.js",
+  "targets": {
+    "cdn": {
+      "includeNodeModules": true,
+      "optimize": true,
+      "outputFormat": "global"
+    }
   },
   "author": "LGLN - Team WaaS",
   "license": "EUPL v1.2",
