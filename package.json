@@ -1,6 +1,6 @@
 {
   "name": "@GDIK2022/map",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Web Component for geometry input and visualization",
   "publishConfig": {
     "registry":"https://npm.pkg.github.com"
