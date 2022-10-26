@@ -1,8 +1,8 @@
 name: Workflow
 on:
   push:
-    tags:
-      - "!*"
+    tags-ignore:
+      - "v*"
 jobs:
   init:
     runs-on: ubuntu-latest
