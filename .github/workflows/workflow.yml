@@ -1,6 +1,8 @@
 name: Workflow
 on:
   push:
+    branches:
+      - '*'
     tags-ignore:
       - "v*"
 jobs:
