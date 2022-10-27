@@ -77,11 +77,6 @@ jobs:
         with:
           node-version: '16.x'
           registry-url: 'https://npm.pkg.github.com'
-      - run: npm ci
-      - run: npm run build
-      - run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: node -p -e '`PACKAGE_VERSION=${require("./package.json").version}`' >> $GITHUB_ENV
       - name: package-version-to-git-tag
         uses: pkgdeps/git-tag-action@v2
@@ -91,12 +86,3 @@ jobs:
           version: ${{ env.PACKAGE_VERSION }}
           git_commit_sha: ${{ github.sha }}
           git_tag_prefix: "v"
-      - name: Upload binaries to release
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: dist/geosuite.js
-          asset_name: geosuite.js
-          tag: ${{ github.ref }}
-          overwrite: true
-          body: "TODO: releasetext"
