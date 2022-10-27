@@ -64,7 +64,7 @@ jobs:
           restore-keys: npm-
       - run: npm i
       - run: npm audit --omit=dev
-  build:
+  tag:
     needs: [test, audit]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
