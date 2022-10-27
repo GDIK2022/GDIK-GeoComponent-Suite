@@ -85,3 +85,14 @@ jobs:
           version: ${{ env.PACKAGE_VERSION }}
           git_commit_sha: ${{ github.sha }}
           git_tag_prefix: "v"
+      - run: npm ci
+      - run: npm run build
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: dist/geosuite.js
+          asset_name: geosuite.js
+          tag: ${{ env.PACKAGE_VERSION }}
+          overwrite: true
+          body: "TODO: releasetext"
