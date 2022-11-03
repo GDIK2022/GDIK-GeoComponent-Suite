@@ -121,5 +121,22 @@ describe("Draw related", () => {
             component.registerGDIKMap(map, layerManager);
         }).toThrow("Inhomogeneous feature collection given");
     });
+
+    it("should update feature on feature attibute change", async () => {
+        const initalFeature = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[1, 1]}}]}",
+            updatedFeature = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[2, 2]}}]}",
+            component = new GDIKDraw();
+
+
+        component.setAttribute("feature", initalFeature);
+        component.registerGDIKMap(map, layerManager);
+
+
+        component.setAttribute("feature", updatedFeature);
+
+        expect(component.control.featureSource.getFeatures().length).toBe(1);
+        expect(component.control.featureSource.getFeatures()[0].getGeometry().getType()).toBe("Point");
+        expect(component.control.featureSource.getFeatures()[0].getGeometry().getCoordinates()).toEqual([2, 2]);
+    });
 });
 
