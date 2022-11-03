@@ -107,6 +107,13 @@ export default class DrawControl extends Control {
         return this.featureSource.getFeatures().length === 0 ? undefined : format.writeFeatures(this.featureSource.getFeatures());
     }
 
+    setFeatureCollection (featureCollection) {
+        const features = format.readFeatures(featureCollection);
+
+        this.featureSource.clear(true);
+        this.featureSource.addFeatures(features);
+    }
+
     determineDrawType (features) {
         let drawType;
 

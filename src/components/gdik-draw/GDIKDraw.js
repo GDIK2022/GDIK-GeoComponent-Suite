@@ -1,6 +1,12 @@
 import DrawControl from "./drawControl";
 
 export default class GDIKDraw extends HTMLElement {
+
+
+    static get observedAttributes () {
+        return ["feature"];
+    }
+
     constructor () {
         super();
         this.control = null;
@@ -29,6 +35,22 @@ export default class GDIKDraw extends HTMLElement {
         });
 
         map.addControl(this.control);
+    }
+
+    attributeChangedCallback (name, oldValue, newValue) {
+        if (oldValue === newValue) {
+            return;
+        }
+        if (this.control === null) {
+            return;
+        }
+        switch (name) {
+            case "feature":
+                this.control.setFeatureCollection(newValue);
+                break;
+            default:
+                break;
+        }
     }
 }
 
