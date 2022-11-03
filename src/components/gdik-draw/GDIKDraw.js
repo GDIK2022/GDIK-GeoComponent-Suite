@@ -38,14 +38,24 @@ export default class GDIKDraw extends HTMLElement {
     }
 
     attributeChangedCallback (name, oldValue, newValue) {
+
+        if (oldValue === null) {
+            return;
+        }
+
         if (oldValue === newValue) {
             return;
         }
         if (this.control === null) {
             return;
         }
+
         switch (name) {
             case "feature":
+                if (newValue === null) {
+                    this.control.featureSource.clear();
+                    return;
+                }
                 this.control.setFeatureCollection(newValue);
                 break;
             default:
