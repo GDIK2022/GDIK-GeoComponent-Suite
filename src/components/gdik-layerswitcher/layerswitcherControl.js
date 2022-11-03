@@ -12,7 +12,7 @@ export default class LayerswitcherControl extends Control {
         super({element: containerDiv});
 
         closed.className = "";
-        closed.innerHTML = "&#x2C3;";
+        closed.innerHTML = "&#x3E;";
         closed.addEventListener("click", () => {
             open.classList.remove("hidden");
             closed.classList.add("hidden");
@@ -28,7 +28,7 @@ export default class LayerswitcherControl extends Control {
         open.appendChild(this.layerContainer);
 
         closer.className = "closer";
-        closer.innerHTML = "&#x2C2;";
+        closer.innerHTML = "&#x3C;";
         closer.addEventListener("click", () => {
             closed.classList.remove("hidden");
             open.classList.add("hidden");
