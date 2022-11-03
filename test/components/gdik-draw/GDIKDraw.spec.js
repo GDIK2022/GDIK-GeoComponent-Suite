@@ -68,11 +68,10 @@ describe("Draw related", () => {
         expect(component.hasAttribute("feature")).toBe(false);
 
         component.control.featureSource.addFeature(feature);
-
+        expect(component.control.featureSource.getFeatures()[0]).toBe(feature);
         expect(component.hasAttribute("feature")).toBe(true);
 
         component.control.featureSource.removeFeature(feature);
-
         expect(component.hasAttribute("feature")).toBe(false);
     });
 
