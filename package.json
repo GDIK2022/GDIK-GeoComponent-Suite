@@ -1,6 +1,6 @@
 {
   "name": "@GDIK2022/map",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "Web Component for geometry input and visualization",
   "publishConfig": {
     "registry":"https://npm.pkg.github.com"
@@ -28,7 +28,7 @@
     }
   },
   "author": "LGLN - Team WaaS",
-  "license": "EUPL v1.2",
+  "license": "EUPL-1.2",
   "dependencies": {
     "masterportalAPI": "bitbucket:geowerkstatt-hamburg/masterportalAPI#v2.3.0"
   },
