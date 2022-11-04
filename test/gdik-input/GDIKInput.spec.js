@@ -31,12 +31,14 @@ describe("Init gdik-input", () => {
 
         component.connectedCallback();
 
-        expect(component.shadowRoot.childNodes.length).toBe(2);
+        expect(component.shadowRoot.childNodes.length).toBe(1);
         expect(component.shadowRoot.childNodes[0].nodeName).toBe("GDIK-MAP");
         expect(component.shadowRoot.childNodes[0].childNodes.length).toBe(2);
         expect(component.shadowRoot.childNodes[0].childNodes[0].nodeName).toBe("GDIK-LAYERSWITCHER");
         expect(component.shadowRoot.childNodes[0].childNodes[1].nodeName).toBe("GDIK-DRAW");
-        expect(component.shadowRoot.childNodes[1].nodeName).toBe("INPUT");
+
+        expect(component.childNodes.length).toBe(1);
+        expect(component.childNodes[0].nodeName).toBe("INPUT");
     });
 
     it("should pass attributes to child components", () => {
@@ -67,7 +69,7 @@ describe("Init gdik-input", () => {
         expect(component.shadowRoot.childNodes[0].childNodes[1].getAttribute("draw-type")).toBe(drawType);
         expect(component.shadowRoot.childNodes[0].childNodes[1].getAttribute("feature")).toBe(feature);
 
-        expect(component.shadowRoot.childNodes[1].getAttribute("value")).toBe(feature);
+        expect(component.childNodes[0].getAttribute("value")).toBe(feature);
     });
 
     it("should pass attribute changes to child components", () => {
@@ -97,7 +99,7 @@ describe("Init gdik-input", () => {
         expect(component.shadowRoot.childNodes[0].childNodes[1].nodeName).toBe("GDIK-DRAW");
         expect(component.shadowRoot.childNodes[0].childNodes[1].getAttribute("feature")).toBe(feature);
 
-        expect(component.shadowRoot.childNodes[1].getAttribute("value")).toBe(feature);
+        expect(component.childNodes[0].getAttribute("value")).toBe(feature);
     });
 
     it("should reflect child attribute changes", async () => {
@@ -136,7 +138,7 @@ describe("Init gdik-input", () => {
         expect(component.getAttribute("zoom")).toBe(changedAttributes.zoom);
         expect(component.getAttribute("active-bg")).toBe(changedAttributes["active-bg"]);
         expect(component.getAttribute("feature")).toBe(changedAttributes.feature);
-        expect(component.shadowRoot.childNodes[1].getAttribute("value")).toBe(changedAttributes.feature);
+        expect(component.childNodes[0].getAttribute("value")).toBe(changedAttributes.feature);
 
         global.MutationObserver = storedMutationObserver;
     });

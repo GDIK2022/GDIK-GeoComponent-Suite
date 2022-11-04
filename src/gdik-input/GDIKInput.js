@@ -29,7 +29,7 @@ export default class GDIKInput extends HTMLElement {
             this.input = document.createElement("input");
             this.input.name = this.getAttribute("name") || "gdik-input";
             this.input.type = "hidden";
-            shadow.appendChild(this.input);
+            this.appendChild(this.input);
 
             this.drawElement = document.createElement("gdik-draw");
             this.drawElement.slot = "content";
