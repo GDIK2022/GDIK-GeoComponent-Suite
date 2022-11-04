@@ -28,7 +28,7 @@
     }
   },
   "author": "LGLN - Team WaaS",
-  "license": "EUPL v1.2",
+  "license": "EUPL-1.2",
   "dependencies": {
     "masterportalAPI": "bitbucket:geowerkstatt-hamburg/masterportalAPI#v2.3.0"
   },
