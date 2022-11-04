@@ -26,17 +26,22 @@ export default class GDIKInput extends HTMLElement {
         this.observer.observe(this.mapElement, {attributes: true, childList: false, subtree: false});
 
         if (this.hasAttribute("draw-type")) {
+            this.input = document.createElement("input");
+            this.input.name = this.getAttribute("name") || "gdik-input";
+            this.input.type = "hidden";
+            shadow.appendChild(this.input);
+
             this.drawElement = document.createElement("gdik-draw");
             this.drawElement.slot = "content";
             this.drawElement.setAttribute("draw-type", this.getAttribute("draw-type"));
 
             if (this.hasAttribute("feature")) {
                 this.drawElement.setAttribute("feature", this.getAttribute("feature"));
+                this.input.value = this.getAttribute("feature");
             }
 
             this.mapElement.appendChild(this.drawElement);
             this.observer.observe(this.drawElement, {attributes: true, childList: false, subtree: false});
-
         }
     }
 
@@ -80,6 +85,7 @@ export default class GDIKInput extends HTMLElement {
                     return;
                 }
                 this.drawElement.setAttribute(name, newValue);
+                this.input.value = this.getAttribute("feature");
                 break;
             default:
                 break;
