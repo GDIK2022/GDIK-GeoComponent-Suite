@@ -85,16 +85,29 @@ describe("Draw Control", () => {
     });
 
     it("should add features of given feature collection to feature source", () => {
-        const control = new DrawControl(layerManager, {featureCollection: {"type": "FeatureCollection", "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [1, 1]}}]}});
+        const control = new DrawControl(layerManager, {drawType: "Point"});
+
+        control.setFeatureCollection("{\"type\": \"FeatureCollection\", \"features\": [{\"type\": \"Feature\", \"geometry\": {\"type\": \"Point\", \"coordinates\": [1, 1]}}]}");
 
         expect(control.featureSource.getFeatures().length).toBe(1);
         expect(control.featureSource.getFeatures()[0].getGeometry().getType()).toBe("Point");
         expect(control.featureSource.getFeatures()[0].getGeometry().getCoordinates()).toEqual([1, 1]);
     });
 
-    it("should not allow mixed geometry types", () => {
+    it("should not allow feature collections with geometry's unequal to control's draw type", () => {
+        const control = new DrawControl(layerManager, {drawType: "LineString"});
+
         expect(() => {
-            new DrawControl(layerManager, {featureCollection: {"type": "FeatureCollection", "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [1, 1]}}, {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[1, 1], [2, 1], [2, 2]]}}]}});
+            control.setFeatureCollection("{\"type\": \"FeatureCollection\", \"features\": [{\"type\": \"Feature\", \"geometry\": {\"type\": \"Point\", \"coordinates\": [1, 1]}}]}");
+        })
+            .toThrow("Geometry type of given feature collection mismatch draw-type");
+    });
+
+    it("should not allow mixed geometry types", () => {
+        const control = new DrawControl(layerManager, {drawType: "Point"});
+
+        expect(() => {
+            control.setFeatureCollection("{\"type\": \"FeatureCollection\", \"features\": [{\"type\": \"Feature\", \"geometry\": {\"type\": \"Point\", \"coordinates\": [1, 1]}}, {\"type\": \"Feature\", \"geometry\": {\"type\": \"LineString\", \"coordinates\": [[1, 1], [2, 1], [2, 2]]}}]}");
         })
             .toThrow("Inhomogeneous feature collection given");
     });
