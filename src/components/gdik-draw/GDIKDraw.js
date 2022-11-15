@@ -28,7 +28,7 @@ export default class GDIKDraw extends HTMLElement {
             const fc = this.control.getFeatureCollection();
 
             if (fc === undefined) {
-                this.removeAttribute("feature");
+                this.setAttribute("feature", "");
                 return;
             }
             this.setAttribute("feature", fc);

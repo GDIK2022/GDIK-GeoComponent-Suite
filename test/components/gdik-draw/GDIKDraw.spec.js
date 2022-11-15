@@ -72,7 +72,8 @@ describe("Draw related", () => {
         expect(component.hasAttribute("feature")).toBe(true);
 
         component.control.featureSource.removeFeature(feature);
-        expect(component.hasAttribute("feature")).toBe(false);
+        expect(component.hasAttribute("feature")).toBe(true);
+        expect(component.getAttribute("feature")).toBe("");
     });
 
     it("should deactivate draw and activate modify after feature is added to layer", async () => {
