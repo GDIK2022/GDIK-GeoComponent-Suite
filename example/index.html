@@ -36,7 +36,11 @@
         const observer = new MutationObserver((mutationList, observer) => {
             mutationList.forEach((mutation) => {
                 if (mutation.type === "attributes" && mutation.attributeName === "feature") {
-                    console.log(mutation.target.id, JSON.parse(mutation.target.getAttribute("feature")));
+                    var feature = mutation.target.getAttribute("feature");
+                    try {
+                        feature = JSON.parse(mutation.target.getAttribute("feature"))
+                    } catch (e) {}
+                    console.log(mutation.target.id, feature);
                 }
             });
         });
