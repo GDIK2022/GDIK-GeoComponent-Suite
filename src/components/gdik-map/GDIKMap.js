@@ -129,7 +129,12 @@ export default class GDIKMap extends HTMLElement {
 
         this.mapPromise.then((map) => {
             children.forEach((child) => {
-                child.registerGDIKMap(map, this.layerManager);
+                try {
+                    child.registerGDIKMap(map, this.layerManager);
+                }
+                catch {
+                    // ignore method not found
+                }
             });
         });
     }
