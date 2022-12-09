@@ -1,11 +1,10 @@
-import mapsAPI from "masterportalAPI/src/maps/api.js";
 import {initializeLayerList} from "masterportalAPI/src/rawLayerList";
 
 import GeolocationControl from "../../../src/components/gdik-geolocation/geolocationControl";
 
 describe("Geolocation", () => {
 
-    let map, rawLayers;
+    let rawLayers;
 
     beforeEach(() => {
         rawLayers = [
@@ -37,8 +36,6 @@ describe("Geolocation", () => {
 
 
         initializeLayerList(rawLayers);
-
-        map = mapsAPI.map.createMap();
     });
 
     it("should init geolocation", () => {
