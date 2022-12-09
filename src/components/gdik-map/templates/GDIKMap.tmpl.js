@@ -23,6 +23,13 @@ template.innerHTML = `<style>
             margin: auto;
         }
 
+        .gdik-geolocation {
+            left: auto;
+            right: 0.5em;
+            top: 4em;
+            bottom: auto;
+        }
+
         .gdik-delete {
             left: 0.5em;
             top: 0.5em;

@@ -20,8 +20,9 @@ describe("Init gdik-input", () => {
 
         expect(component.shadowRoot.childNodes.length).toBe(1);
         expect(component.shadowRoot.childNodes[0].nodeName).toBe("GDIK-MAP");
-        expect(component.shadowRoot.childNodes[0].childNodes.length).toBe(1);
+        expect(component.shadowRoot.childNodes[0].childNodes.length).toBe(2);
         expect(component.shadowRoot.childNodes[0].childNodes[0].nodeName).toBe("GDIK-LAYERSWITCHER");
+        expect(component.shadowRoot.childNodes[0].childNodes[1].nodeName).toBe("GDIK-GEOLOCATION");
     });
 
     it("should rendered with draw component when draw-type given", () => {
@@ -33,9 +34,10 @@ describe("Init gdik-input", () => {
 
         expect(component.shadowRoot.childNodes.length).toBe(1);
         expect(component.shadowRoot.childNodes[0].nodeName).toBe("GDIK-MAP");
-        expect(component.shadowRoot.childNodes[0].childNodes.length).toBe(2);
+        expect(component.shadowRoot.childNodes[0].childNodes.length).toBe(3);
         expect(component.shadowRoot.childNodes[0].childNodes[0].nodeName).toBe("GDIK-LAYERSWITCHER");
         expect(component.shadowRoot.childNodes[0].childNodes[1].nodeName).toBe("GDIK-DRAW");
+        expect(component.shadowRoot.childNodes[0].childNodes[2].nodeName).toBe("GDIK-GEOLOCATION");
 
         expect(component.childNodes.length).toBe(1);
         expect(component.childNodes[0].nodeName).toBe("INPUT");
