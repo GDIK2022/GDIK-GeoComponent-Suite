@@ -43,6 +43,10 @@ export default class GDIKInput extends HTMLElement {
             this.mapElement.appendChild(this.drawElement);
             this.observer.observe(this.drawElement, {attributes: true, childList: false, subtree: false});
         }
+
+        this.geolocationElement = document.createElement("gdik-geolocation");
+        this.geolocationElement.slot = "content";
+        this.mapElement.appendChild(this.geolocationElement);
     }
 
     handleObservedAttributeCallback (mutationList) {
