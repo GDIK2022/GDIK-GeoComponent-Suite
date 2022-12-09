@@ -13,22 +13,19 @@ export default class GDIKDraw extends HTMLElement {
     }
 
     registerGDIKMap (map, layerManager) {
-        let featureCollection;
-
-        if (this.hasAttribute("feature")) {
-            featureCollection = JSON.parse(this.getAttribute("feature"));
-        }
-
         this.control = new DrawControl(layerManager, {
-            featureCollection: featureCollection,
             drawType: this.getAttribute("draw-type")
         });
+
+        if (this.hasAttribute("feature")) {
+            this.control.setFeatureCollection(this.getAttribute("feature"));
+        }
 
         this.control.on("featureupdate", () => {
             const fc = this.control.getFeatureCollection();
 
             if (fc === undefined) {
-                this.removeAttribute("feature");
+                this.setAttribute("feature", "");
                 return;
             }
             this.setAttribute("feature", fc);

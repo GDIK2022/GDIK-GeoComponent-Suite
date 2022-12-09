@@ -32,26 +32,22 @@ export default class DrawControl extends Control {
 
         super({element: div});
 
-        if (options?.featureCollection) {
-            features = format.readFeatures(options.featureCollection);
-            options.drawType = this.determineDrawType(features) || options.drawType;
-        }
-
         if (!options?.drawType) {
             throw Error("Missing draw type");
         }
+        this.drawType = options.drawType;
 
         if (DRAW_TYPES.filter(t => t === options.drawType).length !== 1) {
             throw Error(`Unsupported draw type "${options.drawType}"`);
         }
 
-        this.featureSource = new VectorSource({features: features});
+        this.featureSource = new VectorSource();
         this.featureLayer = new VectorLayer({source: this.featureSource});
 
         layerManager.addLayerOnTop(this.featureLayer);
 
         this.drawInteraction = new Draw({
-            type: options.drawType,
+            type: this.drawType,
             source: this.featureSource
         });
         this.drawInteraction.setActive(true);
@@ -108,7 +104,17 @@ export default class DrawControl extends Control {
     }
 
     setFeatureCollection (featureCollection) {
-        const features = format.readFeatures(featureCollection);
+        let features;
+
+        try {
+            features = format.readFeatures(featureCollection);
+        }
+        catch (e) {
+            return;
+        }
+        if (this.drawType !== this.determineDrawType(features)) {
+            throw Error("Geometry type of given feature collection mismatch draw-type");
+        }
 
         this.featureSource.clear(true);
         this.featureSource.addFeatures(features);

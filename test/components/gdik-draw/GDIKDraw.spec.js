@@ -72,7 +72,8 @@ describe("Draw related", () => {
         expect(component.hasAttribute("feature")).toBe(true);
 
         component.control.featureSource.removeFeature(feature);
-        expect(component.hasAttribute("feature")).toBe(false);
+        expect(component.hasAttribute("feature")).toBe(true);
+        expect(component.getAttribute("feature")).toBe("");
     });
 
     it("should deactivate draw and activate modify after feature is added to layer", async () => {
@@ -101,6 +102,7 @@ describe("Draw related", () => {
             component = new GDIKDraw();
         let modifyInteraction;
 
+        component.setAttribute("draw-type", "Point");
         component.setAttribute("feature", inputFeature);
         component.registerGDIKMap(map, layerManager);
 
@@ -114,6 +116,7 @@ describe("Draw related", () => {
         const inputFeature = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[1, 1]}}, {\"type\":\"Feature\",\"geometry\":{\"type\":\"LineString\",\"coordinates\":[[1, 1],[2, 1], [2, 2]]}}]}",
             component = new GDIKDraw();
 
+        component.setAttribute("draw-type", "LineString");
         component.setAttribute("feature", inputFeature);
 
         expect(() => {
@@ -126,10 +129,9 @@ describe("Draw related", () => {
             updatedFeature = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[2, 2]}}]}",
             component = new GDIKDraw();
 
-
+        component.setAttribute("draw-type", "Point");
         component.setAttribute("feature", initalFeature);
         component.registerGDIKMap(map, layerManager);
-
 
         component.setAttribute("feature", updatedFeature);
 
