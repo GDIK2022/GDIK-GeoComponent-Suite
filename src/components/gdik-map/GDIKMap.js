@@ -62,6 +62,8 @@ export default class GDIKMap extends HTMLElement {
         this.setAttribute("active-bg", this.layerManager.activeBackgroundLayer.get("id"));
 
         this.resolveMapPromise(this.map);
+
+
     }
 
     // Web Component Callback
@@ -119,8 +121,9 @@ export default class GDIKMap extends HTMLElement {
             console.error(`Cannot reach given url: ${configUrl}`);
             console.debug(`Original error was ${err}`);
             console.warn("Fall back to default config");
-            return merge({}, defaultConfig);
+            loadedConfig = merge({}, defaultConfig);
         }
+        this.dispatchEvent(new CustomEvent("configloaded", {detail: loadedConfig}));
         return loadedConfig;
     }
 
@@ -132,8 +135,8 @@ export default class GDIKMap extends HTMLElement {
                 try {
                     child.registerGDIKMap(map, this.layerManager);
                 }
-                catch {
-                    // ignore method not found
+                catch (error) {
+                    console.debug(error);
                 }
             });
         });

@@ -72,6 +72,39 @@ template.innerHTML = `<style>
         .gdik-layerswitcher ul li.active {
             background-color: #003c8880;
         }
+
+        .gdik-search {
+            left: auto;
+            right: auto;
+            width: 60%;
+            top: 0.5em;
+            bottom: auto;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .gdik-search input {
+            width: 100%;
+        }
+
+        .gdik-search .gdik-search-results div {
+            padding: 2px;
+            background-color: white;
+            cursor: pointer;
+        }
+
+        .gdik-search .gdik-search-results div:nth-child(odd) {
+            padding: 2px;
+            background-color: whitesmoke;
+        }
+
+        .gdik-search .gdik-search-results div:last-child {
+            border-radius: 0 0 4px 4px;
+        }
+
+        .gdik-search .gdik-search-results div:hover {
+            background-color: lightgray;
+        }
     </style>`;
 
 template.innerHTML += "<div class=\"gdik-map\"></div><slot name=\"content\"></slot>";

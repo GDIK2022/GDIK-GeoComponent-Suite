@@ -1,6 +1,6 @@
 {
   "name": "@GDIK2022/map",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "Web Component for geometry input and visualization",
   "publishConfig": {
     "registry":"https://npm.pkg.github.com"
@@ -15,7 +15,7 @@
     "test:watch": "jest --config ./jest.config.js --watch",
     "lint": "eslint ./src/** ./test/**",
     "audit": "npm audit --prod",
-    "examples": "parcel example/index.html",
+    "examples": "parcel example/index.html example/config.json",
     "build": "parcel build"
   },
   "source": "src/index.js",

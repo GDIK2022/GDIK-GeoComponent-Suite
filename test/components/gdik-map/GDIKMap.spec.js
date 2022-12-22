@@ -65,6 +65,8 @@ describe("Init gdik-map", () => {
 
         await component.connectedCallback();
 
+        expect(fetch).toBeCalledWith("http://config.service/config.json");
+
         expect(Number(component.getAttribute("lon"))).toBe(customConfig.portal.startCenter[0]);
         expect(Number(component.getAttribute("lat"))).toBe(customConfig.portal.startCenter[1]);
         expect(Number(component.getAttribute("zoom"))).toBe(customConfig.portal.startZoomLevel);
