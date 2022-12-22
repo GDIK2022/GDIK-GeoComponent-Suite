@@ -9,6 +9,11 @@ export default class GDIKInput extends HTMLElement {
         const shadow = this.attachShadow({mode: "open"});
 
         this.mapElement = document.createElement("gdik-map");
+        if (this.hasAttribute("config-url")) {
+            this.mapElement.setAttribute("config-url", this.getAttribute("config-url"));
+        }
+
+        this.mapElement.addEventListener("configloaded", this.handleConfigLoaded.bind(this));
         shadow.appendChild(this.mapElement);
 
         this.layerswitcherElement = document.createElement("gdik-layerswitcher");
@@ -16,7 +21,7 @@ export default class GDIKInput extends HTMLElement {
 
         this.mapElement.appendChild(this.layerswitcherElement);
 
-        GDIKInput.observedAttributes.concat(["config-url"]).forEach((attrName) => {
+        GDIKInput.observedAttributes.forEach((attrName) => {
             if (this.hasAttribute(attrName)) {
                 this.mapElement.setAttribute(attrName, this.getAttribute(attrName));
             }
@@ -93,6 +98,18 @@ export default class GDIKInput extends HTMLElement {
                 break;
             default:
                 break;
+        }
+    }
+
+    handleConfigLoaded (e) {
+        const config = e.detail;
+
+        if (config.portal.searchUrl) {
+            this.searchElement = document.createElement("gdik-search");
+            this.searchElement.slot = "content";
+            this.searchElement.setAttribute("search-url", config.portal.searchUrl);
+            this.searchElement.setAttribute("suggest-url", config.portal.suggestUrl);
+            this.mapElement.appendChild(this.searchElement);
         }
     }
 }
