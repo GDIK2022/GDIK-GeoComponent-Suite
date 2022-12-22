@@ -146,3 +146,22 @@ describe("Init gdik-input", () => {
     });
 
 });
+
+describe("config file handling", () => {
+
+    beforeEach(() => {
+        fetch.resetMocks();
+    });
+
+    it("should load given config url", async () => {
+        const component = new GDIKInput(),
+            configUrl = "https://config";
+
+        component.setAttribute("config-url", configUrl);
+
+        await component.connectedCallback();
+
+        expect(component.shadowRoot.childNodes[0].nodeName).toBe("GDIK-MAP");
+        expect(component.shadowRoot.childNodes[0].getAttribute("config-url")).toBe(configUrl);
+    });
+});
