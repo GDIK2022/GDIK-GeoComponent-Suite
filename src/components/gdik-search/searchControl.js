@@ -10,7 +10,6 @@ export default class SearchControl extends Control {
         super({element: containerDiv});
 
         this.searchUrl = options.searchUrl;
-        this.suggestUrl = options.suggestUrl;
 
         this.input = document.createElement("input");
         this.input.onkeydown = this.handleSearch.bind(this);
@@ -25,7 +24,6 @@ export default class SearchControl extends Control {
         this.view = map.getView();
         this.search = new OSGTS({
             searchUrl: this.searchUrl,
-            suggestUrl: this.suggestUrl,
             srs: map.getView().getProjection().getCode()
         });
         super.setMap(map);

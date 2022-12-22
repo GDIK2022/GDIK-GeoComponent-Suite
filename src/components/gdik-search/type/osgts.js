@@ -2,14 +2,9 @@ export default class OSGTS {
 
     constructor (options) {
         this.searchUrl = options.searchUrl;
-        this.suggestUrl = options.suggestUrl;
         this.extent = options.extent;
         this.srs = options.srs;
         this.entries = options.entries || 5;
-    }
-
-    async suggest (query) {
-        return this.request(this.suggestUrl, query);
     }
 
     async search (query) {
