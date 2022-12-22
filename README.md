@@ -103,9 +103,14 @@ Map interface for drawing a feature. It's possible to draw Points, Lines and Pol
 
 #### portal
 
-This part contains the definition of the map, you will interact with. The section is based on the [masterportal mapView config](https://www.masterportal.org/files/masterportal/html-doku/doc/latest/config.json.html#markdown-header-portalconfigmapview) extended by the property *backgroundLayers*.
+This part contains the definition of the map, you will interact with. The section is based on the [masterportal mapView config](https://www.masterportal.org/files/masterportal/html-doku/doc/latest/config.json.html#markdown-header-portalconfigmapview) extended by following properties:
 
-The backgroundLayers property is a list of layer ids defined in services section.
+<dl>
+  <dt>backgroundLayers</dt>
+  <dd>List of layer ids defined in services section to be present as background layer in component</dd>
+  <dt>searchUrl</dt>
+  <dd>Url of OSGTS to use for geocoding (gdik-search)</dd>
+</dl>
 
 #### services
 
@@ -183,3 +188,7 @@ To start a development environment for development purposes follow these steps:
 ```npm run test```
 or
 ```npm run test:watch```
+
+## Resources
+
+- https://repository.oceanbestpractices.org/bitstream/handle/11329/1079/10-032r8_OGC_OpenSearch_Geo_and_Time_Extensions.pdf?sequence=1&isAllowed=y
