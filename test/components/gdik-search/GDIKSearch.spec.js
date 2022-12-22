@@ -18,4 +18,18 @@ describe("Search related", () => {
         expect(searchElement).not.toBeNull();
         expect(searchElement.className).toBe("ol-control gdik-search");
     });
+
+    it("shoud use urls given by attributes", async () => {
+        const map = mapsAPI.map.createMap({...defaultConfig.portal, layerConf: defaultConfig.services}, "2D"),
+            component = new GDIKSearch(),
+            searchUrl = "https://search";
+
+        component.setAttribute("search-url", searchUrl);
+
+        await component.connectedCallback();
+
+        component.registerGDIKMap(map);
+
+        expect(component.control.search.searchUrl).toBe(searchUrl);
+    });
 });
