@@ -10,7 +10,7 @@ describe("Layerswitcher related", () => {
 
     it("should have added layerswitcher control", () => {
         const map = mapsAPI.map.createMap({...defaultConfig.portal, layerConf: defaultConfig.services}, "2D"),
-            layerManager = new LayerManager(map, defaultConfig.backgroundLayers),
+            layerManager = new LayerManager(map, defaultConfig.component.backgroundLayers),
             component = new GDIKLayerswitcher();
 
         let layerswitcherElement = null,
@@ -30,7 +30,7 @@ describe("Layerswitcher related", () => {
 
     it("should render all given background layers", async () => {
         const map = mapsAPI.map.createMap({...customConfig.portal, layerConf: customConfig.services}, "2D"),
-            layerManager = new LayerManager(map, customConfig.backgroundLayers),
+            layerManager = new LayerManager(map, customConfig.component.backgroundLayers),
             component = new GDIKLayerswitcher();
 
         component.registerGDIKMap(map, layerManager);

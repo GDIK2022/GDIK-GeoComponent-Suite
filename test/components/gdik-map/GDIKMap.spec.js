@@ -73,7 +73,7 @@ describe("Init gdik-map", () => {
 
         expect(component.map.getView().getCenter()).toEqual(customConfig.portal.startCenter);
 
-        expect(component.getAttribute("active-bg")).toBe(customConfig.backgroundLayers[0]);
+        expect(component.getAttribute("active-bg")).toBe(customConfig.component.backgroundLayers[0]);
     });
 
     it("should apply values given by element attributes", async () => {
@@ -183,7 +183,7 @@ describe("Attribute change related", () => {
         expect(Number(component.getAttribute("lat"))).toBe(defaultConfig.portal.startCenter[1]);
         expect(Number(component.getAttribute("zoom"))).toBe(defaultConfig.portal.startZoomLevel);
 
-        expect(component.getAttribute("active-bg")).toBe(defaultConfig.backgroundLayers[0]);
+        expect(component.getAttribute("active-bg")).toBe(defaultConfig.component.backgroundLayers[0]);
 
         component.setAttribute("lon", lon);
         component.setAttribute("lat", lat);
@@ -232,7 +232,7 @@ describe("Attribute change related", () => {
 
         await component.connectedCallback();
 
-        expect(component.getAttribute("active-bg")).toBe(defaultConfig.backgroundLayers[0]);
+        expect(component.getAttribute("active-bg")).toBe(defaultConfig.component.backgroundLayers[0]);
 
         component.layerManager.changeBackgroundLayer(backgroundLayer);
 

@@ -1,6 +1,8 @@
 {
-     "name": "Default config",
-     "backgroundLayers": ["1001", "1002"],
+     "component": {
+          "name": "Default config",
+          "backgroundLayers": ["1001", "1002"]
+     },
      "portal": {
           "epsg": "EPSG:25832",
           "namedProjections": [
