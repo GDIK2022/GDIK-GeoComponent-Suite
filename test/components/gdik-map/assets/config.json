@@ -1,4 +1,6 @@
 {
+     "name": "Test config",
+     "backgroundLayers": ["1001", "1002"],
      "portal": {
           "epsg": "EPSG:25832",
           "namedProjections": [
@@ -7,12 +9,7 @@
           "extent": [400000.0, 5000000.0, 500000.0, 6000000.0],
           "startCenter": [450000.0, 5500000.0],
           "startZoomLevel": 5,
-          "units": "m",
-          "layerConf": "",
-          "menu": {
-               "tree": "test"
-          },
-          "backgroundLayers": ["1001", "1002"]
+          "units": "m"
      },
      "services": [
           {

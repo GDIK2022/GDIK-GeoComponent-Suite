@@ -152,7 +152,7 @@ export default class GDIKMap extends HTMLElement {
         config.portal.layers = [];
         map = mapsAPI.map.createMap({...config.portal, layerConf: config.services}, "2D");
 
-        this.layerManager = new LayerManager(map, config.portal.backgroundLayers);
+        this.layerManager = new LayerManager(map, config.backgroundLayers);
         this.layerManager.on("backgroudchange", () => {
             this.setAttribute("active-bg", this.layerManager.activeBackgroundLayer.get("id"));
         });

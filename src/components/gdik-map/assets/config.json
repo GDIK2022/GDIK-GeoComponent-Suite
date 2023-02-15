@@ -1,4 +1,6 @@
 {
+     "name": "Default config",
+     "backgroundLayers": ["1001", "1002"],
      "portal": {
           "epsg": "EPSG:25832",
           "namedProjections": [
@@ -87,12 +89,8 @@
           ],
           "startCenter": [448360.0, 5888434.0],
           "startZoomLevel": 6,
-          "units": "m",
-          "layerConf": "",
-          "menu": {
-               "tree": "test"
-          },
-          "backgroundLayers": ["1001", "1002"]
+          "units": "m"
+
      },
      "services": [
           {

@@ -14,7 +14,7 @@ describe("Draw related", () => {
 
     beforeEach(() => {
         map = mapsAPI.map.createMap({...defaultConfig.portal, layerConf: defaultConfig.services}, "2D");
-        layerManager = new LayerManager(map, defaultConfig.portal.backgroundLayers);
+        layerManager = new LayerManager(map, defaultConfig.backgroundLayers);
     });
 
     it("should have draw control with inactive draw interaction added when draw-type set", () => {
@@ -140,4 +140,3 @@ describe("Draw related", () => {
         expect(component.control.featureSource.getFeatures()[0].getGeometry().getCoordinates()).toEqual([2, 2]);
     });
 });
-
