@@ -1,34 +1,34 @@
 import mapsAPI from "masterportalAPI/src/maps/api.js";
 
-import GDIKSearch from "../../../src/components/gdik-search/GDIKSearch";
+import GCSSearch from "../../../src/components/gcs-search/GCSSearch";
 
-import * as defaultConfig from "../../../src/components/gdik-map/assets/config.json";
+import * as defaultConfig from "../../../src/components/gcs-map/assets/config.json";
 
 describe("Search related", () => {
 
     it("should have added search control", () => {
         const map = mapsAPI.map.createMap({...defaultConfig.portal, layerConf: defaultConfig.services}, "2D"),
-            component = new GDIKSearch();
+            component = new GCSSearch();
 
         let searchElement = null;
 
-        component.registerGDIKMap(map);
+        component.registerGCSMap(map);
 
         searchElement = component.control.element;
         expect(searchElement).not.toBeNull();
-        expect(searchElement.className).toBe("ol-control gdik-search");
+        expect(searchElement.className).toBe("ol-control gcs-search");
     });
 
     it("shoud use urls given by attributes", async () => {
         const map = mapsAPI.map.createMap({...defaultConfig.portal, layerConf: defaultConfig.services}, "2D"),
-            component = new GDIKSearch(),
+            component = new GCSSearch(),
             searchUrl = "https://search";
 
         component.setAttribute("search-url", searchUrl);
 
         await component.connectedCallback();
 
-        component.registerGDIKMap(map);
+        component.registerGCSMap(map);
 
         expect(component.control.search.searchUrl).toBe(searchUrl);
     });

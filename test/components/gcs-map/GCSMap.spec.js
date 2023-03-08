@@ -1,26 +1,26 @@
 import {enableFetchMocks} from "jest-fetch-mock";
 enableFetchMocks();
 
-import GDIKMap from "../../../src/components/gdik-map/GDIKMap";
-import * as defaultConfig from "../../../src/components/gdik-map/assets/config.json";
+import GCSMap from "../../../src/components/gcs-map/GCSMap";
+import * as defaultConfig from "../../../src/components/gcs-map/assets/config.json";
 import * as customConfig from "./assets/config.json";
 
-describe("Init gdik-map", () => {
+describe("Init gcs-map", () => {
 
     beforeEach(() => {
         fetch.resetMocks();
     });
 
-    it("can create gdik-map component", () => {
-        expect(GDIKMap).toBeDefined();
+    it("can create gcs-map component", () => {
+        expect(GCSMap).toBeDefined();
 
-        const component = new GDIKMap();
+        const component = new GCSMap();
 
         expect(component).toBeDefined();
     });
 
-    it("should render gdik-map component", async () => {
-        const component = new GDIKMap();
+    it("should render gcs-map component", async () => {
+        const component = new GCSMap();
 
         await component.connectedCallback();
 
@@ -33,7 +33,7 @@ describe("Init gdik-map", () => {
     });
 
     it("should use values from default config", async () => {
-        const component = new GDIKMap();
+        const component = new GCSMap();
 
         await component.connectedCallback();
 
@@ -49,7 +49,7 @@ describe("Init gdik-map", () => {
 
     it("should use values from given config", async () => {
         fetch.mockResponseOnce(JSON.stringify(customConfig));
-        const component = new GDIKMap(),
+        const component = new GCSMap(),
             loadedConfig = await component.fetchConfig("http://config.service/config.json");
 
         expect(loadedConfig).not.toBe(false);
@@ -59,7 +59,7 @@ describe("Init gdik-map", () => {
 
     it("should apply loaded config values to element attributes", async () => {
         fetch.mockResponseOnce(JSON.stringify(customConfig));
-        const component = new GDIKMap();
+        const component = new GCSMap();
 
         component.setAttribute("config-url", "http://config.service/config.json");
 
@@ -77,7 +77,7 @@ describe("Init gdik-map", () => {
     });
 
     it("should apply values given by element attributes", async () => {
-        const component = new GDIKMap(),
+        const component = new GCSMap(),
             lon = 450000.0,
             lat = 5500000.0,
             zoom = 8;
@@ -113,7 +113,7 @@ describe("Attribute active-bg", () => {
 
     it("should use background layer given by attribute for init", async () => {
         fetch.mockResponseOnce(JSON.stringify(customConfig));
-        const component = new GDIKMap(),
+        const component = new GCSMap(),
             backgroundLayer = "1002";
 
         component.setAttribute("config-url", "http://config.service/config.json");
@@ -126,7 +126,7 @@ describe("Attribute active-bg", () => {
 
     it("should change background layer when attribute changes", async () => {
         fetch.mockResponseOnce(JSON.stringify(customConfig));
-        const component = new GDIKMap(),
+        const component = new GCSMap(),
             backgroundLayer = "1002";
 
         component.setAttribute("config-url", "http://config.service/config.json");
@@ -140,7 +140,7 @@ describe("Attribute active-bg", () => {
     });
 
     it("should log an error when background layer cannot be found on init", async () => {
-        const component = new GDIKMap(),
+        const component = new GCSMap(),
             backgroundLayer = "1003";
 
         console.error = jest.fn();
@@ -154,7 +154,7 @@ describe("Attribute active-bg", () => {
     });
 
     it("should log an error when background layer cannot be found on attribute change", async () => {
-        const component = new GDIKMap(),
+        const component = new GCSMap(),
             backgroundLayer = "1003";
 
         console.error = jest.fn();
@@ -171,7 +171,7 @@ describe("Attribute active-bg", () => {
 
 describe("Attribute change related", () => {
     it("should change map content on component attribute change", async () => {
-        const component = new GDIKMap(),
+        const component = new GCSMap(),
             lon = 450000.0,
             lat = 5500000.0,
             zoom = 8,
@@ -197,7 +197,7 @@ describe("Attribute change related", () => {
     });
 
     it("should change lon lat attributes when map center changed", async () => {
-        const component = new GDIKMap(),
+        const component = new GCSMap(),
             center = [450000.0, 5500000.0];
 
         await component.connectedCallback();
@@ -213,7 +213,7 @@ describe("Attribute change related", () => {
     });
 
     it("should change zoom attribte when map zoom changes", async () => {
-        const component = new GDIKMap(),
+        const component = new GCSMap(),
             zoom = 8;
 
         await component.connectedCallback();
@@ -227,7 +227,7 @@ describe("Attribute change related", () => {
     });
 
     it("shoud change background layer attribute when background layer changes", async () => {
-        const component = new GDIKMap(),
+        const component = new GCSMap(),
             backgroundLayer = "1002";
 
         await component.connectedCallback();

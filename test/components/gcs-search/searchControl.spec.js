@@ -24,11 +24,11 @@ describe("Search", () => {
 
         const control = new SearchControl(options);
 
-        expect(control.element.className).toBe("ol-control gdik-search");
+        expect(control.element.className).toBe("ol-control gcs-search");
         expect(control.element.children.length).toBe(2);
         expect(control.element.firstChild.nodeName).toBe("INPUT");
         expect(control.element.lastChild.nodeName).toBe("DIV");
-        expect(control.element.lastChild.className).toBe("gdik-search-results");
+        expect(control.element.lastChild.className).toBe("gcs-search-results");
     });
 
     it("should start search on enter press", () => {

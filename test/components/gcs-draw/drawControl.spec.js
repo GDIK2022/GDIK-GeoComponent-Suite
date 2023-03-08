@@ -45,7 +45,7 @@ describe("Draw Control", () => {
     it("should init draw control", () => {
         const control = new DrawControl(layerManager, {drawType: "Point"});
 
-        expect(control.element.className).toBe("ol-control gdik-delete");
+        expect(control.element.className).toBe("ol-control gcs-delete");
         expect(control.element.firstChild.nodeName).toBe("BUTTON");
 
         expect(control.drawInteraction).toBeDefined();

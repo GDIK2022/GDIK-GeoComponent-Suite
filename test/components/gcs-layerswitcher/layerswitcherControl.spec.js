@@ -1,9 +1,9 @@
 import mapsAPI from "masterportalAPI/src/maps/api.js";
 import {initializeLayerList} from "masterportalAPI/src/rawLayerList";
 
-import LayerswitcherControl from "../../../src/components/gdik-layerswitcher/layerswitcherControl";
+import LayerswitcherControl from "../../../src/components/gcs-layerswitcher/layerswitcherControl";
 
-import LayerManager from "../../../src/components/gdik-map/LayerManager";
+import LayerManager from "../../../src/components/gcs-map/LayerManager";
 
 describe("Layerswitcher", () => {
 
@@ -49,7 +49,7 @@ describe("Layerswitcher", () => {
 
         const control = new LayerswitcherControl(layerManager);
 
-        expect(control.element.className).toBe("ol-control gdik-layerswitcher");
+        expect(control.element.className).toBe("ol-control gcs-layerswitcher");
         expect(control.element.firstChild.nodeName).toBe("BUTTON");
         expect(control.element.lastChild.firstChild.nodeName).toBe("UL");
         expect(control.element.lastChild.lastChild.nodeName).toBe("BUTTON");

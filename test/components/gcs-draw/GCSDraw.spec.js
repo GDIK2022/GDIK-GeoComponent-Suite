@@ -3,10 +3,10 @@ import mapsAPI from "masterportalAPI/src/maps/api.js";
 import Feature from "ol/Feature";
 import Point from "ol/geom/Point";
 
-import LayerManager from "../../../src/components/gdik-map/LayerManager";
-import GDIKDraw from "../../../src/components/gdik-draw/GDIKDraw";
+import LayerManager from "../../../src/components/gcs-map/LayerManager";
+import GCSDraw from "../../../src/components/gcs-draw/GDIKDraw";
 
-import * as defaultConfig from "../../../src/components/gdik-map/assets/config.json";
+import * as defaultConfig from "../../../src/components/gcs-map/assets/config.json";
 
 describe("Draw related", () => {
 
@@ -18,25 +18,25 @@ describe("Draw related", () => {
     });
 
     it("should have draw control with inactive draw interaction added when draw-type set", () => {
-        const component = new GDIKDraw();
+        const component = new GCSDraw();
         let drawInteraction;
 
         component.setAttribute("draw-type", "Point");
-        component.registerGDIKMap(map, layerManager);
+        component.registerGCSMap(map, layerManager);
 
         drawInteraction = map.getInteractions().getArray().filter((interaction) => interaction.constructor.name === "Draw");
         expect(drawInteraction.length).toBe(1);
         drawInteraction = drawInteraction[0];
         expect(drawInteraction.getActive()).toBe(true);
 
-        expect(component.control.element.className).toBe("ol-control gdik-delete");
+        expect(component.control.element.className).toBe("ol-control gcs-delete");
     });
 
     it("should have feature attribute with FeatureCollection containing drawed feature when feature added to draw layer", () => {
-        const component = new GDIKDraw();
+        const component = new GCSDraw();
 
         component.setAttribute("draw-type", "Point");
-        component.registerGDIKMap(map, layerManager);
+        component.registerGCSMap(map, layerManager);
 
         expect(component.hasAttribute("feature")).toBe(false);
 
@@ -59,11 +59,11 @@ describe("Draw related", () => {
     });
 
     it("shouldn't have feature attrubute when drawed feature was removed", async () => {
-        const component = new GDIKDraw(),
+        const component = new GCSDraw(),
             feature = new Feature({geometry: new Point([1, 1])});
 
         component.setAttribute("draw-type", "Point");
-        component.registerGDIKMap(map, layerManager);
+        component.registerGCSMap(map, layerManager);
 
         expect(component.hasAttribute("feature")).toBe(false);
 
@@ -77,11 +77,11 @@ describe("Draw related", () => {
     });
 
     it("should deactivate draw and activate modify after feature is added to layer", async () => {
-        const component = new GDIKDraw();
+        const component = new GCSDraw();
         let drawInteraction, modifyInteraction;
 
         component.setAttribute("draw-type", "Point");
-        component.registerGDIKMap(map, layerManager);
+        component.registerGCSMap(map, layerManager);
 
         drawInteraction = map.getInteractions().getArray().filter((interaction) => interaction.constructor.name === "Draw");
         drawInteraction = drawInteraction[0];
@@ -99,12 +99,12 @@ describe("Draw related", () => {
 
     it("should have active modify control when passing feature collection with point feature", async () => {
         const inputFeature = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[1, 1]}}]}",
-            component = new GDIKDraw();
+            component = new GCSDraw();
         let modifyInteraction;
 
         component.setAttribute("draw-type", "Point");
         component.setAttribute("feature", inputFeature);
-        component.registerGDIKMap(map, layerManager);
+        component.registerGCSMap(map, layerManager);
 
         modifyInteraction = map.getInteractions().getArray().filter((interaction) => interaction.constructor.name === "Modify");
 
@@ -114,24 +114,24 @@ describe("Draw related", () => {
 
     it("should not allow mixed geometry types", async () => {
         const inputFeature = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[1, 1]}}, {\"type\":\"Feature\",\"geometry\":{\"type\":\"LineString\",\"coordinates\":[[1, 1],[2, 1], [2, 2]]}}]}",
-            component = new GDIKDraw();
+            component = new GCSDraw();
 
         component.setAttribute("draw-type", "LineString");
         component.setAttribute("feature", inputFeature);
 
         expect(() => {
-            component.registerGDIKMap(map, layerManager);
+            component.registerGCSMap(map, layerManager);
         }).toThrow("Inhomogeneous feature collection given");
     });
 
     it("should update feature on feature attibute change", async () => {
         const initalFeature = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[1, 1]}}]}",
             updatedFeature = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[2, 2]}}]}",
-            component = new GDIKDraw();
+            component = new GCSDraw();
 
         component.setAttribute("draw-type", "Point");
         component.setAttribute("feature", initalFeature);
-        component.registerGDIKMap(map, layerManager);
+        component.registerGCSMap(map, layerManager);
 
         component.setAttribute("feature", updatedFeature);
 

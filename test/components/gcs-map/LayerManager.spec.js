@@ -3,7 +3,7 @@ import VectorLayer from "ol/layer/Vector";
 import {initializeLayerList} from "masterportalAPI/src/rawLayerList";
 import mapsAPI from "masterportalAPI/src/maps/api.js";
 
-import LayerManager from "../../../src/components/gdik-map/LayerManager";
+import LayerManager from "../../../src/components/gcs-map/LayerManager";
 
 describe("LayerManager", () => {
 

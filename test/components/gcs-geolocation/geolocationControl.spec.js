@@ -1,6 +1,6 @@
 import {initializeLayerList} from "masterportalAPI/src/rawLayerList";
 
-import GeolocationControl from "../../../src/components/gdik-geolocation/geolocationControl";
+import GeolocationControl from "../../../src/components/gcs-geolocation/geolocationControl";
 
 describe("Geolocation", () => {
 
@@ -43,7 +43,7 @@ describe("Geolocation", () => {
 
         const control = new GeolocationControl();
 
-        expect(control.element.className).toBe("ol-control gdik-geolocation");
+        expect(control.element.className).toBe("ol-control gcs-geolocation");
         expect(control.element.firstChild.nodeName).toBe("BUTTON");
     });
 });

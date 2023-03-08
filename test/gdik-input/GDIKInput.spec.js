@@ -19,10 +19,10 @@ describe("Init gdik-input", () => {
         component.connectedCallback();
 
         expect(component.shadowRoot.childNodes.length).toBe(1);
-        expect(component.shadowRoot.childNodes[0].nodeName).toBe("GDIK-MAP");
+        expect(component.shadowRoot.childNodes[0].nodeName).toBe("GCS-MAP");
         expect(component.shadowRoot.childNodes[0].childNodes.length).toBe(2);
-        expect(component.shadowRoot.childNodes[0].childNodes[0].nodeName).toBe("GDIK-LAYERSWITCHER");
-        expect(component.shadowRoot.childNodes[0].childNodes[1].nodeName).toBe("GDIK-GEOLOCATION");
+        expect(component.shadowRoot.childNodes[0].childNodes[0].nodeName).toBe("GCS-LAYERSWITCHER");
+        expect(component.shadowRoot.childNodes[0].childNodes[1].nodeName).toBe("GCS-GEOLOCATION");
     });
 
     it("should rendered with draw component when draw-type given", () => {
@@ -33,11 +33,11 @@ describe("Init gdik-input", () => {
         component.connectedCallback();
 
         expect(component.shadowRoot.childNodes.length).toBe(1);
-        expect(component.shadowRoot.childNodes[0].nodeName).toBe("GDIK-MAP");
+        expect(component.shadowRoot.childNodes[0].nodeName).toBe("GCS-MAP");
         expect(component.shadowRoot.childNodes[0].childNodes.length).toBe(3);
-        expect(component.shadowRoot.childNodes[0].childNodes[0].nodeName).toBe("GDIK-LAYERSWITCHER");
-        expect(component.shadowRoot.childNodes[0].childNodes[1].nodeName).toBe("GDIK-DRAW");
-        expect(component.shadowRoot.childNodes[0].childNodes[2].nodeName).toBe("GDIK-GEOLOCATION");
+        expect(component.shadowRoot.childNodes[0].childNodes[0].nodeName).toBe("GCS-LAYERSWITCHER");
+        expect(component.shadowRoot.childNodes[0].childNodes[1].nodeName).toBe("GCS-DRAW");
+        expect(component.shadowRoot.childNodes[0].childNodes[2].nodeName).toBe("GCS-GEOLOCATION");
 
         expect(component.childNodes.length).toBe(1);
         expect(component.childNodes[0].nodeName).toBe("INPUT");
@@ -61,13 +61,13 @@ describe("Init gdik-input", () => {
 
         component.connectedCallback();
 
-        expect(component.shadowRoot.childNodes[0].nodeName).toBe("GDIK-MAP");
+        expect(component.shadowRoot.childNodes[0].nodeName).toBe("GCS-MAP");
         expect(component.shadowRoot.childNodes[0].getAttribute("lon")).toBe(lon);
         expect(component.shadowRoot.childNodes[0].getAttribute("lat")).toBe(lat);
         expect(component.shadowRoot.childNodes[0].getAttribute("zoom")).toBe(zoom);
         expect(component.shadowRoot.childNodes[0].getAttribute("active-bg")).toBe(activeBg);
 
-        expect(component.shadowRoot.childNodes[0].childNodes[1].nodeName).toBe("GDIK-DRAW");
+        expect(component.shadowRoot.childNodes[0].childNodes[1].nodeName).toBe("GCS-DRAW");
         expect(component.shadowRoot.childNodes[0].childNodes[1].getAttribute("draw-type")).toBe(drawType);
         expect(component.shadowRoot.childNodes[0].childNodes[1].getAttribute("feature")).toBe(value);
 
@@ -92,13 +92,13 @@ describe("Init gdik-input", () => {
         component.setAttribute("active-bg", activeBg);
         component.setAttribute("value", value);
 
-        expect(component.shadowRoot.childNodes[0].nodeName).toBe("GDIK-MAP");
+        expect(component.shadowRoot.childNodes[0].nodeName).toBe("GCS-MAP");
         expect(component.shadowRoot.childNodes[0].getAttribute("lon")).toBe(lon);
         expect(component.shadowRoot.childNodes[0].getAttribute("lat")).toBe(lat);
         expect(component.shadowRoot.childNodes[0].getAttribute("zoom")).toBe(zoom);
         expect(component.shadowRoot.childNodes[0].getAttribute("active-bg")).toBe(activeBg);
 
-        expect(component.shadowRoot.childNodes[0].childNodes[1].nodeName).toBe("GDIK-DRAW");
+        expect(component.shadowRoot.childNodes[0].childNodes[1].nodeName).toBe("GCS-DRAW");
         expect(component.shadowRoot.childNodes[0].childNodes[1].getAttribute("value")).toBe(value);
 
         expect(component.childNodes[0].getAttribute("value")).toBe(value);
@@ -134,7 +134,7 @@ describe("Init gdik-input", () => {
             }}, attributeName: k, type: "attributes"}]);
         });
 
-        expect(component.nodeName).toBe("GDIK-INPUT");
+        expect(component.nodeName).toBe("GCS-INPUT");
         expect(component.getAttribute("lon")).toBe(changedAttributes.lon);
         expect(component.getAttribute("lat")).toBe(changedAttributes.lat);
         expect(component.getAttribute("zoom")).toBe(changedAttributes.zoom);
@@ -161,7 +161,7 @@ describe("config file handling", () => {
 
         await component.connectedCallback();
 
-        expect(component.shadowRoot.childNodes[0].nodeName).toBe("GDIK-MAP");
+        expect(component.shadowRoot.childNodes[0].nodeName).toBe("GCS-MAP");
         expect(component.shadowRoot.childNodes[0].getAttribute("config-url")).toBe(configUrl);
     });
 });
