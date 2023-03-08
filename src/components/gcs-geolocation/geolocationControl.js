@@ -10,7 +10,7 @@ export default class GeolocationControl extends Control {
         button.innerHTML = "&#x2316;";
 
         containerDiv.appendChild(button);
-        containerDiv.className = "ol-control gdik-geolocation";
+        containerDiv.className = "ol-control gcs-geolocation";
         super({element: containerDiv});
 
         button.onclick = this.geolocate.bind(this);

@@ -1,16 +1,16 @@
 import GeolocationControl from "./geolocationControl";
 
-export default class GDIKGeolocation extends HTMLElement {
+export default class GCSGeolocation extends HTMLElement {
 
     constructor () {
         super();
         this.control = null;
     }
 
-    registerGDIKMap (map) {
+    registerGCSMap (map) {
         this.control = new GeolocationControl();
         map.addControl(this.control);
     }
 }
 
-customElements.define("gdik-geolocation", GDIKGeolocation);
+customElements.define("gcs-geolocation", GCSGeolocation);
