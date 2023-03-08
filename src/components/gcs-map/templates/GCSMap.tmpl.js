@@ -11,35 +11,35 @@ template.innerHTML = `<style>
             right: 0.5em;
         }
 
-        .gdik-map-container {
+        .gcs-map-container {
             height: 100%;
             width: 100%;
             margin: auto;
         }
 
-        .gdik-map {
+        .gcs-map {
             height: 100%;
             width: 100%;
             margin: auto;
         }
 
-        .gdik-geolocation {
+        .gcs-geolocation {
             left: auto;
             right: 0.5em;
             top: 4em;
             bottom: auto;
         }
 
-        .gdik-delete {
+        .gcs-delete {
             left: 0.5em;
             top: 0.5em;
         }
 
-        .gdik-delete button:disabled {
+        .gcs-delete button:disabled {
             background-color: #888;
         }
 
-        .gdik-layerswitcher {
+        .gcs-layerswitcher {
             left: 0.5em;
             bottom: 0.5em;
             display: flex;
@@ -47,33 +47,33 @@ template.innerHTML = `<style>
             align-items: flex-end;
         }
 
-        .gdik-layerswitcher.ol-control .hidden {
+        .gcs-layerswitcher.ol-control .hidden {
             display: none;
         }
 
-        .gdik-layerswitcher .closer {
+        .gcs-layerswitcher .closer {
             display: inline-block;
         }
 
-        .gdik-layerswitcher ul {
+        .gcs-layerswitcher ul {
             padding: 0;
             margin: 0;
             display: inline-block;
             background-color: ghostwhite;
         }
 
-        .gdik-layerswitcher ul li {
+        .gcs-layerswitcher ul li {
             display: block;
             border: 1px solid rgba(0, 0, 0, .125);
             white-space: nowrap;
             padding: 0.2em 0.4em;
         }
 
-        .gdik-layerswitcher ul li.active {
+        .gcs-layerswitcher ul li.active {
             background-color: #003c8880;
         }
 
-        .gdik-search {
+        .gcs-search {
             left: auto;
             right: auto;
             width: 60%;
@@ -83,30 +83,30 @@ template.innerHTML = `<style>
             position: relative;
         }
 
-        .gdik-search input {
+        .gcs-search input {
             width: 100%;
         }
 
-        .gdik-search .gdik-search-results div {
+        .gcs-search .gcs-search-results div {
             padding: 2px;
             background-color: white;
             cursor: pointer;
         }
 
-        .gdik-search .gdik-search-results div:nth-child(odd) {
+        .gcs-search .gcs-search-results div:nth-child(odd) {
             padding: 2px;
             background-color: whitesmoke;
         }
 
-        .gdik-search .gdik-search-results div:last-child {
+        .gcs-search .gcs-search-results div:last-child {
             border-radius: 0 0 4px 4px;
         }
 
-        .gdik-search .gdik-search-results div:hover {
+        .gcs-search .gcs-search-results div:hover {
             background-color: lightgray;
         }
     </style>`;
 
-template.innerHTML += "<div class=\"gdik-map\"></div><slot name=\"content\"></slot>";
+template.innerHTML += "<div class=\"gcs-map\"></div><slot name=\"content\"></slot>";
 
 export default template;

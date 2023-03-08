@@ -11,10 +11,10 @@ import mapsAPI from "masterportalAPI/src/maps/api.js";
 // TODO remove default config file
 import * as defaultConfig from "./assets/config.json";
 
-import template from "./templates/GDIKMap.tmpl";
+import template from "./templates/GCSMap.tmpl";
 import LayerManager from "./LayerManager";
 
-export default class GDIKMap extends HTMLElement {
+export default class GCSMap extends HTMLElement {
     static get observedAttributes () {
         return ["lon", "lat", "active-bg", "zoom"];
     }
@@ -99,7 +99,7 @@ export default class GDIKMap extends HTMLElement {
 
         shadow.children[0].textContent = olCss + shadow.children[0].textContent;
 
-        this.container = this.shadowRoot.querySelector(".gdik-map");
+        this.container = this.shadowRoot.querySelector(".gcs-map");
 
         shadow.querySelector("slot").addEventListener("slotchange", this.handleSlotChange.bind(this));
 
@@ -133,7 +133,7 @@ export default class GDIKMap extends HTMLElement {
         this.mapPromise.then((map) => {
             children.forEach((child) => {
                 try {
-                    child.registerGDIKMap(map, this.layerManager);
+                    child.registerGCSMap(map, this.layerManager);
                 }
                 catch (error) {
                     console.debug(error);
@@ -181,4 +181,4 @@ export default class GDIKMap extends HTMLElement {
     }
 }
 
-customElements.define("gdik-map", GDIKMap);
+customElements.define("gcs-map", GCSMap);
