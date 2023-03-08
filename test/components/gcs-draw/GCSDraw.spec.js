@@ -4,7 +4,7 @@ import Feature from "ol/Feature";
 import Point from "ol/geom/Point";
 
 import LayerManager from "../../../src/components/gcs-map/LayerManager";
-import GCSDraw from "../../../src/components/gcs-draw/GDIKDraw";
+import GCSDraw from "../../../src/components/gcs-draw/GCSDraw";
 
 import * as defaultConfig from "../../../src/components/gcs-map/assets/config.json";
 

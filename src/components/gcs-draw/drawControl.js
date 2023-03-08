@@ -23,7 +23,7 @@ export default class DrawControl extends Control {
 
         let features;
 
-        div.className = "ol-control gdik-delete";
+        div.className = "ol-control gcs-delete";
 
         clearDrawBtn.innerHTML = "&#x1F5D1;";
         clearDrawBtn.disabled = true;

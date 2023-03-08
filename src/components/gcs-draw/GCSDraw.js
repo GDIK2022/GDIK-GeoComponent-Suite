@@ -1,6 +1,6 @@
 import DrawControl from "./drawControl";
 
-export default class GDIKDraw extends HTMLElement {
+export default class GCSDraw extends HTMLElement {
 
 
     static get observedAttributes () {
@@ -12,7 +12,7 @@ export default class GDIKDraw extends HTMLElement {
         this.control = null;
     }
 
-    registerGDIKMap (map, layerManager) {
+    registerGCSMap (map, layerManager) {
         this.control = new DrawControl(layerManager, {
             drawType: this.getAttribute("draw-type")
         });
@@ -61,4 +61,4 @@ export default class GDIKDraw extends HTMLElement {
     }
 }
 
-customElements.define("gdik-draw", GDIKDraw);
+customElements.define("gcs-draw", GCSDraw);
