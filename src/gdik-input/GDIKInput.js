@@ -1,7 +1,7 @@
 export default class GDIKInput extends HTMLElement {
 
     static get observedAttributes () {
-        return ["lon", "lat", "zoom", "active-bg", "feature"];
+        return ["lon", "lat", "zoom", "active-bg", "value"];
     }
 
     // Web Component Callback
@@ -40,9 +40,9 @@ export default class GDIKInput extends HTMLElement {
             this.drawElement.slot = "content";
             this.drawElement.setAttribute("draw-type", this.getAttribute("draw-type"));
 
-            if (this.hasAttribute("feature")) {
-                this.drawElement.setAttribute("feature", this.getAttribute("feature"));
-                this.input.value = this.getAttribute("feature");
+            if (this.hasAttribute("value")) {
+                this.drawElement.setAttribute("feature", this.getAttribute("value"));
+                this.input.value = this.getAttribute("value");
             }
 
             this.mapElement.appendChild(this.drawElement);
@@ -89,12 +89,12 @@ export default class GDIKInput extends HTMLElement {
             case "active-bg":
                 this.mapElement.setAttribute(name, newValue);
                 break;
-            case "feature":
+            case "value":
                 if (this.drawElement === undefined) {
                     return;
                 }
                 this.drawElement.setAttribute(name, newValue);
-                this.input.value = this.getAttribute("feature");
+                this.input.value = this.getAttribute("value");
                 break;
             default:
                 break;
