@@ -1,6 +1,6 @@
 import SearchControl from "./searchControl";
 
-export default class GDIKSearch extends HTMLElement {
+export default class GCSSearch extends HTMLElement {
 
     constructor () {
         super();
@@ -11,7 +11,7 @@ export default class GDIKSearch extends HTMLElement {
         this.searchUrl = this.getAttribute("search-url");
     }
 
-    registerGDIKMap (map) {
+    registerGCSMap (map) {
         this.control = new SearchControl({
             searchUrl: this.searchUrl
         });
@@ -19,4 +19,4 @@ export default class GDIKSearch extends HTMLElement {
     }
 }
 
-customElements.define("gdik-search", GDIKSearch);
+customElements.define("gcs-search", GCSSearch);

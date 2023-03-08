@@ -1,7 +1,7 @@
 import mapsAPI from "masterportalAPI/src/maps/api.js";
 
-import SearchControl from "../../../src/components/gdik-search/searchControl";
-import * as defaultConfig from "../../../src/components/gdik-map/assets/config.json";
+import SearchControl from "../../../src/components/gcs-search/searchControl";
+import * as defaultConfig from "../../../src/components/gcs-map/assets/config.json";
 
 import {enableFetchMocks} from "jest-fetch-mock";
 enableFetchMocks();

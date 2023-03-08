@@ -8,7 +8,7 @@ export default class LayerswitcherControl extends Control {
             closed = document.createElement("button"),
             closer = document.createElement("button");
 
-        containerDiv.className = "ol-control gdik-layerswitcher";
+        containerDiv.className = "ol-control gcs-layerswitcher";
         super({element: containerDiv});
 
         closed.className = "";

@@ -6,7 +6,7 @@ export default class SearchControl extends Control {
     constructor (options) {
         const containerDiv = document.createElement("div");
 
-        containerDiv.className = "ol-control gdik-search";
+        containerDiv.className = "ol-control gcs-search";
         super({element: containerDiv});
 
         this.searchUrl = options.searchUrl;
@@ -16,7 +16,7 @@ export default class SearchControl extends Control {
         containerDiv.appendChild(this.input);
 
         this.resultsContainer = document.createElement("div");
-        this.resultsContainer.className = "gdik-search-results";
+        this.resultsContainer.className = "gcs-search-results";
         containerDiv.appendChild(this.resultsContainer);
     }
 
@@ -60,4 +60,3 @@ export default class SearchControl extends Control {
         this.resultsContainer.innerHTML = "";
     }
 }
-
