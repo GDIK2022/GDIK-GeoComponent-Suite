@@ -1,7 +1,8 @@
 {
      "component": {
           "name": "Test config",
-          "backgroundLayers": ["1001", "1002"]
+          "backgroundLayers": ["1001", "1002"],
+          "searchUrl": "https://osgts.example.com"
      },
      "portal": {
           "epsg": "EPSG:25832",

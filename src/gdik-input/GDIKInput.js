@@ -104,11 +104,11 @@ export default class GDIKInput extends HTMLElement {
     handleConfigLoaded (e) {
         const config = e.detail;
 
-        if (config.portal.searchUrl) {
+        if (config.component.searchUrl) {
             this.searchElement = document.createElement("gdik-search");
             this.searchElement.slot = "content";
-            this.searchElement.setAttribute("search-url", config.portal.searchUrl);
-            this.searchElement.setAttribute("suggest-url", config.portal.suggestUrl);
+            this.searchElement.setAttribute("search-url", config.component.searchUrl);
+            this.searchElement.setAttribute("suggest-url", config.component.suggestUrl);
             this.mapElement.appendChild(this.searchElement);
         }
     }
