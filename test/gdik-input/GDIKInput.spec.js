@@ -50,14 +50,14 @@ describe("Init gdik-input", () => {
             zoom = "8",
             activeBg = "1002",
             drawType = "Point",
-            feature = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[1, 1]}}]}";
+            value = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[1, 1]}}]}";
 
         component.setAttribute("lon", lon);
         component.setAttribute("lat", lat);
         component.setAttribute("zoom", zoom);
         component.setAttribute("active-bg", activeBg);
         component.setAttribute("draw-type", drawType);
-        component.setAttribute("feature", feature);
+        component.setAttribute("value", value);
 
         component.connectedCallback();
 
@@ -69,9 +69,9 @@ describe("Init gdik-input", () => {
 
         expect(component.shadowRoot.childNodes[0].childNodes[1].nodeName).toBe("GDIK-DRAW");
         expect(component.shadowRoot.childNodes[0].childNodes[1].getAttribute("draw-type")).toBe(drawType);
-        expect(component.shadowRoot.childNodes[0].childNodes[1].getAttribute("feature")).toBe(feature);
+        expect(component.shadowRoot.childNodes[0].childNodes[1].getAttribute("feature")).toBe(value);
 
-        expect(component.childNodes[0].getAttribute("value")).toBe(feature);
+        expect(component.childNodes[0].getAttribute("value")).toBe(value);
     });
 
     it("should pass attribute changes to child components", () => {
@@ -80,7 +80,7 @@ describe("Init gdik-input", () => {
             lat = "2",
             zoom = "8",
             activeBg = "1002",
-            feature = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[1, 1]}}]}";
+            value = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[1, 1]}}]}";
 
         component.setAttribute("draw-type", "Point");
 
@@ -90,7 +90,7 @@ describe("Init gdik-input", () => {
         component.setAttribute("lat", lat);
         component.setAttribute("zoom", zoom);
         component.setAttribute("active-bg", activeBg);
-        component.setAttribute("feature", feature);
+        component.setAttribute("value", value);
 
         expect(component.shadowRoot.childNodes[0].nodeName).toBe("GDIK-MAP");
         expect(component.shadowRoot.childNodes[0].getAttribute("lon")).toBe(lon);
@@ -99,9 +99,9 @@ describe("Init gdik-input", () => {
         expect(component.shadowRoot.childNodes[0].getAttribute("active-bg")).toBe(activeBg);
 
         expect(component.shadowRoot.childNodes[0].childNodes[1].nodeName).toBe("GDIK-DRAW");
-        expect(component.shadowRoot.childNodes[0].childNodes[1].getAttribute("feature")).toBe(feature);
+        expect(component.shadowRoot.childNodes[0].childNodes[1].getAttribute("value")).toBe(value);
 
-        expect(component.childNodes[0].getAttribute("value")).toBe(feature);
+        expect(component.childNodes[0].getAttribute("value")).toBe(value);
     });
 
     it("should reflect child attribute changes", async () => {
@@ -115,7 +115,7 @@ describe("Init gdik-input", () => {
                 lat: "2",
                 zoom: "8",
                 "active-bg": "1002",
-                feature: "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[1, 1]}}]}"
+                value: "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[1, 1]}}]}"
             };
 
         global.MutationObserver = mutationObserverMock;
@@ -139,8 +139,8 @@ describe("Init gdik-input", () => {
         expect(component.getAttribute("lat")).toBe(changedAttributes.lat);
         expect(component.getAttribute("zoom")).toBe(changedAttributes.zoom);
         expect(component.getAttribute("active-bg")).toBe(changedAttributes["active-bg"]);
-        expect(component.getAttribute("feature")).toBe(changedAttributes.feature);
-        expect(component.childNodes[0].getAttribute("value")).toBe(changedAttributes.feature);
+        expect(component.getAttribute("value")).toBe(changedAttributes.value);
+        expect(component.childNodes[0].getAttribute("value")).toBe(changedAttributes.value);
 
         global.MutationObserver = storedMutationObserver;
     });
