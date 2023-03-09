@@ -1,4 +1,4 @@
-import {initializeLayerList} from "masterportalAPI/src/rawLayerList";
+import rawLayerList from "masterportalAPI/src/rawLayerList";
 
 import GeolocationControl from "../../../src/components/gcs-geolocation/geolocationControl";
 
@@ -35,7 +35,7 @@ describe("Geolocation", () => {
         ];
 
 
-        initializeLayerList(rawLayers);
+        rawLayerList.initializeLayerList(rawLayers);
     });
 
     it("should init geolocation", () => {

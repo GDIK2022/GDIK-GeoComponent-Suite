@@ -1,5 +1,4 @@
-
-import {getLayerWhere} from "masterportalAPI/src/rawLayerList";
+import rawLayerList from "masterportalAPI/src/rawLayerList";
 import Observable from "ol/Observable";
 
 export default class LayerManager extends Observable {
@@ -13,7 +12,7 @@ export default class LayerManager extends Observable {
         this.activeBackgroundLayer = null;
 
         backgroundLayers.forEach(layerId => {
-            const rawLayer = getLayerWhere({id: layerId});
+            const rawLayer = rawLayerList.getLayerWhere({id: layerId});
             let layer = null;
 
             if (!rawLayer) {

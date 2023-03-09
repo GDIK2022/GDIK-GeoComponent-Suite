@@ -1,6 +1,6 @@
 import VectorLayer from "ol/layer/Vector";
 
-import {initializeLayerList} from "masterportalAPI/src/rawLayerList";
+import rawLayerList from "masterportalAPI/src/rawLayerList";
 import mapsAPI from "masterportalAPI/src/maps/api.js";
 
 import LayerManager from "../../../src/components/gcs-map/LayerManager";
@@ -8,7 +8,7 @@ import LayerManager from "../../../src/components/gcs-map/LayerManager";
 describe("LayerManager", () => {
 
     beforeEach(() => {
-        initializeLayerList([
+        rawLayerList.initializeLayerList([
             {
                 "id": "1001",
                 "typ": "WMS",

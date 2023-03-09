@@ -1,5 +1,5 @@
 import mapsAPI from "masterportalAPI/src/maps/api.js";
-import {initializeLayerList} from "masterportalAPI/src/rawLayerList";
+import rawLayerList from "masterportalAPI/src/rawLayerList";
 
 import LayerswitcherControl from "../../../src/components/gcs-layerswitcher/layerswitcherControl";
 
@@ -38,7 +38,7 @@ describe("Layerswitcher", () => {
         ];
 
 
-        initializeLayerList(rawLayers);
+        rawLayerList.initializeLayerList(rawLayers);
 
         map = mapsAPI.map.createMap();
         layerManager = new LayerManager(map, ["1001", "1002"]);
