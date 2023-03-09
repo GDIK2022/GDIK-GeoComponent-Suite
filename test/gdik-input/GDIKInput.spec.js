@@ -134,7 +134,7 @@ describe("Init gdik-input", () => {
             }}, attributeName: k, type: "attributes"}]);
         });
 
-        expect(component.nodeName).toBe("GCS-INPUT");
+        expect(component.nodeName).toBe("GDIK-INPUT");
         expect(component.getAttribute("lon")).toBe(changedAttributes.lon);
         expect(component.getAttribute("lat")).toBe(changedAttributes.lat);
         expect(component.getAttribute("zoom")).toBe(changedAttributes.zoom);

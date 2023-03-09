@@ -1,4 +1,4 @@
-import OSGTS from "../../../../src/components/gdik-search/type/osgts.js";
+import OSGTS from "../../../../src/components/gcs-search/type/osgts.js";
 
 import {enableFetchMocks} from "jest-fetch-mock";
 enableFetchMocks();
