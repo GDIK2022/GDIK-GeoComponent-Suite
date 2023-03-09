@@ -1,14 +1,19 @@
-# Geo-Suite
-Interactive map as a web component based on masterportal API with multiple additional feature components.
+# GDIK GeoComponent Suite
+
+The GDIK GeoComponent Suite is a collection of web components extending HTML form by geographical input elements.
+
+GeoComponent Suite is build upon the [masterportalAPI](https://bitbucket.org/geowerkstatt-hamburg/masterportalapi/src/master/) project.
 
 ## Components
 
 ### \<gdik-input\>
 
-Wrapper component for gdik-map with gdik-layerswitcher and gdik-draw.
-Ready to use.
+The `<gdik-input>` element is used to create interactive map controls for web-based forms in order to accept geometries from the user. Geometries can be points, lines and polygons drawn by the user. User input data can be accessed by using the *feature* attribute. Input data is also submitted when the surrounding form is submitted.
 
-#### Attribues
+The element can be customized by providing an URL pointing to a config file to the *config-url* attribute. The config file is based on masterportalAPI config schema documented in the [masterportal project](https://bitbucket.org/geowerkstatt-hamburg/masterportal/src/dev/).
+
+
+#### Attributes
 
 | Name       | Required | Type       | Default    | Reactive | Description |
 |------------|----------|------------|------------|----------|-------------|
@@ -30,95 +35,37 @@ Ready to use.
 </gdik-input>
 ```
 
-### \<gdik-map\>
-
-Simple map. Interactive presentation of geodata with minimal map controls: Zoom in/out and fullscreen mode
-
-#### Attribues
-
-| Name       | Required | Type       | Default    | Reactive | Description |
-|------------|----------|------------|------------|----------|-------------|
-| config-url | no       | string     | -          | no       | config file url |
-| lon        | no       | string     | 448360.0   | yes      | center position |
-| lat        | no       | string     | 5888434.0  | yes      | center position |
-| active-bg  | no       | string     | 1001       | yes      | active background layer |
-
-#### Example
-
-```
-<gdik-map config-url="data/config.json"
-            lon="448360.0"
-            lat="5888434.0"
-            active-bg="1002">
-</gdik-map>
-```
-
-### \<gdik-layerswitcher\>
-
-**Have to be placed as child of \<gdik-map\>**
-
-Map interface for changing background layers.
-
-#### Attribues
-
-None
-
-#### Example
-
-```
-<gdik-map>
-  <gdik-layerswitcher slot="content"></gdik-layerswitcher>
-<gdik-map>
-```
-
-### \<gdik-draw\>
-
-**Have to be placed as child of \<gdik-map\>**
-
-Map interface for drawing a feature. It's possible to draw Points, Lines and Polygons. You can also pass a FeatureCollection into the feature attribute and it's available and editable. Current state of drawn geometry is available by feature attribute.
-
-#### Attribues
-
-| Name       | Required | Type       | Default    | Reactive | Description |
-|------------|----------|------------|------------|----------|-------------|
-| draw-type  | yes      | string     | -          | no       | One of "Point", "LineString", "Polygon" |
-| feature    | no       | string     | -          | yes      | Feature Collection with feature (currently one feature is supported), added to draw mode
-
-#### Example
-
-```
-<gdik-map>
-  <gdik-draw slot="content"
-             draw-type="Point"
-             feature='{"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Point","coordinates":[447539.7921095789,5888785.399549828]}]}'>
-  </gdik-draw>
-</gdik-map>
-```
-
 ## Configuration
 
-\<gdik-input\> and \<gdik-map\> accepts a `config-url` attribute pointing to a config file in json format.
+`<gdik-input>` accepts a URL pointing to a config file given in *config-url* attribute. The config file is in json format. The configuration file is divided into three main sections:
 
-### Schema
+### component
 
-#### portal
-
-This part contains the definition of the map, you will interact with. The section is based on the [masterportal mapView config](https://www.masterportal.org/files/masterportal/html-doku/doc/latest/config.json.html#markdown-header-portalconfigmapview) extended by following properties:
+This part contains `<gdik-input>` specific parameters. The following properties are included in this section:
 
 <dl>
-  <dt>backgroundLayers</dt>
+  <dt><b>backgroundLayers</b></dt>
   <dd>List of layer ids defined in services section to be present as background layer in component</dd>
-  <dt>searchUrl</dt>
+  <dt><b>searchUrl</b></dt>
   <dd>Url of OSGTS to use for geocoding (gdik-search)</dd>
 </dl>
 
-#### services
+### portal
 
-This part is the content of the [masterportal services.json file](https://www.masterportal.org/files/masterportal/html-doku/doc/latest/services.json.html). Every layer specified in this section can be added as background layer by it's id. See backgroundLayers property of portal part.
+This part contains the definition of the map, you will interact with. The section is based on the [masterportal mapView config](https://www.masterportal.org/files/masterportal/html-doku/doc/latest/config.json.html#markdown-header-portalconfigmapview).
+
+
+### services
+
+This part is the content of the [masterportal services.json file](https://www.masterportal.org/files/masterportal/html-doku/doc/latest/services.json.html). Every layer specified in this section can be added as background layer by it's id. See backgroundLayers property of component part.
 
 ### Example
 ```
 {
+  "component": {
+    "backgroundLayers": ["webatlas", "topplus"],
+    "searchUrl": "https://osgts.example.com"
+  },
   "portal": {
     "epsg": "EPSG:25832",
     "namedProjections": [
@@ -130,12 +77,11 @@ This part is the content of the [masterportal services.json file](https://www.ma
     "extent": [400000.0, 5000000.0, 500000.0, 6000000.0],
     "startCenter": [448360.0, 5888434.0],
     "startZoomLevel": 6,
-    "units": "m",
-    "backgroundLayers": ["1001", "1002"]
+    "units": "m"
   },
   "services": [
     {
-      "id": "1001",
+      "id": "webatlas",
       "typ": "WMS",
       "name": "WebAtlasDe",
       "url": "https://sg.geodatenzentrum.de/wms_webatlasde__54a30b0f-b92f-34ba-39c0-3af32cfa13d6",
@@ -147,7 +93,7 @@ This part is the content of the [masterportal services.json file](https://www.ma
       "gutter": 0
     },
     {
-      "id": "1002",
+      "id": "topplus",
       "typ": "WMS",
       "name": "TopPlusOpen - Farbe",
       "url": "https://sgx.geodatenzentrum.de/wms_topplus_open",
@@ -160,16 +106,6 @@ This part is the content of the [masterportal services.json file](https://www.ma
     }
   ]
 }
-```
-
-### Examples
-
-#### Example usage in Vue
-```
-<gdik-map config-url="data/config.json"
-          :lon="center[0]"
-          :lat="center[1]">
-</gdik-map>
 ```
 
 ## Development
@@ -191,4 +127,5 @@ or
 
 ## Resources
 
-- https://repository.oceanbestpractices.org/bitstream/handle/11329/1079/10-032r8_OGC_OpenSearch_Geo_and_Time_Extensions.pdf?sequence=1&isAllowed=y
+- [Masterportal documentation](https://www.masterportal.org/documentation.html)
+- [OpenSearch Geo and Time Extensions Definition](https://repository.oceanbestpractices.org/bitstream/handle/11329/1079/10-032r8_OGC_OpenSearch_Geo_and_Time_Extensions.pdf?sequence=1&isAllowed=y)

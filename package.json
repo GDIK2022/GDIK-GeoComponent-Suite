@@ -3,13 +3,12 @@
   "version": "0.0.16",
   "description": "Web Component for geometry input and visualization",
   "publishConfig": {
-    "registry":"https://npm.pkg.github.com"
+    "registry": "https://npm.pkg.github.com"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/GDIK2022/GDIK-Map.git"
   },
-
   "scripts": {
     "test": "jest --config ./jest.config.js --collectCoverage --collectCoverageFrom=src/**/*.js",
     "test:watch": "jest --config ./jest.config.js --watch",
@@ -30,7 +29,7 @@
   "author": "LGLN - Team WaaS",
   "license": "EUPL-1.2",
   "dependencies": {
-    "masterportalAPI": "bitbucket:geowerkstatt-hamburg/masterportalAPI#v2.3.0"
+    "masterportalAPI": "bitbucket:geowerkstatt-hamburg/masterportalAPI#v2.15.1"
   },
   "devDependencies": {
     "@babel/core": "^7.16.7",
@@ -52,6 +51,7 @@
     "jest-transform-stub": "^2.0.0",
     "parcel": "^2.2.0",
     "process": "^0.11.10",
+    "resize-observer-polyfill": "^1.5.1",
     "stream-browserify": "^3.0.0",
     "string_decoder": "^1.3.0",
     "timers-browserify": "^2.0.12"
