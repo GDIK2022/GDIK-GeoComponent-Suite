@@ -14,7 +14,7 @@
     "test:watch": "jest --config ./jest.config.js --watch",
     "lint": "eslint ./src/** ./test/**",
     "audit": "npm audit --prod",
-    "examples": "parcel example/index.html example/config.json",
+    "examples": "parcel example/index.html",
     "build": "parcel build"
   },
   "source": "src/index.js",
