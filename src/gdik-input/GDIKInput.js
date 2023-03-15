@@ -93,7 +93,7 @@ export default class GDIKInput extends HTMLElement {
                 if (this.drawElement === undefined) {
                     return;
                 }
-                this.drawElement.setAttribute(name, newValue);
+                this.drawElement.setAttribute("feature", newValue);
                 this.input.value = this.getAttribute("value");
                 break;
             default:

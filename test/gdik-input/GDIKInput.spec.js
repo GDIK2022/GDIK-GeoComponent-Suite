@@ -99,7 +99,7 @@ describe("Init gdik-input", () => {
         expect(component.shadowRoot.childNodes[0].getAttribute("active-bg")).toBe(activeBg);
 
         expect(component.shadowRoot.childNodes[0].childNodes[1].nodeName).toBe("GCS-DRAW");
-        expect(component.shadowRoot.childNodes[0].childNodes[1].getAttribute("value")).toBe(value);
+        expect(component.shadowRoot.childNodes[0].childNodes[1].getAttribute("feature")).toBe(value);
 
         expect(component.childNodes[0].getAttribute("value")).toBe(value);
     });
