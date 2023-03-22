@@ -18,7 +18,7 @@
     "build": "parcel build"
   },
   "source": "src/index.js",
-  "cdn": "dist/geosuite.js",
+  "cdn": "dist/gdik-geocomponent-suite.js",
   "targets": {
     "cdn": {
       "includeNodeModules": true,

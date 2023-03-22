@@ -83,8 +83,8 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: dist/geosuite.js
-          asset_name: geosuite.js
+          file: dist/gdik-geocomponent-suite.js
+          asset_name: gdik-geocomponent-suite.js
           tag: ${{ env.PACKAGE_VERSION }}
           overwrite: true
           body: "TODO: releasetext"
