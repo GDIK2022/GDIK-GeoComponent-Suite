@@ -1,5 +1,5 @@
 {
-  "name": "@GDIK2022/map",
+  "name": "@GDIK2022/GDIK-GeoComponent-Suite",
   "version": "1.0.0",
   "description": "Web Component for geometry input and visualization",
   "publishConfig": {
@@ -7,7 +7,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/GDIK2022/GDIK-Map.git"
+    "url": "https://github.com/GDIK2022/GDIK-GeoComponent-Suite.git"
   },
   "scripts": {
     "test": "jest --config ./jest.config.js --collectCoverage --collectCoverageFrom=src/**/*.js",
