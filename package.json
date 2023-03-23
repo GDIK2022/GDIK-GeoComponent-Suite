@@ -1,6 +1,6 @@
 {
   "name": "@GDIK2022/GDIK-GeoComponent-Suite",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Web Component for geometry input and visualization",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
