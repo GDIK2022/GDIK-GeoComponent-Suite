@@ -68,6 +68,15 @@ export default class GDIKInput extends HTMLElement {
                 }
                 this.setAttribute(mutation.attributeName, newValue);
             }
+
+            if (mutation.attributeName === "feature") {
+                const newValue = mutation.target.getAttribute(mutation.attributeName);
+
+                if (this.getAttribute("value") === newValue) {
+                    return;
+                }
+                this.setAttribute("value", newValue);
+            }
         });
     }
 
