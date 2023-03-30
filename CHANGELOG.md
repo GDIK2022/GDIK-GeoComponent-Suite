@@ -10,6 +10,14 @@ The [Semantic Versioning](https://semver.org/spec/v2.0.0.html) is used.
 ### Removed
 ### Fixed
 
+## 1.0.2
+### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+gdik-input attribute observing of gcs-draw feature attribute
+
 ## 1.0.1
 ### Added
 ### Changed
