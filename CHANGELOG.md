@@ -10,6 +10,15 @@ The [Semantic Versioning](https://semver.org/spec/v2.0.0.html) is used.
 ### Removed
 ### Fixed
 
+## 1.0.3
+### Added
+### Changed
+- Replace default background layer WebAtlasDE by basemap.de
+- Enlarge default bbox to germany
+### Deprecated
+### Removed
+### Fixed
+
 ## 1.0.2
 ### Added
 ### Changed
