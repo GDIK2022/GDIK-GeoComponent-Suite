@@ -4,6 +4,10 @@ enableFetchMocks();
 import GDIKInput from "../../src/gdik-input/GDIKInput";
 
 describe("Init gdik-input", () => {
+    const featureCollection = {"type": "FeatureCollection", "features": [{"type": "Feature", "geometry":{ "type": "Point", "coordinates": [1, 1]}}]},
+    featureCollection2 = {"type": "FeatureCollection", "features": [{"type": "Feature", "geometry":{ "type": "Point", "coordinates": [2, 2]}}]},
+    value = JSON.stringify(featureCollection),
+    value2 = JSON.stringify(featureCollection2);
 
     it("can create gdik-input component", () => {
         expect(GDIKInput).toBeDefined();
@@ -49,8 +53,7 @@ describe("Init gdik-input", () => {
             lat = "2",
             zoom = "8",
             activeBg = "1002",
-            drawType = "Point",
-            value = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[1, 1]}}]}";
+            drawType = "Point";
 
         component.setAttribute("lon", lon);
         component.setAttribute("lat", lat);
@@ -72,6 +75,7 @@ describe("Init gdik-input", () => {
         expect(component.shadowRoot.childNodes[0].childNodes[1].getAttribute("feature")).toBe(value);
 
         expect(component.childNodes[0].getAttribute("value")).toBe(value);
+        expect(component.value).toEqual(featureCollection);
     });
 
     it("should pass attribute changes to child components", () => {
@@ -79,8 +83,7 @@ describe("Init gdik-input", () => {
             lon = "1",
             lat = "2",
             zoom = "8",
-            activeBg = "1002",
-            value = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[1, 1]}}]}";
+            activeBg = "1002";
 
         component.setAttribute("draw-type", "Point");
 
@@ -102,6 +105,7 @@ describe("Init gdik-input", () => {
         expect(component.shadowRoot.childNodes[0].childNodes[1].getAttribute("feature")).toBe(value);
 
         expect(component.childNodes[0].getAttribute("value")).toBe(value);
+        expect(component.value).toEqual(featureCollection);
     });
 
     it("should reflect child attribute changes", async () => {
@@ -115,7 +119,7 @@ describe("Init gdik-input", () => {
                 lat: "2",
                 zoom: "8",
                 "active-bg": "1002",
-                value: "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[1, 1]}}]}"
+                value: value
             };
 
         global.MutationObserver = mutationObserverMock;
@@ -141,11 +145,177 @@ describe("Init gdik-input", () => {
         expect(component.getAttribute("active-bg")).toBe(changedAttributes["active-bg"]);
         expect(component.getAttribute("value")).toBe(changedAttributes.value);
         expect(component.childNodes[0].getAttribute("value")).toBe(changedAttributes.value);
+        expect(component.value).toEqual(featureCollection);
 
         global.MutationObserver = storedMutationObserver;
     });
 
+
 });
+
+describe("value assignment", () => {
+    const featureCollection = {"type": "FeatureCollection", "features": [{"type": "Feature", "geometry":{ "type": "Point", "coordinates": [1, 1]}}]},
+        featureCollection2 = {"type": "FeatureCollection", "features": [{"type": "Feature", "geometry":{ "type": "Point", "coordinates": [2, 2]}}]},
+        value = JSON.stringify(featureCollection),
+        value2 = JSON.stringify(featureCollection2);
+
+    it("should set state by value on init", async () => {
+        const component = new GDIKInput()
+
+        component.setAttribute("draw-type", "Point");
+        component.setAttribute("value", value);
+        component.connectedCallback();
+
+        expect(component.value).toEqual(featureCollection);
+        expect(component.getAttribute("value")).toBe(value);
+        expect(component.childNodes[0].getAttribute("value")).toBe(value);
+        expect(component.shadowRoot.childNodes[0].childNodes[1].getAttribute("feature")).toBe(value);
+    });
+
+    it("should set state by value at runtime", async () => {
+        const component = new GDIKInput()
+
+        component.setAttribute("draw-type", "Point");
+        component.connectedCallback();
+        component.setAttribute("value", value);
+
+        expect(component.value).toEqual(featureCollection);
+        expect(component.getAttribute("value")).toBe(value);
+        expect(component.childNodes[0].getAttribute("value")).toBe(value);
+        expect(component.shadowRoot.childNodes[0].childNodes[1].getAttribute("feature")).toBe(value);
+    });
+
+    it("should set state by changed value", async () => {
+        const component = new GDIKInput()
+
+        component.setAttribute("draw-type", "Point");
+        component.setAttribute("value", value);
+        component.connectedCallback();
+        component.setAttribute("value", value2);
+
+        expect(component.value).toEqual(featureCollection2);
+        expect(component.getAttribute("value")).toBe(value2);
+        expect(component.childNodes[0].getAttribute("value")).toBe(value2);
+        expect(component.shadowRoot.childNodes[0].childNodes[1].getAttribute("feature")).toBe(value2);
+    });
+
+    it("should set state when child state is changed", async () => {
+        const component = new GDIKInput();
+
+        component.setAttribute("draw-type", "Point");
+        component.connectedCallback();
+
+        component.handleObservedAttributeCallback([{target: {getAttribute: () => {
+            return value;
+        }}, attributeName: "feature", type: "attributes"}]);
+
+        expect(component.value).toEqual(featureCollection);
+        expect(component.getAttribute("value")).toBe(value);
+        expect(component.childNodes[0].getAttribute("value")).toBe(value);
+        expect(component.shadowRoot.childNodes[0].childNodes[1].getAttribute("feature")).toBe(value);
+    });
+
+    it("should not emit events when value is given before component init", async () => {
+        const component = new GDIKInput(),
+            dispatchEventSpy = jest.spyOn(component, 'dispatchEvent');
+
+        component.setAttribute("draw-type", "Point");
+        component.setAttribute("value", value);
+        component.connectedCallback();
+
+        expect(dispatchEventSpy).not.toHaveBeenCalled();
+    });
+
+    it("should not emit events when component value is set from outside", async () => {
+        const component = new GDIKInput(),
+            dispatchEventSpy = jest.spyOn(component, 'dispatchEvent');
+
+        component.setAttribute("draw-type", "Point");
+        component.connectedCallback();
+        component.setAttribute("value", value);
+
+        expect(dispatchEventSpy).not.toHaveBeenCalled();
+
+        expect(component.value).toEqual(featureCollection);
+        expect(component.getAttribute("value")).toBe(value);
+        expect(component.childNodes[0].getAttribute("value")).toBe(value);
+        expect(component.shadowRoot.childNodes[0].childNodes[1].getAttribute("feature")).toBe(value);
+
+    });
+
+    it("should emit events when value is changed by child", async () => {
+        const component = new GDIKInput(),
+            dispatchEventSpy = jest.spyOn(component, 'dispatchEvent');
+
+        component.setAttribute("draw-type", "Point");
+        component.connectedCallback();
+
+        component.handleObservedAttributeCallback([{target: {getAttribute: () => {
+            return value;
+        }}, attributeName: "feature", type: "attributes"}]);
+
+        expect(dispatchEventSpy).toHaveBeenCalledTimes(2);
+    });
+
+    it("should pass changed value in emitted event", async () => {
+        const component = new GDIKInput(),
+            dispatchEventSpy = jest.spyOn(component, 'dispatchEvent');
+
+        component.setAttribute("draw-type", "Point");
+        component.connectedCallback();
+
+        component.handleObservedAttributeCallback([{target: {getAttribute: () => {
+            return value;
+        }}, attributeName: "feature", type: "attributes"}]);
+
+        expect(dispatchEventSpy).toHaveBeenCalledTimes(2);
+
+        const mockCalls = dispatchEventSpy.mock.calls;
+        expect(mockCalls[0][0]).toBeInstanceOf(InputEvent);
+        expect(mockCalls[1][0]).toBeInstanceOf(CustomEvent);
+
+        const inputEvent = mockCalls[0][0],
+            changeEvent = mockCalls[1][0];
+
+        expect(inputEvent.type).toBe("input");
+        expect(inputEvent.data).toEqual(value);
+
+        expect(changeEvent.type).toBe("change");
+        expect(changeEvent.detail).toEqual(featureCollection);
+    });
+
+    it("should unset value when child value is removed", async () => {
+        const component = new GDIKInput(),
+            dispatchEventSpy = jest.spyOn(component, 'dispatchEvent');
+
+        component.setAttribute("draw-type", "Point");
+        component.connectedCallback();
+
+        component.handleObservedAttributeCallback([{target: {getAttribute: () => {
+            return "";
+        }}, attributeName: "feature", type: "attributes"}]);
+
+        expect(dispatchEventSpy).toHaveBeenCalledTimes(2);
+
+        const mockCalls = dispatchEventSpy.mock.calls;
+        expect(mockCalls[0][0]).toBeInstanceOf(InputEvent);
+        expect(mockCalls[1][0]).toBeInstanceOf(CustomEvent);
+
+        const inputEvent = mockCalls[0][0],
+            changeEvent = mockCalls[1][0];
+
+        expect(inputEvent.type).toBe("input");
+        expect(inputEvent.data).toEqual("");
+
+        expect(changeEvent.type).toBe("change");
+        expect(changeEvent.detail).toEqual(null);
+
+        expect(component.value).toEqual(null);
+        expect(component.getAttribute("value")).toBe("");
+        expect(component.childNodes[0].getAttribute("value")).toBe("");
+        expect(component.shadowRoot.childNodes[0].childNodes[1].getAttribute("feature")).toBe("");
+    });
+})
 
 describe("config file handling", () => {
 
