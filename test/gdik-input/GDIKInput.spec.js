@@ -315,6 +315,36 @@ describe("value assignment", () => {
         expect(component.childNodes[0].getAttribute("value")).toBe("");
         expect(component.shadowRoot.childNodes[0].childNodes[1].getAttribute("feature")).toBe("");
     });
+
+    it("should not break when value is set to nonsense at runtime", async () => {
+        const component = new GDIKInput(),
+            dispatchEventSpy = jest.spyOn(component, 'dispatchEvent');
+
+        component.setAttribute("draw-type", "Point");
+        component.setAttribute("value", "foobar");
+        component.connectedCallback();
+
+        expect(component.value).toEqual(null);
+        expect(component.getAttribute("value")).toBe("foobar");
+        expect(component.childNodes[0].getAttribute("value")).toBe("");
+        expect(component.shadowRoot.childNodes[0].childNodes[1].getAttribute("feature")).toBe("");
+    });
+
+    it("should not break when value is set to nonsense at runtime", async () => {
+        const component = new GDIKInput(),
+            dispatchEventSpy = jest.spyOn(component, 'dispatchEvent');
+
+        component.setAttribute("draw-type", "Point");
+        component.connectedCallback();
+        component.setAttribute("value", "foobar");
+
+        expect(dispatchEventSpy).not.toHaveBeenCalled();
+
+        expect(component.value).toEqual(null);
+        expect(component.getAttribute("value")).toBe("foobar");
+        expect(component.childNodes[0].getAttribute("value")).toBe("");
+        expect(component.shadowRoot.childNodes[0].childNodes[1].getAttribute("feature")).toBe("");
+    });
 })
 
 describe("config file handling", () => {

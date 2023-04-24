@@ -123,17 +123,20 @@ export default class GDIKInput extends HTMLElement {
         }
 
         this.setAttribute("value", value);
-        this.input.value = value;
-        if (this.drawElement !== undefined) {
-            this.drawElement.setAttribute("feature", value);
-        }
 
         let jsonValue = null;
         try {
             jsonValue = JSON.parse(value);
-        } catch (e) {}
+        } catch (e) {
+            value = "";
+        }
 
         this.value = jsonValue;
+
+        this.input.value = value;
+        if (this.drawElement !== undefined) {
+            this.drawElement.setAttribute("feature", value);
+        }
 
         if (silent === true) {
             return;
