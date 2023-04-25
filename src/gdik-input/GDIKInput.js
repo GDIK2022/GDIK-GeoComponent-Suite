@@ -124,18 +124,21 @@ export default class GDIKInput extends HTMLElement {
 
         this.setAttribute("value", value);
 
-        let jsonValue = null;
+        let jsonValue = null,
+            strValue = value;
+
         try {
             jsonValue = JSON.parse(value);
-        } catch (e) {
-            value = "";
+        }
+        catch (e) {
+            strValue = "";
         }
 
         this.value = jsonValue;
 
-        this.input.value = value;
+        this.input.value = strValue;
         if (this.drawElement !== undefined) {
-            this.drawElement.setAttribute("feature", value);
+            this.drawElement.setAttribute("feature", strValue);
         }
 
         if (silent === true) {
@@ -145,7 +148,7 @@ export default class GDIKInput extends HTMLElement {
         // InputEvent pass only text in data, so we have to use
         // string value as data
         this.dispatchEvent(new InputEvent("input", {
-            data: value, composed: true, bubbles: true
+            data: strValue, composed: true, bubbles: true
         }));
         // CustomEvent can handle objects, so we can pass value
         // as object
