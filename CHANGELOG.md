@@ -17,6 +17,7 @@ The [Semantic Versioning](https://semver.org/spec/v2.0.0.html) is used.
 ### Deprecated
 ### Removed
 ### Fixed
+- CVE-2023-0842
 
 ## 1.0.3
 ### Added
