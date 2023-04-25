@@ -24,6 +24,16 @@ The element can be customized by providing an URL pointing to a config file to t
 | draw-type  | no       | string     | -          | no       | One of "Point", "LineString", "Polygon" |
 | feature    | no       | string     | -          | yes      | Feature Collection with feature (currently one feature is supported), added to draw mode
 
+#### Events
+
+##### "input"
+
+When value is changed the component emits an event of type "input". Current component value is added to data attribute of event as string.
+
+##### "change"
+
+When value is changed the component emits an event of type "change". Current component value is added to detail attribute of event as object or null.
+
 #### Example
 
 ```

@@ -10,6 +10,15 @@ The [Semantic Versioning](https://semver.org/spec/v2.0.0.html) is used.
 ### Removed
 ### Fixed
 
+## 1.0.4
+### Added
+- Emit "input" and "change" events when gdik-input value changes
+### Changed
+### Deprecated
+### Removed
+### Fixed
+- CVE-2023-0842
+
 ## 1.0.3
 ### Added
 ### Changed

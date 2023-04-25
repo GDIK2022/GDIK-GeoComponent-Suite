@@ -41,8 +41,7 @@ export default class GDIKInput extends HTMLElement {
             this.drawElement.setAttribute("draw-type", this.getAttribute("draw-type"));
 
             if (this.hasAttribute("value")) {
-                this.drawElement.setAttribute("feature", this.getAttribute("value"));
-                this.input.value = this.getAttribute("value");
+                this.setValue(this.getAttribute("value"), true);
             }
 
             this.mapElement.appendChild(this.drawElement);
@@ -54,6 +53,7 @@ export default class GDIKInput extends HTMLElement {
         this.mapElement.appendChild(this.geolocationElement);
     }
 
+    // Web Component Callback
     handleObservedAttributeCallback (mutationList) {
         mutationList.forEach((mutation) => {
             if (mutation.type !== "attributes") {
@@ -72,18 +72,17 @@ export default class GDIKInput extends HTMLElement {
             if (mutation.attributeName === "feature") {
                 const newValue = mutation.target.getAttribute(mutation.attributeName);
 
-                if (this.getAttribute("value") === newValue) {
-                    return;
-                }
-                this.setAttribute("value", newValue);
+                this.setValue(newValue);
             }
         });
     }
 
+    // Web Component Callback
     detachedCallback () {
         this.observer.disconnect();
     }
 
+    // Web Component Callback
     attributeChangedCallback (name, oldValue, newValue) {
         if (oldValue === newValue) {
             return;
@@ -99,11 +98,7 @@ export default class GDIKInput extends HTMLElement {
                 this.mapElement.setAttribute(name, newValue);
                 break;
             case "value":
-                if (this.drawElement === undefined) {
-                    return;
-                }
-                this.drawElement.setAttribute("feature", newValue);
-                this.input.value = this.getAttribute("value");
+                this.setValue(this.getAttribute("value"), true);
                 break;
             default:
                 break;
@@ -120,6 +115,46 @@ export default class GDIKInput extends HTMLElement {
             this.searchElement.setAttribute("suggest-url", config.component.suggestUrl);
             this.mapElement.appendChild(this.searchElement);
         }
+    }
+
+    setValue (value, silent) {
+        if (this.value !== undefined && this.input.value === value) {
+            return;
+        }
+
+        this.setAttribute("value", value);
+
+        let jsonValue = null,
+            strValue = value;
+
+        try {
+            jsonValue = JSON.parse(value);
+        }
+        catch (e) {
+            strValue = "";
+        }
+
+        this.value = jsonValue;
+
+        this.input.value = strValue;
+        if (this.drawElement !== undefined) {
+            this.drawElement.setAttribute("feature", strValue);
+        }
+
+        if (silent === true) {
+            return;
+        }
+
+        // InputEvent pass only text in data, so we have to use
+        // string value as data
+        this.dispatchEvent(new InputEvent("input", {
+            data: strValue, composed: true, bubbles: true
+        }));
+        // CustomEvent can handle objects, so we can pass value
+        // as object
+        this.dispatchEvent(new CustomEvent("change", {
+            detail: jsonValue, composed: true, bubbles: true
+        }));
     }
 }
 
