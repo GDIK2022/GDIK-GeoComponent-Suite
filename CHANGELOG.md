@@ -10,6 +10,14 @@ The [Semantic Versioning](https://semver.org/spec/v2.0.0.html) is used.
 ### Removed
 ### Fixed
 
+### Added
+### Changed
+The following packages have been updated:
+- geowerkstatt-hamburg/masterportalAPI: 2.15.1 to 2.18.0
+### Deprecated
+### Removed
+### Fixed
+
 ## 1.0.4
 ### Added
 - Emit "input" and "change" events when gdik-input value changes
