@@ -22,7 +22,7 @@ The element can be customized by providing an URL pointing to a config file to t
 | lat        | no       | string     | 5888434.0  | yes      | center position |
 | active-bg  | no       | string     | 1001       | yes      | active background layer |
 | draw-type  | no       | string     | -          | no       | One of "Point", "LineString", "Polygon" |
-| feature    | no       | string     | -          | yes      | Feature Collection with feature (currently one feature is supported), added to draw mode
+| value      | no       | string     | -          | yes      | Feature Collection with feature (currently one feature is supported), added to draw mode
 
 #### Events
 
@@ -73,7 +73,7 @@ This part is the content of the [masterportal services.json file](https://www.ma
 ```
 {
   "component": {
-    "backgroundLayers": ["webatlas", "topplus"],
+    "backgroundLayers": ["basemap", "topplus"],
     "searchUrl": "https://osgts.example.com"
   },
   "portal": {
@@ -91,12 +91,12 @@ This part is the content of the [masterportal services.json file](https://www.ma
   },
   "services": [
     {
-      "id": "webatlas",
+      "id": "basemap",
       "typ": "WMS",
-      "name": "WebAtlasDe",
-      "url": "https://sg.geodatenzentrum.de/wms_webatlasde__54a30b0f-b92f-34ba-39c0-3af32cfa13d6",
-      "version": "1.1.1",
-      "layers": "webatlasde",
+      "name": "basemap.de",
+      "url": "https://sgx.geodatenzentrum.de/wms_basemapde",
+      "version": "1.3.0",
+      "layers": "de_basemapde_web_raster_farbe",
       "transparent": true,
       "singleTile": false,
       "tilesize": 256,
