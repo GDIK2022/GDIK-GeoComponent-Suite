@@ -25,7 +25,7 @@ describe("Layerswitcher related", () => {
         bgLayers = layerswitcherElement.querySelectorAll("ul li");
         expect(bgLayers.length).toBe(2);
 
-        expect(bgLayers[0].innerHTML).toBe("WebAtlasDe");
+        expect(bgLayers[0].innerHTML).toBe("basemap.de");
     });
 
     it("should render all given background layers", async () => {
@@ -40,7 +40,7 @@ describe("Layerswitcher related", () => {
         bgLayers = component.control.element.querySelectorAll("ul li");
         expect(bgLayers.length).toBe(2);
 
-        expect(bgLayers[0].innerHTML).toBe("WebAtlasDe");
+        expect(bgLayers[0].innerHTML).toBe("basemap.de");
         expect(bgLayers[1].innerHTML).toBe("TopPlusOpen - Farbe");
     });
 });

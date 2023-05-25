@@ -1,13 +1,13 @@
 {
-  "name": "@GDIK2022/map",
-  "version": "0.0.18",
+  "name": "@GDIK2022/GDIK-GeoComponent-Suite",
+  "version": "1.0.5",
   "description": "Web Component for geometry input and visualization",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/GDIK2022/GDIK-Map.git"
+    "url": "https://github.com/GDIK2022/GDIK-GeoComponent-Suite.git"
   },
   "scripts": {
     "test": "jest --config ./jest.config.js --collectCoverage --collectCoverageFrom=src/**/*.js",
@@ -18,7 +18,7 @@
     "build": "parcel build"
   },
   "source": "src/index.js",
-  "cdn": "dist/geosuite.js",
+  "cdn": "dist/gdik-geocomponent-suite.js",
   "targets": {
     "cdn": {
       "includeNodeModules": true,
@@ -29,7 +29,7 @@
   "author": "LGLN - Team WaaS",
   "license": "EUPL-1.2",
   "dependencies": {
-    "masterportalAPI": "bitbucket:geowerkstatt-hamburg/masterportalAPI#v2.15.1"
+    "masterportalAPI": "bitbucket:geowerkstatt-hamburg/masterportalAPI#v2.18.0"
   },
   "devDependencies": {
     "@babel/core": "^7.16.7",
