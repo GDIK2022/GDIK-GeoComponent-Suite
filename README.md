@@ -120,23 +120,6 @@ This part is the content of the [masterportal services.json file](https://www.ma
 }
 ```
 
-## Development
-
-### Setup
-
-To start a development environment for development purposes follow these steps:
-
-```npm install```
-
-### Start examples server
-
-```npm run examples```
-
-### Run tests
-```npm run test```
-or
-```npm run test:watch```
-
 ## Resources
 
 - [Masterportal documentation](https://www.masterportal.org/documentation.html)
