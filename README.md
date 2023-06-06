@@ -2,6 +2,8 @@
 
 The GDIK GeoComponent Suite is a collection of web components extending HTML form by geographical input elements.
 
+A ready-to-use transpiled version of this component suite can be found [here](https://github.com/GDIK2022/GDIK-GeoComponent-Suite/releases/latest). Just download the ```gdik-geocomponent-suite.js``` file and add it to your project by using a script tag.
+
 GeoComponent Suite is build upon the [masterportalAPI](https://bitbucket.org/geowerkstatt-hamburg/masterportalapi/src/master/) project.
 
 ## Components
