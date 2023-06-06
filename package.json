@@ -1,6 +1,11 @@
 {
   "name": "@GDIK2022/GDIK-GeoComponent-Suite",
   "version": "1.0.6",
+  "author": {
+    "name": "Landesamt für Geoinformation und Landesvermessung Niedersachsen (LGLN)",
+    "email": "team-waas@lgln.niedersachsen.de",
+    "url": "https://www.lgln.niedersachsen.de/"
+  },
   "description": "Web Component for geometry input and visualization",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
@@ -26,7 +31,6 @@
       "outputFormat": "global"
     }
   },
-  "author": "LGLN - Team WaaS",
   "license": "EUPL-1.2",
   "dependencies": {
     "masterportalAPI": "bitbucket:geowerkstatt-hamburg/masterportalAPI#v2.18.0"
