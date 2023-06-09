@@ -39,6 +39,7 @@
     "@babel/core": "^7.16.7",
     "@babel/plugin-transform-modules-commonjs": "^7.18.6",
     "@babel/preset-env": "^7.18.6",
+    "@parcel/css-darwin-arm64": "^1.13.1",
     "@parcel/transformer-inline-string": "^2.6.2",
     "babel-jest": "^28.1.1",
     "buffer": "^6.0.3",
