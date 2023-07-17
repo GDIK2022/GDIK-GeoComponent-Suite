@@ -12,10 +12,13 @@ export default class GCSDraw extends HTMLElement {
         this.control = null;
     }
 
-    registerGCSMap (map, layerManager) {
+    registerGCSMap (map, layerManager, i18next) {
+        i18next.addResources("en", "draw", {ERASE_DRAW: "Erase geometry"});
+        i18next.addResources("de", "draw", {ERASE_DRAW: "Geometrie löschen"});
+
         this.control = new DrawControl(layerManager, {
             drawType: this.getAttribute("draw-type")
-        });
+        }, i18next);
 
         if (this.hasAttribute("feature")) {
             this.control.setFeatureCollection(this.getAttribute("feature"));

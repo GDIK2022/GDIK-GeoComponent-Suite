@@ -17,7 +17,7 @@ export default class DrawControl extends Control {
 
      */
 
-    constructor (layerManager, options) {
+    constructor (layerManager, options, i18next) {
         const div = document.createElement("div"),
             clearDrawBtn = document.createElement("button");
 
@@ -27,6 +27,7 @@ export default class DrawControl extends Control {
 
         clearDrawBtn.innerHTML = "&#x1F5D1;";
         clearDrawBtn.disabled = true;
+        clearDrawBtn.title = i18next.t("ERASE_DRAW", {ns: "draw"});
 
         div.appendChild(clearDrawBtn);
 

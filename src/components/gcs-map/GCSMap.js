@@ -1,5 +1,7 @@
 const merge = require("deepmerge");
 
+import i18next from "i18next";
+
 import olCss from "bundle-text:../../../node_modules/ol/ol.css";
 
 import DoubleClickZoom from "ol/interaction/DoubleClickZoom";
@@ -32,6 +34,10 @@ export default class GCSMap extends HTMLElement {
         this.container = undefined;
         this.configURL = undefined;
         this.config = undefined;
+
+        i18next.init({lng: "de", resources: {}});
+        i18next.addResources("en", "map", {ZOOM_IN: "Zoom in", ZOOM_OUT: "Zoom out", FULLSCREEN: "Fullscreen"});
+        i18next.addResources("de", "map", {ZOOM_IN: "Maßstab vergrößern", ZOOM_OUT: "Maßstab kleinern", FULLSCREEN: "Vollbild"});
     }
 
     // Web Component Callback
@@ -135,7 +141,7 @@ export default class GCSMap extends HTMLElement {
         this.mapPromise.then((map) => {
             children.forEach((child) => {
                 try {
-                    child.registerGCSMap(map, this.layerManager);
+                    child.registerGCSMap(map, this.layerManager, i18next);
                 }
                 catch (error) {
                     console.debug(error);
@@ -159,8 +165,13 @@ export default class GCSMap extends HTMLElement {
             this.setAttribute("active-bg", this.layerManager.activeBackgroundLayer.get("id"));
         });
 
-        map.addControl(new Zoom());
-        map.addControl(new FullScreen());
+        map.addControl(new Zoom({
+            zoomInTipLabel: i18next.t("ZOOM_IN", {ns: "map"}),
+            zoomOutTipLabel: i18next.t("ZOOM_OUT", {ns: "map"})
+        }));
+        map.addControl(new FullScreen({
+            tipLabel: i18next.t("FULLSCREEN", {ns: "map"})
+        }));
 
         // TODO move to draw?
         dobleClickZoom = this.getInteractionByClass(map, DoubleClickZoom);

@@ -3,11 +3,12 @@ import Geolocation from "ol/Geolocation";
 
 export default class GeolocationControl extends Control {
 
-    constructor () {
+    constructor (i18next) {
         const containerDiv = document.createElement("div"),
             button = document.createElement("button");
 
         button.innerHTML = "&#x2316;";
+        button.title = i18next.t("GEOLOCATE", {ns: "geolocate"});
 
         containerDiv.appendChild(button);
         containerDiv.className = "ol-control gcs-geolocation";
