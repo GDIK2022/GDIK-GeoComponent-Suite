@@ -117,7 +117,8 @@ describe("Init gdik-input", () => {
                 lat: "2",
                 zoom: "8",
                 "active-bg": "1002",
-                value: value
+                value: value,
+                "search-string": "search-string"
             };
 
         global.MutationObserver = mutationObserverMock;
@@ -141,6 +142,7 @@ describe("Init gdik-input", () => {
         expect(component.getAttribute("lat")).toBe(changedAttributes.lat);
         expect(component.getAttribute("zoom")).toBe(changedAttributes.zoom);
         expect(component.getAttribute("active-bg")).toBe(changedAttributes["active-bg"]);
+        expect(component.getAttribute("search-string")).toBe(changedAttributes["search-string"]);
         expect(component.getAttribute("value")).toBe(changedAttributes.value);
         expect(component.childNodes[0].getAttribute("value")).toBe(changedAttributes.value);
         expect(component.value).toEqual(featureCollection);

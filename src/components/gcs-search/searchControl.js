@@ -12,6 +12,9 @@ export default class SearchControl extends Control {
         this.searchUrl = options.searchUrl;
 
         this.input = document.createElement("input");
+        this.on("propertychange", this.handlePropertyChange.bind(this));
+        this.searchString = options.searchString;
+        this.input.value = this.searchString;
         this.input.onkeydown = this.handleSearch.bind(this);
         containerDiv.appendChild(this.input);
 
@@ -26,6 +29,11 @@ export default class SearchControl extends Control {
             searchUrl: this.searchUrl,
             srs: map.getView().getProjection().getCode()
         });
+        if (!!this.searchString) {
+            this.handleSearch({keyCode: 13, target: this.input, preventDefault: () => {
+                // noop
+            }});
+        }
         super.setMap(map);
     }
 
@@ -35,9 +43,19 @@ export default class SearchControl extends Control {
         if (e.keyCode === 13) {
             e.preventDefault();
             this.clearResults();
-            this.search.search(elem.value).then((resp) => this.renderResponse(resp));
+            if (this.search) {
+                this.search.search(elem.value).then((resp) => this.renderResponse(resp));
+            }
         }
+    }
 
+    handlePropertyChange (property) {
+        if (property.key === "searchString") {
+            this.input.value = this.get("searchString");
+            this.handleSearch({keyCode: 13, target: this.input, preventDefault: () => {
+                // noop
+            }});
+        }
     }
 
     renderResponse (findings) {
