@@ -95,6 +95,17 @@ describe("Init gcs-map", () => {
         expect(component.map.getView().getCenter()).toEqual([lon, lat]);
         expect(Number(component.map.getView().getZoom())).toBe(zoom);
     });
+
+    it("should set language to language defined by attribute on init", async () => {
+        const component = new GCSMap(),
+            spy = jest.spyOn(component.i18next, "changeLanguage");
+
+        component.setAttribute("lng", "en");
+
+        await component.connectedCallback();
+
+        expect(spy).toBeCalledWith("en");
+    });
 });
 
 describe("Attribute active-bg", () => {
@@ -240,6 +251,18 @@ describe("Attribute change related", () => {
         expect(component.getAttribute("active-bg")).toBe(backgroundLayer);
     });
 
+    it("should change language when lng attribute value changes", async () => {
+        const component = new GCSMap(),
+            spy = jest.spyOn(component.i18next, "changeLanguage");
+
+        await component.connectedCallback();
+
+        expect(component.getAttribute("lng")).toBe("de");
+
+        component.setAttribute("lng", "en");
+
+        expect(spy).toBeCalledWith("en");
+    });
 });
 
 describe("Reading of config.json", () => {

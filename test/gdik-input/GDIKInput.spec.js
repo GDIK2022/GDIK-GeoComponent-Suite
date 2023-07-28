@@ -51,7 +51,8 @@ describe("Init gdik-input", () => {
             lat = "2",
             zoom = "8",
             activeBg = "1002",
-            drawType = "Point";
+            drawType = "Point",
+            lng = "en";
 
         component.setAttribute("lon", lon);
         component.setAttribute("lat", lat);
@@ -59,6 +60,7 @@ describe("Init gdik-input", () => {
         component.setAttribute("active-bg", activeBg);
         component.setAttribute("draw-type", drawType);
         component.setAttribute("value", value);
+        component.setAttribute("lng", lng);
 
         component.connectedCallback();
 
@@ -67,6 +69,7 @@ describe("Init gdik-input", () => {
         expect(component.shadowRoot.childNodes[0].getAttribute("lat")).toBe(lat);
         expect(component.shadowRoot.childNodes[0].getAttribute("zoom")).toBe(zoom);
         expect(component.shadowRoot.childNodes[0].getAttribute("active-bg")).toBe(activeBg);
+        expect(component.shadowRoot.childNodes[0].getAttribute("lng")).toBe(lng);
 
         expect(component.shadowRoot.childNodes[0].childNodes[1].nodeName).toBe("GCS-DRAW");
         expect(component.shadowRoot.childNodes[0].childNodes[1].getAttribute("draw-type")).toBe(drawType);
@@ -81,7 +84,8 @@ describe("Init gdik-input", () => {
             lon = "1",
             lat = "2",
             zoom = "8",
-            activeBg = "1002";
+            activeBg = "1002",
+            lng = "en";
 
         component.setAttribute("draw-type", "Point");
 
@@ -92,12 +96,14 @@ describe("Init gdik-input", () => {
         component.setAttribute("zoom", zoom);
         component.setAttribute("active-bg", activeBg);
         component.setAttribute("value", value);
+        component.setAttribute("lng", lng);
 
         expect(component.shadowRoot.childNodes[0].nodeName).toBe("GCS-MAP");
         expect(component.shadowRoot.childNodes[0].getAttribute("lon")).toBe(lon);
         expect(component.shadowRoot.childNodes[0].getAttribute("lat")).toBe(lat);
         expect(component.shadowRoot.childNodes[0].getAttribute("zoom")).toBe(zoom);
         expect(component.shadowRoot.childNodes[0].getAttribute("active-bg")).toBe(activeBg);
+        expect(component.shadowRoot.childNodes[0].getAttribute("lng")).toBe(lng);
 
         expect(component.shadowRoot.childNodes[0].childNodes[1].nodeName).toBe("GCS-DRAW");
         expect(component.shadowRoot.childNodes[0].childNodes[1].getAttribute("feature")).toBe(value);
@@ -118,7 +124,8 @@ describe("Init gdik-input", () => {
                 zoom: "8",
                 "active-bg": "1002",
                 value: value,
-                "search-string": "search-string"
+                "search-string": "search-string",
+                lng: "en"
             };
 
         global.MutationObserver = mutationObserverMock;
@@ -143,6 +150,7 @@ describe("Init gdik-input", () => {
         expect(component.getAttribute("zoom")).toBe(changedAttributes.zoom);
         expect(component.getAttribute("active-bg")).toBe(changedAttributes["active-bg"]);
         expect(component.getAttribute("search-string")).toBe(changedAttributes["search-string"]);
+        expect(component.getAttribute("lng")).toBe(changedAttributes.lng);
         expect(component.getAttribute("value")).toBe(changedAttributes.value);
         expect(component.childNodes[0].getAttribute("value")).toBe(changedAttributes.value);
         expect(component.value).toEqual(featureCollection);
@@ -362,7 +370,11 @@ describe("config file handling", () => {
 
         await component.connectedCallback();
 
+        // TODO check fetch called
+
         expect(component.shadowRoot.childNodes[0].nodeName).toBe("GCS-MAP");
         expect(component.shadowRoot.childNodes[0].getAttribute("config-url")).toBe(configUrl);
     });
+
+    it.todo("should add search component when searchUrl defined in loaded config");
 });
