@@ -29,7 +29,7 @@ export default class SearchControl extends Control {
             searchUrl: this.searchUrl,
             srs: map.getView().getProjection().getCode()
         });
-        if (!!this.searchString) {
+        if (this.searchString) {
             this.handleSearch({keyCode: 13, target: this.input, preventDefault: () => {
                 // noop
             }});
