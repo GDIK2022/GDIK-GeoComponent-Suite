@@ -1,3 +1,5 @@
+import i18next from "i18next";
+
 import mapsAPI from "masterportalAPI/src/maps/api.js";
 
 import LayerManager from "../../../src/components/gcs-map/LayerManager";
@@ -16,7 +18,7 @@ describe("Layerswitcher related", () => {
         let layerswitcherElement = null,
             bgLayers = null;
 
-        component.registerGCSMap(map, layerManager);
+        component.registerGCSMap(map, layerManager, i18next);
 
         layerswitcherElement = component.control.element;
         expect(layerswitcherElement).not.toBeNull();
@@ -33,7 +35,7 @@ describe("Layerswitcher related", () => {
             layerManager = new LayerManager(map, customConfig.component.backgroundLayers),
             component = new GCSLayerswitcher();
 
-        component.registerGCSMap(map, layerManager);
+        component.registerGCSMap(map, layerManager, i18next);
 
         let bgLayers = null;
 

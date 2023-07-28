@@ -1,3 +1,4 @@
+
 require("jest-fetch-mock").enableMocks();
 
 global.ResizeObserver = require("resize-observer-polyfill");
@@ -22,3 +23,8 @@ class Worker {
 }
 // a mock for web worker
 window.Worker = Worker;
+
+import i18next from "i18next";
+beforeAll(() => {
+    i18next.init({debug: false, lng: "dev"});
+});

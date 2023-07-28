@@ -1,3 +1,5 @@
+import i18next from "i18next";
+
 import mapsAPI from "masterportalAPI/src/maps/api.js";
 import rawLayerList from "masterportalAPI/src/rawLayerList";
 
@@ -47,7 +49,7 @@ describe("Layerswitcher", () => {
     it("should init layerswitcher", () => {
         expect(LayerswitcherControl).toBeDefined();
 
-        const control = new LayerswitcherControl(layerManager);
+        const control = new LayerswitcherControl(layerManager, i18next);
 
         expect(control.element.className).toBe("ol-control gcs-layerswitcher");
         expect(control.element.firstChild.nodeName).toBe("BUTTON");
@@ -56,7 +58,7 @@ describe("Layerswitcher", () => {
     });
 
     it("should render layer entry as expected", () => {
-        const control = new LayerswitcherControl(layerManager);
+        const control = new LayerswitcherControl(layerManager, i18next);
 
         control.setMap(map);
 
@@ -75,7 +77,7 @@ describe("Layerswitcher", () => {
     });
 
     it("should change visible background layer", async () => {
-        const control = new LayerswitcherControl(layerManager);
+        const control = new LayerswitcherControl(layerManager, i18next);
 
         control.setMap(map);
 
@@ -100,7 +102,7 @@ describe("Layerswitcher", () => {
     });
 
     it("should toggle open and close element", () => {
-        const control = new LayerswitcherControl(layerManager);
+        const control = new LayerswitcherControl(layerManager, i18next);
 
         let opener = control.element.querySelector("button"),
             listContainer = control.element.querySelector("div div"),

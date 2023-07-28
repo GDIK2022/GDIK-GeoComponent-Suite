@@ -1,3 +1,6 @@
+
+import i18next from "i18next";
+
 import mapsAPI from "masterportalAPI/src/maps/api.js";
 
 import GCSGeolocation from "../../../src/components/gcs-geolocation/GCSGeolocation";
@@ -12,7 +15,7 @@ describe("Geolocation related", () => {
 
         let geolocationElement = null;
 
-        component.registerGCSMap(map);
+        component.registerGCSMap(map, undefined, i18next);
 
         geolocationElement = component.control.element;
         expect(geolocationElement).not.toBeNull();

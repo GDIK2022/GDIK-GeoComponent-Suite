@@ -1,3 +1,5 @@
+import i18next from "i18next";
+
 import rawLayerList from "masterportalAPI/src/rawLayerList";
 
 import GeolocationControl from "../../../src/components/gcs-geolocation/geolocationControl";
@@ -41,7 +43,7 @@ describe("Geolocation", () => {
     it("should init geolocation", () => {
         expect(GeolocationControl).toBeDefined();
 
-        const control = new GeolocationControl();
+        const control = new GeolocationControl(i18next);
 
         expect(control.element.className).toBe("ol-control gcs-geolocation");
         expect(control.element.firstChild.nodeName).toBe("BUTTON");

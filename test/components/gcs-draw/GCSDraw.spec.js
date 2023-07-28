@@ -1,3 +1,5 @@
+import i18next from "i18next";
+
 import mapsAPI from "masterportalAPI/src/maps/api.js";
 
 import Feature from "ol/Feature";
@@ -22,7 +24,7 @@ describe("Draw related", () => {
         let drawInteraction;
 
         component.setAttribute("draw-type", "Point");
-        component.registerGCSMap(map, layerManager);
+        component.registerGCSMap(map, layerManager, i18next);
 
         drawInteraction = map.getInteractions().getArray().filter((interaction) => interaction.constructor.name === "Draw");
         expect(drawInteraction.length).toBe(1);
@@ -36,7 +38,7 @@ describe("Draw related", () => {
         const component = new GCSDraw();
 
         component.setAttribute("draw-type", "Point");
-        component.registerGCSMap(map, layerManager);
+        component.registerGCSMap(map, layerManager, i18next);
 
         expect(component.hasAttribute("feature")).toBe(false);
 
@@ -63,7 +65,7 @@ describe("Draw related", () => {
             feature = new Feature({geometry: new Point([1, 1])});
 
         component.setAttribute("draw-type", "Point");
-        component.registerGCSMap(map, layerManager);
+        component.registerGCSMap(map, layerManager, i18next);
 
         expect(component.hasAttribute("feature")).toBe(false);
 
@@ -81,7 +83,7 @@ describe("Draw related", () => {
         let drawInteraction, modifyInteraction;
 
         component.setAttribute("draw-type", "Point");
-        component.registerGCSMap(map, layerManager);
+        component.registerGCSMap(map, layerManager, i18next);
 
         drawInteraction = map.getInteractions().getArray().filter((interaction) => interaction.constructor.name === "Draw");
         drawInteraction = drawInteraction[0];
@@ -104,7 +106,7 @@ describe("Draw related", () => {
 
         component.setAttribute("draw-type", "Point");
         component.setAttribute("feature", inputFeature);
-        component.registerGCSMap(map, layerManager);
+        component.registerGCSMap(map, layerManager, i18next);
 
         modifyInteraction = map.getInteractions().getArray().filter((interaction) => interaction.constructor.name === "Modify");
 
@@ -120,7 +122,7 @@ describe("Draw related", () => {
         component.setAttribute("feature", inputFeature);
 
         expect(() => {
-            component.registerGCSMap(map, layerManager);
+            component.registerGCSMap(map, layerManager, i18next);
         }).toThrow("Inhomogeneous feature collection given");
     });
 
@@ -131,7 +133,7 @@ describe("Draw related", () => {
 
         component.setAttribute("draw-type", "Point");
         component.setAttribute("feature", initalFeature);
-        component.registerGCSMap(map, layerManager);
+        component.registerGCSMap(map, layerManager, i18next);
 
         component.setAttribute("feature", updatedFeature);
 
