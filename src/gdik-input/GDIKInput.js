@@ -1,7 +1,7 @@
 export default class GDIKInput extends HTMLElement {
 
     static get observedAttributes () {
-        return ["lon", "lat", "zoom", "active-bg", "value", "search-string"];
+        return ["lon", "lat", "zoom", "active-bg", "value", "search-string", "lng"];
     }
 
     // Web Component Callback
@@ -11,6 +11,10 @@ export default class GDIKInput extends HTMLElement {
         this.mapElement = document.createElement("gcs-map");
         if (this.hasAttribute("config-url")) {
             this.mapElement.setAttribute("config-url", this.getAttribute("config-url"));
+        }
+
+        if (this.hasAttribute("lng")) {
+            this.mapElement.setAttribute("lng", this.getAttribute("lng"));
         }
 
         this.mapElement.addEventListener("configloaded", this.handleConfigLoaded.bind(this));
@@ -95,6 +99,7 @@ export default class GDIKInput extends HTMLElement {
             case "lat":
             case "zoom":
             case "active-bg":
+            case "lng":
                 this.mapElement.setAttribute(name, newValue);
                 break;
             case "value":
