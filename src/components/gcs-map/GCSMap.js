@@ -49,9 +49,6 @@ export default class GCSMap extends HTMLElement {
             this.lng = this.getAttribute("lng");
             this.i18next.changeLanguage(this.lng);
         }
-        else {
-            this.setAttribute("lng", this.lng);
-        }
 
         this.renderComponent();
 
@@ -80,6 +77,7 @@ export default class GCSMap extends HTMLElement {
         this.setAttribute("lat", this.config.portal.startCenter[1]);
         this.setAttribute("zoom", this.config.portal.startZoomLevel);
         this.setAttribute("active-bg", this.layerManager.activeBackgroundLayer.get("id"));
+        this.setAttribute("lng", this.lng);
 
         this.resolveMapPromise(this.map);
     }
