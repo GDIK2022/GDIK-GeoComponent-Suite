@@ -19,7 +19,7 @@ import StyleManager from "./StyleManager";
 
 export default class GCSMap extends HTMLElement {
     static get observedAttributes () {
-        return ["lon", "lat", "active-bg", "zoom"];
+        return ["lon", "lat", "active-bg", "zoom", "lng"];
     }
 
     constructor () {
@@ -34,14 +34,23 @@ export default class GCSMap extends HTMLElement {
         this.container = undefined;
         this.configURL = undefined;
         this.config = undefined;
+        this.lng = "de";
 
-        i18next.init({lng: "de", resources: {}});
+        i18next.init({lng: this.lng, resources: {}});
         i18next.addResources("en", "map", {ZOOM_IN: "Zoom in", ZOOM_OUT: "Zoom out", FULLSCREEN: "Fullscreen"});
         i18next.addResources("de", "map", {ZOOM_IN: "Maßstab vergrößern", ZOOM_OUT: "Maßstab kleinern", FULLSCREEN: "Vollbild"});
     }
 
     // Web Component Callback
     async connectedCallback () {
+        if (this.hasAttribute("lng")) {
+            this.lng = this.getAttribute("lng");
+            i18next.changeLanguage(this.lng);
+        }
+        else {
+            this.setAttribute("lng", this.lng);
+        }
+
         this.renderComponent();
 
         // load defautconfig
@@ -70,8 +79,6 @@ export default class GCSMap extends HTMLElement {
         this.setAttribute("active-bg", this.layerManager.activeBackgroundLayer.get("id"));
 
         this.resolveMapPromise(this.map);
-
-
     }
 
     // Web Component Callback
@@ -94,6 +101,9 @@ export default class GCSMap extends HTMLElement {
                 this.layerManager.changeBackgroundLayer(newValue).catch(() => {
                     // TODO implement
                 });
+                break;
+            case "lng":
+                i18next.changeLanguage(newValue);
                 break;
             default:
                 break;
