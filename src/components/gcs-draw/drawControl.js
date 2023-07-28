@@ -21,8 +21,6 @@ export default class DrawControl extends Control {
         const div = document.createElement("div"),
             clearDrawBtn = document.createElement("button");
 
-        let features;
-
         div.className = "ol-control gcs-delete";
 
         clearDrawBtn.innerHTML = "&#x1F5D1;";
@@ -66,9 +64,6 @@ export default class DrawControl extends Control {
 
         this.clearDrawBtn = clearDrawBtn;
 
-        if (features !== undefined && features.length > 0) {
-            this.handleAddFeature();
-        }
     }
 
     setMap (map) {
