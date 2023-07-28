@@ -39,6 +39,7 @@ export default class GCSMap extends HTMLElement {
         i18next.init({lng: this.lng, resources: {}});
         i18next.addResources("en", "map", {ZOOM_IN: "Zoom in", ZOOM_OUT: "Zoom out", FULLSCREEN: "Fullscreen"});
         i18next.addResources("de", "map", {ZOOM_IN: "Maßstab vergrößern", ZOOM_OUT: "Maßstab kleinern", FULLSCREEN: "Vollbild"});
+        i18next.on("languageChanged", this.handleLanguageChange.bind(this));
     }
 
     // Web Component Callback
@@ -66,6 +67,7 @@ export default class GCSMap extends HTMLElement {
         }
 
         this.map = this.setupMap(this.config);
+        this.setupControls(this.map);
 
         if (this.hasAttribute("active-bg")) {
             this.layerManager.changeBackgroundLayer(this.getAttribute("active-bg")).catch(() => {
@@ -160,6 +162,10 @@ export default class GCSMap extends HTMLElement {
         });
     }
 
+    handleLanguageChange () {
+        this.setupControls();
+    }
+
     setupMap (config) {
         let map = null,
             dobleClickZoom = null;
@@ -174,14 +180,6 @@ export default class GCSMap extends HTMLElement {
         this.layerManager.on("backgroudchange", () => {
             this.setAttribute("active-bg", this.layerManager.activeBackgroundLayer.get("id"));
         });
-
-        map.addControl(new Zoom({
-            zoomInTipLabel: i18next.t("ZOOM_IN", {ns: "map"}),
-            zoomOutTipLabel: i18next.t("ZOOM_OUT", {ns: "map"})
-        }));
-        map.addControl(new FullScreen({
-            tipLabel: i18next.t("FULLSCREEN", {ns: "map"})
-        }));
 
         // TODO move to draw?
         dobleClickZoom = this.getInteractionByClass(map, DoubleClickZoom);
@@ -201,6 +199,31 @@ export default class GCSMap extends HTMLElement {
         });
 
         return map;
+    }
+
+    setupControls () {
+        if (!this.map) {
+            return;
+        }
+
+        if (this.zoomControl) {
+            this.map.removeControl(this.zoomControl);
+        }
+
+        if (this.fullScreenControl) {
+            this.map.removeControl(this.fullScreenControl);
+        }
+
+        this.zoomControl = new Zoom({
+            zoomInTipLabel: i18next.t("ZOOM_IN", {ns: "map"}),
+            zoomOutTipLabel: i18next.t("ZOOM_OUT", {ns: "map"})
+        });
+        this.fullScreenControl = new FullScreen({
+            tipLabel: i18next.t("FULLSCREEN", {ns: "map"})
+        });
+
+        this.map.addControl(this.zoomControl);
+        this.map.addControl(this.fullScreenControl);
     }
 
     getInteractionByClass (map, c) {
