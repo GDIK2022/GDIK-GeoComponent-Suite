@@ -34,19 +34,20 @@ export default class GCSMap extends HTMLElement {
         this.container = undefined;
         this.configURL = undefined;
         this.config = undefined;
-        this.lng = "de";
 
-        i18next.init({lng: this.lng, resources: {}});
-        i18next.addResources("en", "map", {ZOOM_IN: "Zoom in", ZOOM_OUT: "Zoom out", FULLSCREEN: "Fullscreen"});
-        i18next.addResources("de", "map", {ZOOM_IN: "Maßstab vergrößern", ZOOM_OUT: "Maßstab kleinern", FULLSCREEN: "Vollbild"});
-        i18next.on("languageChanged", this.handleLanguageChange.bind(this));
+        this.lng = "de";
+        this.i18next = i18next.createInstance();
+        this.i18next.init({lng: this.lng, resources: {}});
+        this.i18next.addResources("en", "map", {ZOOM_IN: "Zoom in", ZOOM_OUT: "Zoom out", FULLSCREEN: "Fullscreen"});
+        this.i18next.addResources("de", "map", {ZOOM_IN: "Maßstab vergrößern", ZOOM_OUT: "Maßstab kleinern", FULLSCREEN: "Vollbild"});
+        this.i18next.on("languageChanged", this.handleLanguageChange.bind(this));
     }
 
     // Web Component Callback
     async connectedCallback () {
         if (this.hasAttribute("lng")) {
             this.lng = this.getAttribute("lng");
-            i18next.changeLanguage(this.lng);
+            this.i18next.changeLanguage(this.lng);
         }
         else {
             this.setAttribute("lng", this.lng);
@@ -105,7 +106,7 @@ export default class GCSMap extends HTMLElement {
                 });
                 break;
             case "lng":
-                i18next.changeLanguage(newValue);
+                this.i18next.changeLanguage(newValue);
                 break;
             default:
                 break;
@@ -215,11 +216,11 @@ export default class GCSMap extends HTMLElement {
         }
 
         this.zoomControl = new Zoom({
-            zoomInTipLabel: i18next.t("ZOOM_IN", {ns: "map"}),
-            zoomOutTipLabel: i18next.t("ZOOM_OUT", {ns: "map"})
+            zoomInTipLabel: this.i18next.t("ZOOM_IN", {ns: "map"}),
+            zoomOutTipLabel: this.i18next.t("ZOOM_OUT", {ns: "map"})
         });
         this.fullScreenControl = new FullScreen({
-            tipLabel: i18next.t("FULLSCREEN", {ns: "map"})
+            tipLabel: this.i18next.t("FULLSCREEN", {ns: "map"})
         });
 
         this.map.addControl(this.zoomControl);
