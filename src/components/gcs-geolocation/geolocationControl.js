@@ -16,6 +16,14 @@ export default class GeolocationControl extends Control {
 
         button.onclick = this.geolocate.bind(this);
 
+        i18next.on("languageChanged", this.handleLanguageChange.bind(this));
+
+        this.button = button;
+        this.i18next = i18next;
+    }
+
+    handleLanguageChange () {
+        this.button.title = this.i18next.t("GEOLOCATE", {ns: "geolocate"});
     }
 
     setMap (map) {

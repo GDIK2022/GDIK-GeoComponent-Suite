@@ -62,14 +62,20 @@ export default class DrawControl extends Control {
 
         clearDrawBtn.onclick = this.handleClearDrawBtnClick.bind(this);
 
-        this.clearDrawBtn = clearDrawBtn;
+        i18next.on("languageChanged", this.handleLanguageChange.bind(this));
 
+        this.clearDrawBtn = clearDrawBtn;
+        this.i18next = i18next;
     }
 
     setMap (map) {
         super.setMap(map);
         map.addInteraction(this.drawInteraction);
         map.addInteraction(this.modifyInteraction);
+    }
+
+    handleLanguageChange () {
+        this.clearDrawBtn.title = this.i18next.t("ERASE_DRAW", {ns: "draw"});
     }
 
     handleAddFeature () {

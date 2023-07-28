@@ -40,6 +40,17 @@ export default class LayerswitcherControl extends Control {
 
         containerDiv.appendChild(opener);
         containerDiv.appendChild(open);
+
+        i18next.on("languageChanged", this.handleLanguageChange.bind(this));
+
+        this.opener = opener;
+        this.closer = closer;
+        this.i18next = i18next;
+    }
+
+    handleLanguageChange () {
+        this.opener.title = this.i18next.t("OPEN", {ns: "layerswitcher"});
+        this.closer.title = this.i18next.t("CLOSE", {ns: "layerswitcher"});
     }
 
     setMap (map) {
