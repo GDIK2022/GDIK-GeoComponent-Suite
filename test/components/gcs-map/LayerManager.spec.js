@@ -32,6 +32,18 @@ describe("LayerManager", () => {
                 "singleTile": false,
                 "tilesize": 256,
                 "gutter": 20
+            },
+            {
+                "id": "2003",
+                "typ": "WMS",
+                "name": "My WMS",
+                "url": "https://sgx.geodatenzentrum.de/wms_topplus_open",
+                "version": "1.1.1",
+                "layers": "web",
+                "transparent": true,
+                "singleTile": false,
+                "tilesize": 256,
+                "gutter": 20
             }
         ]);
     });
@@ -42,6 +54,30 @@ describe("LayerManager", () => {
             layerManager = new LayerManager(map, backgroundLayers);
 
         expect(layerManager.olBackgroundLayer.length).toBe(1);
+
+        expect(layerManager.activeBackgroundLayer.get("name")).toBe("WebAtlasDe");
+
+    });
+
+    it("should create foreground layer from given id", () => {
+        const map = mapsAPI.map.createMap(),
+            backgroundLayers = [],
+            foregroundLayer = "2003",
+            layerManager = new LayerManager(map, backgroundLayers, foregroundLayer);
+
+        expect(layerManager.foregroundLayer).not.toBeNull();
+
+        expect(layerManager.foregroundLayer.get("name")).toBe("My WMS");
+
+    });
+
+    it("should create only background layers from given ids", () => {
+        const map = mapsAPI.map.createMap(),
+            backgroundLayers = ["1001"],
+            layerManager = new LayerManager(map, backgroundLayers);
+
+        expect(layerManager.olBackgroundLayer.length).toBe(1);
+        expect(layerManager.foregroundLayer).toBeNull();
 
         expect(layerManager.activeBackgroundLayer.get("name")).toBe("WebAtlasDe");
 
@@ -102,6 +138,18 @@ describe("LayerManager", () => {
         expect(console.error.mock.calls[0][0]).toBe("Background layer with id '1003' not found. Skipped.");
     });
 
+    it("should log an error when given foreground layer id not present", () => {
+        const map = mapsAPI.map.createMap(),
+            backgroundLayers = [],
+            foregroundLayer = "2003";
+
+        console.error = jest.fn();
+
+        new LayerManager(map, backgroundLayers, foregroundLayer);
+
+        expect(console.error.mock.calls[0][0]).toBe("Foreground layer with id '2003' not found.");
+    });
+
     it("should log an error when changing background layer to a not present id", async () => {
         const map = mapsAPI.map.createMap(),
             backgroundLayers = ["1002"],
@@ -132,5 +180,28 @@ describe("LayerManager", () => {
 
         layerManager.addLayerOnTop(layerTwo);
         expect(map.getLayers().item(map.getLayers().getLength() - 1).get("name")).toBe("layerTwo");
+    });
+
+    it("should add layer on top but 1 below foreground layer", () => {
+        // TODO remove addLayerOnTop and introduce named layer slots (interactionLayer, foregroundLayer, backgroundLayers)
+        // olTopLayer -> interactionLayer, addLayerOnTop -> will be a setter
+        const map = mapsAPI.map.createMap(),
+            backgroundLayers = ["1001", "1002"],
+            foregroundLayer = "1003",
+            layerManager = new LayerManager(map, backgroundLayers, foregroundLayer),
+            layerOne = new VectorLayer(),
+            layerTwo = new VectorLayer();
+
+        layerOne.set("name", "layerOne");
+        layerTwo.set("name", "layerTwo");
+
+        layerManager.addLayerOnTop(layerOne);
+
+        expect(map.getLayers().item(map.getLayers().getLength() - 1).get("name")).toBe("layerOne");
+        expect(map.getLayers().item(map.getLayers().getLength() - 2).get("name")).toBe("My WMS");
+
+        layerManager.addLayerOnTop(layerTwo);
+        expect(map.getLayers().item(map.getLayers().getLength() - 1).get("name")).toBe("layerTwo");
+        expect(map.getLayers().item(map.getLayers().getLength() - 2).get("name")).toBe("My WMS");
     });
 });

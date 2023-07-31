@@ -2,6 +2,7 @@
      "component": {
           "name": "Test config",
           "backgroundLayers": ["1001", "1002"],
+          "foregroundLayer": "1003",
           "searchUrl": "https://osgts.example.com"
      },
      "portal": {

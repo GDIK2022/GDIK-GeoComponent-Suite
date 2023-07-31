@@ -238,4 +238,6 @@ describe("Attribute change related", () => {
 
         expect(component.getAttribute("active-bg")).toBe(backgroundLayer);
     });
+
+    // TODO check if layermanager is initialized correctly
 });
