@@ -29,7 +29,6 @@ export default class GCSSearch extends HTMLElement {
         if (oldValue === null) {
             return;
         }
-
         if (oldValue === newValue) {
             return;
         }

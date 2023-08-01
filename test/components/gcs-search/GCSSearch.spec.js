@@ -37,12 +37,15 @@ describe("Search related", () => {
 
         it("should return if oldvalue === null", async () => {
             expect(component.attributeChangedCallback("", null, null)).toBe(undefined);
+            expect(component.searchString).not.toBe(null);
         });
         it("should return if oldvalue === newvalue", async () => {
             expect(component.attributeChangedCallback("", "test", "test")).toBe(undefined);
+            expect(component.searchString).not.toBe("test");
         });
-        it("should return if control is undefined", async () => {
+        it("should return if control is undefined and value shouldnt change", async () => {
             expect(component.attributeChangedCallback("", "oldvalue", "newvalue")).toBe(undefined);
+            expect(component.searchString).not.toBe("newvalue");
         });
         it("should use search String given by attributes", async () => {
 
@@ -63,7 +66,7 @@ describe("Search related", () => {
             component.setAttribute("search-string", "Stade");
             expect(component.searchString).toBe("Stade");
         });
-        it("should use ignore undefined properties", async () => {
+        it("should ignore undefined properties", async () => {
             const map = {addControl: (control) => {
                 return control;
             }};
