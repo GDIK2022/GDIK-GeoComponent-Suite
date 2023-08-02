@@ -5,6 +5,7 @@ The [Semantic Versioning](https://semver.org/spec/v2.0.0.html) is used.
 
 ## Unreleased - in development
 ### Added
+- Added an option to specify a foregroundLayer in the config.json
 ### Changed
 ### Deprecated
 ### Removed

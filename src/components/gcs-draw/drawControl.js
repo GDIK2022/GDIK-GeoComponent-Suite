@@ -44,7 +44,7 @@ export default class DrawControl extends Control {
         this.featureSource = new VectorSource();
         this.featureLayer = new VectorLayer({source: this.featureSource});
 
-        layerManager.addLayerOnTop(this.featureLayer);
+        layerManager.setInteractionLayer(this.featureLayer);
 
         this.drawInteraction = new Draw({
             type: this.drawType,

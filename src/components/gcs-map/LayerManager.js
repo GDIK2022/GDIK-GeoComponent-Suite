@@ -3,15 +3,16 @@ import Observable from "ol/Observable";
 
 export default class LayerManager extends Observable {
 
-    constructor (map, backgroundLayers) {
+    constructor (map, backgroundLayerIds, foregroundLayerId = null) {
         super();
         this.map = map;
         this.backgroundLayerIds = [];
-        this.olBackgroundLayer = [];
-        this.olTopLayer = [];
+        this.backgroundLayers = [];
+        this.foregroundLayer = null;
+        this.interactionLayer = null;
         this.activeBackgroundLayer = null;
 
-        backgroundLayers.forEach(layerId => {
+        backgroundLayerIds.forEach(layerId => {
             const rawLayer = rawLayerList.getLayerWhere({id: layerId});
             let layer = null;
 
@@ -22,7 +23,7 @@ export default class LayerManager extends Observable {
 
             layer = map.addLayer(layerId);
             layer.set("name", rawLayer.name);
-            this.olBackgroundLayer.push(layer);
+            this.backgroundLayers.push(layer);
             this.backgroundLayerIds.push(layerId);
 
             if (this.activeBackgroundLayer === null) {
@@ -31,6 +32,22 @@ export default class LayerManager extends Observable {
 
             layer.setVisible(layer === this.activeBackgroundLayer);
         });
+
+        if (foregroundLayerId) {
+            const rawLayer = rawLayerList.getLayerWhere({id: foregroundLayerId});
+            let layer = null;
+
+            if (!rawLayer) {
+                console.error("Foreground layer with id '" + foregroundLayerId + "' not found.");
+                return;
+            }
+
+            layer = map.addLayer(foregroundLayerId);
+            layer.set("name", rawLayer.name);
+            this.foregroundLayer = layer;
+            this.foregroundLayer.setVisible(true);
+            this.foregroundLayer.setOpacity(0.5);
+        }
     }
 
     changeBackgroundLayer (id) {
@@ -39,7 +56,7 @@ export default class LayerManager extends Observable {
             return Promise.reject(`Background layer with id ${id} not found`);
         }
 
-        const newBackgroundLayer = this.olBackgroundLayer.filter(l => l.get("id") === id)[0];
+        const newBackgroundLayer = this.backgroundLayers.filter(l => l.get("id") === id)[0];
 
         if (this.activeBackgroundLayer) {
             this.activeBackgroundLayer.setVisible(false);
@@ -50,9 +67,10 @@ export default class LayerManager extends Observable {
         return Promise.resolve();
     }
 
-    addLayerOnTop (layer) {
-        this.olTopLayer.push(layer);
-        this.map.addLayer(layer);
+    setInteractionLayer (interactionLayer) {
+        this.map.removeLayer(this.interactionLayer);
+        this.interactionLayer = interactionLayer;
+        this.map.addLayer(interactionLayer);
     }
 
 }
