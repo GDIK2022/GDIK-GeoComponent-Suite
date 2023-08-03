@@ -35,11 +35,11 @@ describe("Search related", () => {
     describe("attributeChangedCallback tests", () => {
         const component = new GCSSearch();
 
-        it("should return if oldvalue === null", async () => {
+        it("should return if oldvalue === null and value shouldnt change", async () => {
             expect(component.attributeChangedCallback("", null, null)).toBe(undefined);
             expect(component.searchString).not.toBe(null);
         });
-        it("should return if oldvalue === newvalue", async () => {
+        it("should return if oldvalue === newvalue and value shouldnt change", async () => {
             expect(component.attributeChangedCallback("", "test", "test")).toBe(undefined);
             expect(component.searchString).not.toBe("test");
         });
