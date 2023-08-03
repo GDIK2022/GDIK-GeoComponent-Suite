@@ -238,4 +238,30 @@ describe("Attribute change related", () => {
 
         expect(component.getAttribute("active-bg")).toBe(backgroundLayer);
     });
+
+});
+
+describe("Reading of config.json", () => {
+
+    it("should initialize LayerManager correctly with foregroundLayer and backgroundLayer", async () => {
+        fetch.mockResponseOnce(JSON.stringify(customConfig)); // customConfig has a foregroundLayer defined
+        const component = new GCSMap();
+
+        component.setAttribute("config-url", "http://config.service/config.json");
+
+        await component.connectedCallback();
+
+        expect(component.layerManager.backgroundLayers.length).toBe(2);
+        expect(component.layerManager.foregroundLayer).not.toBeNull();
+        expect(component.layerManager.foregroundLayer.get("name")).toBe("My WMS");
+    });
+
+    it("should initialize LayerManager correctly without foregroundLayer", async () => {
+        const component = new GCSMap(); // defaultConfig has no foregroundLayer defined
+
+        await component.connectedCallback();
+
+        expect(component.layerManager.backgroundLayers.length).toBe(2);
+        expect(component.layerManager.foregroundLayer).toBeNull();
+    });
 });

@@ -59,6 +59,8 @@ This part contains `<gdik-input>` specific parameters. The following properties 
 <dl>
   <dt><b>backgroundLayers</b></dt>
   <dd>List of layer ids defined in services section to be present as background layer in component</dd>
+  <dt><b>foregroundLayer</b></dt>
+  <dd>Layer id defined in services section to be present as the foreground layer in component</dd>
   <dt><b>searchUrl</b></dt>
   <dd>Url of OSGTS to use for geocoding (gdik-search)</dd>
 </dl>
@@ -77,6 +79,7 @@ This part is the content of the [masterportal services.json file](https://www.ma
 {
   "component": {
     "backgroundLayers": ["basemap", "topplus"],
+    "foregroundLayer": "overlay",
     "searchUrl": "https://osgts.example.com"
   },
   "portal": {
@@ -107,6 +110,18 @@ This part is the content of the [masterportal services.json file](https://www.ma
     },
     {
       "id": "topplus",
+      "typ": "WMS",
+      "name": "TopPlusOpen - Farbe",
+      "url": "https://sgx.geodatenzentrum.de/wms_topplus_open",
+      "version": "1.1.1",
+      "layers": "web",
+      "transparent": true,
+      "singleTile": false,
+      "tilesize": 256,
+      "gutter": 20
+    },
+    {
+      "id": "overlay",
       "typ": "WMS",
       "name": "TopPlusOpen - Farbe",
       "url": "https://sgx.geodatenzentrum.de/wms_topplus_open",

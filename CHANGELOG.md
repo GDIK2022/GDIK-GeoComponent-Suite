@@ -10,6 +10,14 @@ The [Semantic Versioning](https://semver.org/spec/v2.0.0.html) is used.
 ### Removed
 ### Fixed
 
+## 1.0.8
+### Added
+- Added an option to specify a foregroundLayer in the config.json
+### Changed
+### Deprecated
+### Removed
+### Fixed
+
 ## 1.0.7
 ### Added
 - Search string attribute to gdik-input and gcs-search

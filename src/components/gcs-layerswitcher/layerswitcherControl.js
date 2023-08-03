@@ -48,7 +48,7 @@ export default class LayerswitcherControl extends Control {
     render () {
         this.layerContainer.querySelectorAll("*").forEach(n => n.remove());
 
-        this.layerManager.olBackgroundLayer.forEach((layer) => {
+        this.layerManager.backgroundLayers.forEach((layer) => {
             const li = document.createElement("li");
 
             li.className = "list-group-item";
