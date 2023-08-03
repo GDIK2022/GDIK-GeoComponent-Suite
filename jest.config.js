@@ -15,6 +15,6 @@ module.exports = {
     testPathIgnorePatterns: ["<rootDir>/(node_modules|bin|build)"],
     transform: {
         ".+\\.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$": "jest-transform-stub",
-        "^.+\\.jsx?$": "babel-jest"
+        "^.+\\.(t|j)sx?$": "@swc/jest"
     }
 };
