@@ -10,6 +10,15 @@ The [Semantic Versioning](https://semver.org/spec/v2.0.0.html) is used.
 ### Removed
 ### Fixed
 
+## 1.0.7
+### Added
+### Changed
+The following packages in package-lock.json have been update due to security reasons:
+- protobufjs 7.2.3 to 7.2.4
+### Deprecated
+### Removed
+### Fixed
+
 ## 1.0.6
 ### Added
 ### Changed
