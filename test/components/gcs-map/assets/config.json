@@ -2,6 +2,7 @@
      "component": {
           "name": "Test config",
           "backgroundLayers": ["1001", "1002"],
+          "foregroundLayer": "2003",
           "searchUrl": "https://osgts.example.com"
      },
      "portal": {
@@ -31,6 +32,18 @@
                "id": "1002",
                "typ": "WMS",
                "name": "TopPlusOpen - Farbe",
+               "url": "https://sgx.geodatenzentrum.de/wms_topplus_open",
+               "version": "1.1.1",
+               "layers": "web",
+               "transparent": true,
+               "singleTile": false,
+               "tilesize": 256,
+               "gutter": 20
+          },
+          {
+               "id": "2003",
+               "typ": "WMS",
+               "name": "My WMS",
                "url": "https://sgx.geodatenzentrum.de/wms_topplus_open",
                "version": "1.1.1",
                "layers": "web",

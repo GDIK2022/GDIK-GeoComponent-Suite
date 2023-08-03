@@ -2,6 +2,8 @@
 
 The GDIK GeoComponent Suite is a collection of web components extending HTML form by geographical input elements.
 
+A ready-to-use transpiled version of this component suite can be found [here](https://github.com/GDIK2022/GDIK-GeoComponent-Suite/releases/latest). Just download the ```gdik-geocomponent-suite.js``` file and add it to your project by using a script tag.
+
 GeoComponent Suite is build upon the [masterportalAPI](https://bitbucket.org/geowerkstatt-hamburg/masterportalapi/src/master/) project.
 
 ## Components
@@ -22,7 +24,8 @@ The element can be customized by providing an URL pointing to a config file to t
 | lat        | no       | string     | 5888434.0  | yes      | center position |
 | active-bg  | no       | string     | 1001       | yes      | active background layer |
 | draw-type  | no       | string     | -          | no       | One of "Point", "LineString", "Polygon" |
-| feature    | no       | string     | -          | yes      | Feature Collection with feature (currently one feature is supported), added to draw mode
+| value      | no       | string     | -          | yes      | Feature Collection with feature (currently one feature is supported), added to draw mode
+| search-string  | no       | string     | -          | yes       | string to search in the map for  |
 
 #### Events
 
@@ -56,6 +59,8 @@ This part contains `<gdik-input>` specific parameters. The following properties 
 <dl>
   <dt><b>backgroundLayers</b></dt>
   <dd>List of layer ids defined in services section to be present as background layer in component</dd>
+  <dt><b>foregroundLayer</b></dt>
+  <dd>Layer id defined in services section to be present as the foreground layer in component</dd>
   <dt><b>searchUrl</b></dt>
   <dd>Url of OSGTS to use for geocoding (gdik-search)</dd>
 </dl>
@@ -73,7 +78,8 @@ This part is the content of the [masterportal services.json file](https://www.ma
 ```
 {
   "component": {
-    "backgroundLayers": ["webatlas", "topplus"],
+    "backgroundLayers": ["basemap", "topplus"],
+    "foregroundLayer": "overlay",
     "searchUrl": "https://osgts.example.com"
   },
   "portal": {
@@ -91,12 +97,12 @@ This part is the content of the [masterportal services.json file](https://www.ma
   },
   "services": [
     {
-      "id": "webatlas",
+      "id": "basemap",
       "typ": "WMS",
-      "name": "WebAtlasDe",
-      "url": "https://sg.geodatenzentrum.de/wms_webatlasde__54a30b0f-b92f-34ba-39c0-3af32cfa13d6",
-      "version": "1.1.1",
-      "layers": "webatlasde",
+      "name": "basemap.de",
+      "url": "https://sgx.geodatenzentrum.de/wms_basemapde",
+      "version": "1.3.0",
+      "layers": "de_basemapde_web_raster_farbe",
       "transparent": true,
       "singleTile": false,
       "tilesize": 256,
@@ -113,27 +119,22 @@ This part is the content of the [masterportal services.json file](https://www.ma
       "singleTile": false,
       "tilesize": 256,
       "gutter": 20
+    },
+    {
+      "id": "overlay",
+      "typ": "WMS",
+      "name": "TopPlusOpen - Farbe",
+      "url": "https://sgx.geodatenzentrum.de/wms_topplus_open",
+      "version": "1.1.1",
+      "layers": "web",
+      "transparent": true,
+      "singleTile": false,
+      "tilesize": 256,
+      "gutter": 20
     }
   ]
 }
 ```
-
-## Development
-
-### Setup
-
-To start a development environment for development purposes follow these steps:
-
-```npm install```
-
-### Start examples server
-
-```npm run examples```
-
-### Run tests
-```npm run test```
-or
-```npm run test:watch```
 
 ## Resources
 

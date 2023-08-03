@@ -32,16 +32,52 @@ describe("LayerManager", () => {
                 "singleTile": false,
                 "tilesize": 256,
                 "gutter": 20
+            },
+            {
+                "id": "2003",
+                "typ": "WMS",
+                "name": "My WMS",
+                "url": "https://sgx.geodatenzentrum.de/wms_topplus_open",
+                "version": "1.1.1",
+                "layers": "web",
+                "transparent": true,
+                "singleTile": false,
+                "tilesize": 256,
+                "gutter": 20
             }
         ]);
     });
 
     it("should create layers from given ids", () => {
         const map = mapsAPI.map.createMap(),
-            backgroundLayers = ["1001"],
-            layerManager = new LayerManager(map, backgroundLayers);
+            backgroundLayerIds = ["1001"],
+            layerManager = new LayerManager(map, backgroundLayerIds);
 
-        expect(layerManager.olBackgroundLayer.length).toBe(1);
+        expect(layerManager.backgroundLayers.length).toBe(1);
+
+        expect(layerManager.activeBackgroundLayer.get("name")).toBe("WebAtlasDe");
+
+    });
+
+    it("should create foreground layer from given id", () => {
+        const map = mapsAPI.map.createMap(),
+            backgroundLayerIds = [],
+            foregroundLayerId = "2003",
+            layerManager = new LayerManager(map, backgroundLayerIds, foregroundLayerId);
+
+        expect(layerManager.foregroundLayer).not.toBeNull();
+
+        expect(layerManager.foregroundLayer.get("name")).toBe("My WMS");
+
+    });
+
+    it("should create only background layers from given ids", () => {
+        const map = mapsAPI.map.createMap(),
+            backgroundLayerIds = ["1001"],
+            layerManager = new LayerManager(map, backgroundLayerIds);
+
+        expect(layerManager.backgroundLayers.length).toBe(1);
+        expect(layerManager.foregroundLayer).toBeNull();
 
         expect(layerManager.activeBackgroundLayer.get("name")).toBe("WebAtlasDe");
 
@@ -50,62 +86,87 @@ describe("LayerManager", () => {
     it("should have first given background layer visible", () => {
         const map = mapsAPI.map.createMap();
 
-        let backgroundLayers = ["1001", "1002"],
-            layerManager = new LayerManager(map, backgroundLayers);
+        let backgroundLayerIds = ["1001", "1002"],
+            layerManager = new LayerManager(map, backgroundLayerIds);
 
-        expect(layerManager.olBackgroundLayer.length).toBe(2);
+        expect(layerManager.backgroundLayers.length).toBe(2);
 
         expect(layerManager.activeBackgroundLayer.get("name")).toBe("WebAtlasDe");
 
-        expect(layerManager.olBackgroundLayer[0].get("name")).toBe("WebAtlasDe");
-        expect(layerManager.olBackgroundLayer[0].getVisible()).toBe(true);
-        expect(layerManager.olBackgroundLayer[1].get("name")).toBe("TopPlusOpen - Farbe");
-        expect(layerManager.olBackgroundLayer[1].getVisible()).toBe(false);
+        expect(layerManager.backgroundLayers[0].get("name")).toBe("WebAtlasDe");
+        expect(layerManager.backgroundLayers[0].getVisible()).toBe(true);
+        expect(layerManager.backgroundLayers[1].get("name")).toBe("TopPlusOpen - Farbe");
+        expect(layerManager.backgroundLayers[1].getVisible()).toBe(false);
 
-        backgroundLayers = ["1002", "1001"];
-        layerManager = new LayerManager(map, backgroundLayers);
+        backgroundLayerIds = ["1002", "1001"];
+        layerManager = new LayerManager(map, backgroundLayerIds);
 
-        expect(layerManager.olBackgroundLayer.length).toBe(2);
+        expect(layerManager.backgroundLayers.length).toBe(2);
 
         expect(layerManager.activeBackgroundLayer.get("name")).toBe("TopPlusOpen - Farbe");
 
-        expect(layerManager.olBackgroundLayer[0].get("name")).toBe("TopPlusOpen - Farbe");
-        expect(layerManager.olBackgroundLayer[0].getVisible()).toBe(true);
-        expect(layerManager.olBackgroundLayer[1].get("name")).toBe("WebAtlasDe");
-        expect(layerManager.olBackgroundLayer[1].getVisible()).toBe(false);
+        expect(layerManager.backgroundLayers[0].get("name")).toBe("TopPlusOpen - Farbe");
+        expect(layerManager.backgroundLayers[0].getVisible()).toBe(true);
+        expect(layerManager.backgroundLayers[1].get("name")).toBe("WebAtlasDe");
+        expect(layerManager.backgroundLayers[1].getVisible()).toBe(false);
     });
 
     it("should change the active and visible background layer", () => {
         const map = mapsAPI.map.createMap(),
-            backgroundLayers = ["1001", "1002"],
-            layerManager = new LayerManager(map, backgroundLayers);
+            backgroundLayersIds = ["1001", "1002"],
+            layerManager = new LayerManager(map, backgroundLayersIds);
 
         expect(layerManager.activeBackgroundLayer.get("name")).toBe("WebAtlasDe");
-        expect(layerManager.olBackgroundLayer[0].getVisible()).toBe(true);
-        expect(layerManager.olBackgroundLayer[1].getVisible()).toBe(false);
+        expect(layerManager.backgroundLayers[0].getVisible()).toBe(true);
+        expect(layerManager.backgroundLayers[1].getVisible()).toBe(false);
 
         layerManager.changeBackgroundLayer("1002");
 
         expect(layerManager.activeBackgroundLayer.get("name")).toBe("TopPlusOpen - Farbe");
-        expect(layerManager.olBackgroundLayer[0].getVisible()).toBe(false);
-        expect(layerManager.olBackgroundLayer[1].getVisible()).toBe(true);
+        expect(layerManager.backgroundLayers[0].getVisible()).toBe(false);
+        expect(layerManager.backgroundLayers[1].getVisible()).toBe(true);
+    });
+
+    it("should keep the foreground layer on top when changing the active background layer", () => {
+        const map = mapsAPI.map.createMap(),
+            backgroundLayersIds = ["1001", "1002"],
+            foregroundLayerId = "2003",
+            layerManager = new LayerManager(map, backgroundLayersIds, foregroundLayerId);
+
+        expect(map.getLayers().item(map.getLayers().getLength() - 1).get("name")).toBe("My WMS");
+
+        layerManager.changeBackgroundLayer("1002");
+
+        expect(map.getLayers().item(map.getLayers().getLength() - 1).get("name")).toBe("My WMS");
     });
 
     it("should log an error when given background layer id not present", () => {
         const map = mapsAPI.map.createMap(),
-            backgroundLayers = ["1003"];
+            backgroundLayerIds = ["1003"];
 
         console.error = jest.fn();
 
-        new LayerManager(map, backgroundLayers);
+        new LayerManager(map, backgroundLayerIds);
 
         expect(console.error.mock.calls[0][0]).toBe("Background layer with id '1003' not found. Skipped.");
     });
 
+    it("should log an error when given foreground layer id not present", () => {
+        const map = mapsAPI.map.createMap(),
+            backgroundLayerIds = [],
+            foregroundLayerId = "1337";
+
+        console.error = jest.fn();
+
+        new LayerManager(map, backgroundLayerIds, foregroundLayerId);
+
+        expect(console.error.mock.calls[0][0]).toBe("Foreground layer with id '1337' not found.");
+    });
+
     it("should log an error when changing background layer to a not present id", async () => {
         const map = mapsAPI.map.createMap(),
-            backgroundLayers = ["1002"],
-            layerManager = new LayerManager(map, backgroundLayers);
+            backgroundLayerIds = ["1002"],
+            layerManager = new LayerManager(map, backgroundLayerIds);
 
         console.error = jest.fn();
 
@@ -116,21 +177,73 @@ describe("LayerManager", () => {
         expect(console.error.mock.calls[0][0]).toBe("Background layer with id 1003 not found");
     });
 
-    it("should add layer on top", () => {
+    it("should set the interaction layer on top", () => {
         const map = mapsAPI.map.createMap(),
-            backgroundLayers = ["1001", "1002"],
-            layerManager = new LayerManager(map, backgroundLayers),
+            backgroundLayerIds = ["1001", "1002"],
+            layerManager = new LayerManager(map, backgroundLayerIds),
             layerOne = new VectorLayer(),
             layerTwo = new VectorLayer();
 
         layerOne.set("name", "layerOne");
         layerTwo.set("name", "layerTwo");
 
-        layerManager.addLayerOnTop(layerOne);
+        layerManager.setInteractionLayer(layerOne);
 
         expect(map.getLayers().item(map.getLayers().getLength() - 1).get("name")).toBe("layerOne");
 
-        layerManager.addLayerOnTop(layerTwo);
+        layerManager.setInteractionLayer(layerTwo);
         expect(map.getLayers().item(map.getLayers().getLength() - 1).get("name")).toBe("layerTwo");
+    });
+
+    it("should replace the existing interactionLayer with a new one", () => {
+        const map = mapsAPI.map.createMap(),
+            backgroundLayerIds = ["1001", "1002"],
+            layerManager = new LayerManager(map, backgroundLayerIds),
+            layerOne = new VectorLayer(),
+            layerTwo = new VectorLayer();
+
+        layerOne.set("name", "layerOne");
+        layerTwo.set("name", "layerTwo");
+
+        layerManager.setInteractionLayer(layerOne);
+
+        expect(map.getLayers().getLength()).toBe(3);
+
+        layerManager.setInteractionLayer(layerTwo);
+        expect(map.getLayers().getLength()).toBe(3);
+    });
+
+    it("should keep the foregroundLayer 1 below the interactionLayer", () => {
+        const map = mapsAPI.map.createMap(),
+            backgroundLayerIds = ["1001", "1002"],
+            foregroundLayerId = "2003",
+            layerManager = new LayerManager(map, backgroundLayerIds, foregroundLayerId),
+            layerOne = new VectorLayer(),
+            layerTwo = new VectorLayer();
+
+        layerOne.set("name", "layerOne");
+        layerTwo.set("name", "layerTwo");
+
+        layerManager.setInteractionLayer(layerOne);
+
+        expect(map.getLayers().item(map.getLayers().getLength() - 1).get("name")).toBe("layerOne");
+        expect(map.getLayers().item(map.getLayers().getLength() - 2).get("name")).toBe("My WMS");
+
+        layerManager.setInteractionLayer(layerTwo);
+        expect(map.getLayers().item(map.getLayers().getLength() - 1).get("name")).toBe("layerTwo");
+        expect(map.getLayers().item(map.getLayers().getLength() - 2).get("name")).toBe("My WMS");
+    });
+
+    it("should have foreground layer on top", () => {
+        const map = mapsAPI.map.createMap(),
+            backgroundLayerIds = ["1001", "1002"],
+            foregroundLayerId = "2003",
+            layerManager = new LayerManager(map, backgroundLayerIds, foregroundLayerId);
+
+        expect(layerManager.foregroundLayer).not.toBeNull();
+
+        expect(layerManager.foregroundLayer.get("name")).toBe("My WMS");
+        expect(map.getLayers().item(map.getLayers().getLength() - 1).get("name")).toBe("My WMS");
+
     });
 });

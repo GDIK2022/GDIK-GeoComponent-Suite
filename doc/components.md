@@ -62,3 +62,26 @@ Map interface for drawing a feature. It's possible to draw Points, Lines and Pol
   </gcs-draw>
 </gcs-map>
 ```
+
+### \<gcs-search\>
+
+**Have to be placed as child of \<gcs-map\>**
+
+Map interface for searching in the map. It's possible to search for alot of variables depending the implemented search engine.
+
+#### Attribues
+
+| Name          | Required | Type       | Default    | Reactive | Description |
+|---------------|----------|------------|------------|----------|-------------|
+| search-url    | yes      | string     | -          | no       | url to the implmented search engine |
+| search-string | no       | string     | -          | yes      | string to search in the map for |
+
+#### Example
+
+```
+<gcs-map>
+</gcs-map>
+  <gcs-search  search-url="urltosearch"
+             search-string="stade">
+  </gcs-search>
+```
