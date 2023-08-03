@@ -10,6 +10,15 @@ The [Semantic Versioning](https://semver.org/spec/v2.0.0.html) is used.
 ### Removed
 ### Fixed
 
+## 1.0.9
+### Added
+### Changed
+The following packages have been updated:
+- geowerkstatt-hamburg/masterportalAPI: 2.18.0 to 2.24.0
+### Deprecated
+### Removed
+### Fixed
+
 ## 1.0.8
 ### Added
 - Added an option to specify a foregroundLayer in the config.json
