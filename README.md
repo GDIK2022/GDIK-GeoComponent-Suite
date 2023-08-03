@@ -25,6 +25,7 @@ The element can be customized by providing an URL pointing to a config file to t
 | active-bg  | no       | string     | 1001       | yes      | active background layer |
 | draw-type  | no       | string     | -          | no       | One of "Point", "LineString", "Polygon" |
 | value      | no       | string     | -          | yes      | Feature Collection with feature (currently one feature is supported), added to draw mode
+| search-string  | no       | string     | -          | yes       | string to search in the map for  |
 
 #### Events
 

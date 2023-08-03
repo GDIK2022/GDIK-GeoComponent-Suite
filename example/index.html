@@ -27,10 +27,17 @@
         </div>
     </div>
     <h2>Prepopulated feature</h2>
-        <div class="map-container">
-            <h3>Point</h3>
-            <gdik-input id="prepopulate-point" draw-type="Point" value='{"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Point","coordinates":[447994.8751971674,5888450.37108491]}}]}'></gdik-input>
-        </div>
+    <div class="map-container">
+        <h3>Point</h3>
+        <gdik-input id="prepopulate-point" draw-type="Point" value='{"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Point","coordinates":[447994.8751971674,5888450.37108491]}}]}'></gdik-input>
+    </div>
+    <h2>Search feature</h2>
+    <label for="adress">Adresse:</label>
+    <input oninput="updatesearch()" id="adress" name="adress"><br>
+    <div class="map-container" >
+        <h3>Search</h3>
+        <gdik-input id="Search" search-string="foo" config-url="https://configuration.dev.gdik.de/configs/0450f634-0b3f-11ee-9868-3e72854101d6.json"></gdik-input>
+    </div>
     <script type="module" src="../src/index.js"></script>
     <script type="text/javascript">
         const observer = new MutationObserver((mutationList, observer) => {
@@ -47,6 +54,10 @@
         Array.prototype.slice.call(document.getElementsByTagName("gdik-input")).forEach((element) => {
             observer.observe(element, {attributes: true, childList: false, subtree: false});
         });
+        function updatesearch(){
+            let value = document.getElementById("adress").value
+            document.getElementById("Search").setAttribute("search-string",value)
+        };
     </script>
 </body>
 </html>

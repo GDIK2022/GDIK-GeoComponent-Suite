@@ -1,7 +1,7 @@
 export default class GDIKInput extends HTMLElement {
 
     static get observedAttributes () {
-        return ["lon", "lat", "zoom", "active-bg", "value"];
+        return ["lon", "lat", "zoom", "active-bg", "value", "search-string"];
     }
 
     // Web Component Callback
@@ -100,6 +100,11 @@ export default class GDIKInput extends HTMLElement {
             case "value":
                 this.setValue(this.getAttribute("value"), true);
                 break;
+            case "search-string":
+                if (this.searchElement) {
+                    this.searchElement.setAttribute("search-string", newValue);
+                }
+                break;
             default:
                 break;
         }
@@ -113,6 +118,9 @@ export default class GDIKInput extends HTMLElement {
             this.searchElement.slot = "content";
             this.searchElement.setAttribute("search-url", config.component.searchUrl);
             this.searchElement.setAttribute("suggest-url", config.component.suggestUrl);
+            if (this.hasAttribute("search-string")) {
+                this.searchElement.setAttribute("search-string", this.getAttribute("search-string"));
+            }
             this.mapElement.appendChild(this.searchElement);
         }
     }

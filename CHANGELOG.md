@@ -10,6 +10,26 @@ The [Semantic Versioning](https://semver.org/spec/v2.0.0.html) is used.
 ### Removed
 ### Fixed
 
+## 1.0.7
+### Added
+- Search string attribute to gdik-input and gcs-search
+### Changed
+The following packages in package-lock.json have been update due to security reasons:
+- protobufjs 7.2.3 to 7.2.4
+### Deprecated
+### Removed
+### Fixed
+
+## 1.0.6
+### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+- gdik-input attribute documentation
+- Replaced webatlas by basemap service in example config
+
+## 1.0.5
 ### Added
 ### Changed
 The following packages have been updated:
