@@ -46,7 +46,6 @@ export default class LayerManager extends Observable {
             layer.set("name", rawLayer.name);
             this.foregroundLayer = layer;
             this.foregroundLayer.setVisible(true);
-            this.foregroundLayer.setOpacity(0.5);
         }
     }
 
