@@ -1,0 +1,86 @@
+{
+  "component": {
+    "name": "Test config",
+    "backgroundLayers": ["1001", "1002"],
+    "foregroundLayer": "666",
+    "searchUrl": "https://osgts.example.com"
+  },
+  "portal": {
+    "epsg": "EPSG:25832",
+    "namedProjections": [
+      ["EPSG:25832", "+title=ETRS89/UTM 32N +proj=utm +zone=32 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"]
+    ],
+    "extent": [400000.0, 5000000.0, 500000.0, 6000000.0],
+    "startCenter": [450000.0, 5500000.0],
+    "startZoomLevel": 5,
+    "units": "m"
+  },
+  "services": [
+    {
+      "id": "1001",
+      "typ": "WMS",
+      "name": "basemap.de",
+      "url": "https://sgx.geodatenzentrum.de/wms_basemapde",
+      "version": "1.3.0",
+      "layers": "de_basemapde_web_raster_farbe",
+      "transparent": true,
+      "singleTile": false,
+      "tilesize": 256,
+      "gutter": 0
+    },
+    {
+      "id": "1002",
+      "typ": "WMS",
+      "name": "TopPlusOpen - Farbe",
+      "url": "https://sgx.geodatenzentrum.de/wms_topplus_open",
+      "version": "1.1.1",
+      "layers": "web",
+      "transparent": true,
+      "singleTile": false,
+      "tilesize": 256,
+      "gutter": 20
+    },
+    {
+      "id": "666",
+      "name": "Norderstedt Beispiel",
+      "url": "https://geoservice.norderstedt.de/geoserver/test/wfs",
+      "typ": "WFS",
+      "featureType": "test_polygon",
+      "featurePrefix": "test",
+      "featureNS": "http://opengeo.org/test",
+      "version": "1.1.0",
+      "gfiAttributes": "showAll",
+      "layerAttribution": "nicht vorhanden",
+      "legend": true,
+      "isSecured": false,
+      "datasets": [],
+      "gfiTheme": "default",
+      "styleId": "1"
+    }
+  ],
+  "style":[
+    {
+      "styleId": "1",
+      "rules": [
+        {
+          "style": {
+            "polygonStrokeColor": [
+              0,
+              0,
+              0,
+              1
+            ],
+            "polygonStrokeWidth": 5,
+            "polygonFillColor": [
+              10,
+              200,
+              0,
+              0.2
+            ]
+          }
+        }
+      ]
+    }
+  ]
+
+}

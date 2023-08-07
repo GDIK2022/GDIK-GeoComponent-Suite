@@ -74,6 +74,9 @@ This part contains the definition of the map, you will interact with. The sectio
 
 This part is the content of the [masterportal services.json file](https://www.masterportal.org/files/masterportal/html-doku/doc/latest/services.json.html). Every layer specified in this section can be added as background layer by it's id. See backgroundLayers property of component part.
 
+### style
+This part the content of the [masterportal style.json file](https://www.masterportal.org/files/masterportal/html-doku/doc/latest/style.json.html). Services of type WFS, GeoJSON, SensorThings or TileSet3D can reference a defined style by adding the property "styleId" to their definition.
+
 ### Example
 ```
 {
@@ -129,8 +132,33 @@ This part is the content of the [masterportal services.json file](https://www.ma
        "featurePrefix": "vg1000",
        "version": "2.0.0",
        "datasets": [],
-      }
-  ]
+       "styleId", "1"
+    }
+  ],
+  "style": [
+    {
+       "styleId": "1",
+       "rules": [
+         {
+            "style": {
+              "polygonStrokeColor": [
+                0,
+                0,
+                0,
+                1
+              ],
+              "polygonStrokeWidth": 5,
+              "polygonFillColor": [
+                10,
+                200,
+                0,
+                0.2
+              ]
+            }
+         }
+       ]
+    }
+ ]
 }
 ```
 
