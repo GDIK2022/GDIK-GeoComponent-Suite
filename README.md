@@ -121,17 +121,15 @@ This part is the content of the [masterportal services.json file](https://www.ma
       "gutter": 20
     },
     {
-      "id": "overlay",
-      "typ": "WMS",
-      "name": "TopPlusOpen - Farbe",
-      "url": "https://sgx.geodatenzentrum.de/wms_topplus_open",
-      "version": "1.1.1",
-      "layers": "web",
-      "transparent": true,
-      "singleTile": false,
-      "tilesize": 256,
-      "gutter": 20
-    }
+       "id": "overlay",
+       "name": "Landkreise",
+       "url": "https://sgx.geodatenzentrum.de/wfs_vg1000",
+       "typ": "WFS",
+       "featureType": "vg1000_krs",
+       "featurePrefix": "vg1000",
+       "version": "2.0.0",
+       "datasets": [],
+      }
   ]
 }
 ```
