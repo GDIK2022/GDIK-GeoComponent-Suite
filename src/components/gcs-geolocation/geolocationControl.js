@@ -8,7 +8,7 @@ export default class GeolocationControl extends Control {
             button = document.createElement("button");
 
         button.innerHTML = "&#x2316;";
-        button.title = i18next.t("GEOLOCATE", {ns: "geolocate"});
+        button.title = i18next.t("GEOLOCATE", {ns: "geolocation"});
 
         containerDiv.appendChild(button);
         containerDiv.className = "ol-control gcs-geolocation";
@@ -23,7 +23,7 @@ export default class GeolocationControl extends Control {
     }
 
     handleLanguageChange () {
-        this.button.title = this.i18next.t("GEOLOCATE", {ns: "geolocate"});
+        this.button.title = this.i18next.t("GEOLOCATE", {ns: "geolocation"});
     }
 
     setMap (map) {
