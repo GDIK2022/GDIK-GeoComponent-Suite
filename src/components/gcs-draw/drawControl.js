@@ -17,16 +17,15 @@ export default class DrawControl extends Control {
 
      */
 
-    constructor (layerManager, options) {
+    constructor (layerManager, options, i18next) {
         const div = document.createElement("div"),
             clearDrawBtn = document.createElement("button");
-
-        let features;
 
         div.className = "ol-control gcs-delete";
 
         clearDrawBtn.innerHTML = "&#x1F5D1;";
         clearDrawBtn.disabled = true;
+        clearDrawBtn.title = i18next.t("ERASE_DRAW", {ns: "draw"});
 
         div.appendChild(clearDrawBtn);
 
@@ -63,17 +62,20 @@ export default class DrawControl extends Control {
 
         clearDrawBtn.onclick = this.handleClearDrawBtnClick.bind(this);
 
-        this.clearDrawBtn = clearDrawBtn;
+        i18next.on("languageChanged", this.handleLanguageChange.bind(this));
 
-        if (features !== undefined && features.length > 0) {
-            this.handleAddFeature();
-        }
+        this.clearDrawBtn = clearDrawBtn;
+        this.i18next = i18next;
     }
 
     setMap (map) {
         super.setMap(map);
         map.addInteraction(this.drawInteraction);
         map.addInteraction(this.modifyInteraction);
+    }
+
+    handleLanguageChange () {
+        this.clearDrawBtn.title = this.i18next.t("ERASE_DRAW", {ns: "draw"});
     }
 
     handleAddFeature () {

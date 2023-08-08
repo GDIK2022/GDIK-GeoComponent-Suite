@@ -2,20 +2,21 @@ import {Control} from "ol/control";
 
 export default class LayerswitcherControl extends Control {
 
-    constructor (layerManager) {
+    constructor (layerManager, i18next) {
         const containerDiv = document.createElement("div"),
             open = document.createElement("div"),
-            closed = document.createElement("button"),
+            opener = document.createElement("button"),
             closer = document.createElement("button");
 
         containerDiv.className = "ol-control gcs-layerswitcher";
         super({element: containerDiv});
 
-        closed.className = "";
-        closed.innerHTML = "&#x3E;";
-        closed.addEventListener("click", () => {
+        opener.className = "";
+        opener.innerHTML = "&#x3E;";
+        opener.title = i18next.t("OPEN", {ns: "layerswitcher"});
+        opener.addEventListener("click", () => {
             open.classList.remove("hidden");
-            closed.classList.add("hidden");
+            opener.classList.add("hidden");
         });
 
         open.className = "list-container hidden";
@@ -29,15 +30,27 @@ export default class LayerswitcherControl extends Control {
 
         closer.className = "closer";
         closer.innerHTML = "&#x3C;";
+        closer.title = i18next.t("CLOSE", {ns: "layerswitcher"});
         closer.addEventListener("click", () => {
-            closed.classList.remove("hidden");
+            opener.classList.remove("hidden");
             open.classList.add("hidden");
         });
 
         open.appendChild(closer);
 
-        containerDiv.appendChild(closed);
+        containerDiv.appendChild(opener);
         containerDiv.appendChild(open);
+
+        i18next.on("languageChanged", this.handleLanguageChange.bind(this));
+
+        this.opener = opener;
+        this.closer = closer;
+        this.i18next = i18next;
+    }
+
+    handleLanguageChange () {
+        this.opener.title = this.i18next.t("OPEN", {ns: "layerswitcher"});
+        this.closer.title = this.i18next.t("CLOSE", {ns: "layerswitcher"});
     }
 
     setMap (map) {

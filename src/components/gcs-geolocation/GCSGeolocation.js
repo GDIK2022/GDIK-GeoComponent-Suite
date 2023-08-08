@@ -7,8 +7,11 @@ export default class GCSGeolocation extends HTMLElement {
         this.control = null;
     }
 
-    registerGCSMap (map) {
-        this.control = new GeolocationControl();
+    registerGCSMap (map, layermanager, i18next) {
+        i18next.addResources("en", "geolocation", {GEOLOCATE: "Center map in current location"});
+        i18next.addResources("de", "geolocation", {GEOLOCATE: "Auf Standort zentrieren"});
+
+        this.control = new GeolocationControl(i18next);
         map.addControl(this.control);
     }
 }

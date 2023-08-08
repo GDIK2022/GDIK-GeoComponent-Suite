@@ -1,5 +1,7 @@
 const merge = require("deepmerge");
 
+import i18next from "i18next";
+
 import olCss from "bundle-text:../../../node_modules/ol/ol.css";
 
 import DoubleClickZoom from "ol/interaction/DoubleClickZoom";
@@ -17,7 +19,7 @@ import StyleManager from "./StyleManager";
 
 export default class GCSMap extends HTMLElement {
     static get observedAttributes () {
-        return ["lon", "lat", "active-bg", "zoom"];
+        return ["lon", "lat", "active-bg", "zoom", "lng"];
     }
 
     constructor () {
@@ -32,10 +34,22 @@ export default class GCSMap extends HTMLElement {
         this.container = undefined;
         this.configURL = undefined;
         this.config = undefined;
+
+        this.lng = "de";
+        this.i18next = i18next.createInstance();
+        this.i18next.init({lng: this.lng, resources: {}});
+        this.i18next.addResources("en", "map", {ZOOM_IN: "Zoom in", ZOOM_OUT: "Zoom out", FULLSCREEN: "Fullscreen"});
+        this.i18next.addResources("de", "map", {ZOOM_IN: "Maßstab vergrößern", ZOOM_OUT: "Maßstab kleinern", FULLSCREEN: "Vollbild"});
+        this.i18next.on("languageChanged", this.handleLanguageChange.bind(this));
     }
 
     // Web Component Callback
     async connectedCallback () {
+        if (this.hasAttribute("lng")) {
+            this.lng = this.getAttribute("lng");
+            this.i18next.changeLanguage(this.lng);
+        }
+
         this.renderComponent();
 
         // load defautconfig
@@ -51,6 +65,7 @@ export default class GCSMap extends HTMLElement {
         }
 
         this.map = this.setupMap(this.config);
+        this.setupControls(this.map);
 
         if (this.hasAttribute("active-bg")) {
             this.layerManager.changeBackgroundLayer(this.getAttribute("active-bg")).catch(() => {
@@ -62,10 +77,9 @@ export default class GCSMap extends HTMLElement {
         this.setAttribute("lat", this.config.portal.startCenter[1]);
         this.setAttribute("zoom", this.config.portal.startZoomLevel);
         this.setAttribute("active-bg", this.layerManager.activeBackgroundLayer.get("id"));
+        this.setAttribute("lng", this.lng);
 
         this.resolveMapPromise(this.map);
-
-
     }
 
     // Web Component Callback
@@ -88,6 +102,9 @@ export default class GCSMap extends HTMLElement {
                 this.layerManager.changeBackgroundLayer(newValue).catch(() => {
                     // TODO implement
                 });
+                break;
+            case "lng":
+                this.i18next.changeLanguage(newValue);
                 break;
             default:
                 break;
@@ -135,13 +152,17 @@ export default class GCSMap extends HTMLElement {
         this.mapPromise.then((map) => {
             children.forEach((child) => {
                 try {
-                    child.registerGCSMap(map, this.layerManager);
+                    child.registerGCSMap(map, this.layerManager, this.i18next);
                 }
                 catch (error) {
                     console.debug(error);
                 }
             });
         });
+    }
+
+    handleLanguageChange () {
+        this.setupControls();
     }
 
     setupMap (config) {
@@ -158,9 +179,6 @@ export default class GCSMap extends HTMLElement {
         this.layerManager.on("backgroudchange", () => {
             this.setAttribute("active-bg", this.layerManager.activeBackgroundLayer.get("id"));
         });
-
-        map.addControl(new Zoom());
-        map.addControl(new FullScreen());
 
         // TODO move to draw?
         dobleClickZoom = this.getInteractionByClass(map, DoubleClickZoom);
@@ -180,6 +198,31 @@ export default class GCSMap extends HTMLElement {
         });
 
         return map;
+    }
+
+    setupControls () {
+        if (!this.map) {
+            return;
+        }
+
+        if (this.zoomControl) {
+            this.map.removeControl(this.zoomControl);
+        }
+
+        if (this.fullScreenControl) {
+            this.map.removeControl(this.fullScreenControl);
+        }
+
+        this.zoomControl = new Zoom({
+            zoomInTipLabel: this.i18next.t("ZOOM_IN", {ns: "map"}),
+            zoomOutTipLabel: this.i18next.t("ZOOM_OUT", {ns: "map"})
+        });
+        this.fullScreenControl = new FullScreen({
+            tipLabel: this.i18next.t("FULLSCREEN", {ns: "map"})
+        });
+
+        this.map.addControl(this.zoomControl);
+        this.map.addControl(this.fullScreenControl);
     }
 
     getInteractionByClass (map, c) {
