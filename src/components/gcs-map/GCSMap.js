@@ -13,6 +13,7 @@ import * as defaultConfig from "./assets/config.json";
 
 import template from "./templates/GCSMap.tmpl";
 import LayerManager from "./LayerManager";
+import StyleManager from "./StyleManager";
 
 export default class GCSMap extends HTMLElement {
     static get observedAttributes () {
@@ -27,6 +28,7 @@ export default class GCSMap extends HTMLElement {
             this.rejectMapPromise = reject;
         });
         this.layerManager = undefined;
+        this.styleManager = undefined;
         this.container = undefined;
         this.configURL = undefined;
         this.config = undefined;
@@ -169,6 +171,12 @@ export default class GCSMap extends HTMLElement {
             this.setAttribute("lon", `${this.center[0]}`);
             this.setAttribute("lat", `${this.center[1]}`);
             this.setAttribute("zoom", map.getView().getZoom());
+        });
+
+        this.styleManager = new StyleManager(config.style);
+        this.styleManager.addStyleToLayer(this.layerManager.foregroundLayer, true);
+        this.layerManager.backgroundLayers.forEach(backgroundLayer => {
+            this.styleManager.addStyleToLayer(backgroundLayer, true);
         });
 
         return map;

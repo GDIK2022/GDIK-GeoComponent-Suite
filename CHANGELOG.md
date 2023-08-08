@@ -10,6 +10,14 @@ The [Semantic Versioning](https://semver.org/spec/v2.0.0.html) is used.
 ### Removed
 ### Fixed
 
+## 1.0.11
+### Added
+- Added styling for vector layers
+### Changed
+### Deprecated
+### Removed
+### Fixed
+
 ## 1.0.10
 ### Added
 - Added WFS to example config.json in Readme

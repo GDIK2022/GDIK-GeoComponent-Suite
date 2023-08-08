@@ -23,6 +23,8 @@ export default class LayerManager extends Observable {
 
             layer = map.addLayer(layerId);
             layer.set("name", rawLayer.name);
+            layer.set("styleId", rawLayer.styleId);
+            layer.set("type", rawLayer.typ);
             this.backgroundLayers.push(layer);
             this.backgroundLayerIds.push(layerId);
 
@@ -44,6 +46,8 @@ export default class LayerManager extends Observable {
 
             layer = map.addLayer(foregroundLayerId);
             layer.set("name", rawLayer.name);
+            layer.set("styleId", rawLayer.styleId);
+            layer.set("type", rawLayer.typ);
             this.foregroundLayer = layer;
             this.foregroundLayer.setVisible(true);
         }
