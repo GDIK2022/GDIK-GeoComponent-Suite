@@ -132,7 +132,7 @@ This part the content of the [masterportal style.json file](https://www.masterpo
        "featurePrefix": "vg1000",
        "version": "2.0.0",
        "datasets": [],
-       "styleId", "1"
+       "styleId": "1"
     }
   ],
   "style": [

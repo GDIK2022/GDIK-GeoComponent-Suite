@@ -7,12 +7,7 @@ export default class StyleManager {
     }
 
     constructor (styleList) {
-        if (!styleList) {
-            this.styleList = [];
-        }
-        else {
-            this.styleList = styleList;
-        }
+        this.styleList = styleList || [];
     }
 
     addStyleToLayer (layer, failSilent = false) {
