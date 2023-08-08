@@ -10,6 +10,8 @@ Simple map. Interactive presentation of geodata with minimal map controls: Zoom 
 | lon        | no       | string     | 448360.0   | yes      | center position |
 | lat        | no       | string     | 5888434.0  | yes      | center position |
 | active-bg  | no       | string     | 1001       | yes      | active background layer |
+| zoom       | no       | number     | -          | yes      | Initial / current zoom level
+| lng        | no       | string     | de         | yes      | Language of text elements like tooltips
 
 #### Example
 
