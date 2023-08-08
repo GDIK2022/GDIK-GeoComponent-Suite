@@ -152,7 +152,7 @@ export default class GCSMap extends HTMLElement {
         this.mapPromise.then((map) => {
             children.forEach((child) => {
                 try {
-                    child.registerGCSMap(map, this.layerManager, i18next);
+                    child.registerGCSMap(map, this.layerManager, this.i18next);
                 }
                 catch (error) {
                     console.debug(error);
