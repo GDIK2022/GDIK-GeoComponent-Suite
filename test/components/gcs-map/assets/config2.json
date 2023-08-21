@@ -3,7 +3,8 @@
     "name": "Test config",
     "backgroundLayers": ["1001", "1002"],
     "foregroundLayer": "666",
-    "searchUrl": "https://osgts.example.com"
+    "searchUrl": "https://osgts.example.com",
+    "interactionLayerStyleId": "1"
   },
   "portal": {
     "epsg": "EPSG:25832",

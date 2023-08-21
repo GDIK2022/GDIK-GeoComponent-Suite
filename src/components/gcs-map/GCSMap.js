@@ -152,7 +152,8 @@ export default class GCSMap extends HTMLElement {
         this.mapPromise.then((map) => {
             children.forEach((child) => {
                 try {
-                    child.registerGCSMap(map, this.layerManager, this.i18next);
+                    // TODO refactor arguments to an Options-Object (except map)
+                    child.registerGCSMap(map, this.layerManager, this.i18next, this.styleManager);
                 }
                 catch (error) {
                     console.debug(error);
@@ -191,7 +192,7 @@ export default class GCSMap extends HTMLElement {
             this.setAttribute("zoom", map.getView().getZoom());
         });
 
-        this.styleManager = new StyleManager(config.style);
+        this.styleManager = new StyleManager(config.style, config.component.interactionLayerStyleId);
         this.styleManager.addStyleToLayer(this.layerManager.foregroundLayer, true);
         this.layerManager.backgroundLayers.forEach(backgroundLayer => {
             this.styleManager.addStyleToLayer(backgroundLayer, true);

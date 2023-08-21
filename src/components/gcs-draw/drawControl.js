@@ -17,9 +17,10 @@ export default class DrawControl extends Control {
 
      */
 
-    constructor (layerManager, options, i18next) {
+    constructor(layerManager, styleManager, options, i18next) {
         const div = document.createElement("div"),
-            clearDrawBtn = document.createElement("button");
+            clearDrawBtn = document.createElement("button"),
+            drawOptions = {};
 
         div.className = "ol-control gcs-delete";
 
@@ -43,12 +44,21 @@ export default class DrawControl extends Control {
         this.featureSource = new VectorSource();
         this.featureLayer = new VectorLayer({source: this.featureSource});
 
+        drawOptions.type = this.drawType;
+        drawOptions.source = this.featureSource;
+
+        this.featureLayer.set("type", "Draw");
+        this.featureLayer.set("name", "Internal InteractionLayer");
+
+        if (styleManager && styleManager.getInteractionLayerStyleId()) {
+            this.featureLayer.set("styleId", styleManager.getInteractionLayerStyleId());
+            styleManager.addStyleToLayer(this.featureLayer);
+            drawOptions.style = this.featureLayer.getStyle();
+        }
+
         layerManager.setInteractionLayer(this.featureLayer);
 
-        this.drawInteraction = new Draw({
-            type: this.drawType,
-            source: this.featureSource
-        });
+        this.drawInteraction = new Draw(drawOptions);
         this.drawInteraction.setActive(true);
 
         this.modifyInteraction = new Modify({

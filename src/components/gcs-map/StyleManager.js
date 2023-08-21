@@ -3,11 +3,12 @@ import createStyle from "masterportalAPI/src/vectorStyle/createStyle";
 export default class StyleManager {
 
     static get supportedLayerTypes () {
-        return ["WFS", "GeoJSON", "SensorThings", "TileSet3D"];
+        return ["WFS", "GeoJSON", "SensorThings", "TileSet3D", "Draw"];
     }
 
-    constructor (styleList) {
+    constructor (styleList, interactionLayerStyleId) {
         this.styleList = styleList || [];
+        this.interactionLayerStyleId = interactionLayerStyleId || undefined;
     }
 
     addStyleToLayer (layer, failSilent = false) {
@@ -43,6 +44,10 @@ export default class StyleManager {
         }
 
         return this.styleList.some(style => style.styleId === styleId);
+    }
+
+    getInteractionLayerStyleId () {
+        return this.interactionLayerStyleId;
     }
 
 }
