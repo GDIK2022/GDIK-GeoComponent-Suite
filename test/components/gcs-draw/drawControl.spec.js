@@ -135,7 +135,7 @@ describe("Draw Control", () => {
         expect(control.featureSource.getFeatures().length).toBe(0);
     });
 
-    it("should style and name layer", () => {
+    it("should custom style and name layer", () => {
         const control = new DrawControl(layerManager, styleManager, {drawType: "Point"}, i18next);
 
         control.setFeatureCollection("{\"type\": \"FeatureCollection\", \"features\": [{\"type\": \"Feature\", \"geometry\": {\"type\": \"Point\", \"coordinates\": [1, 1]}}]}");
@@ -146,7 +146,7 @@ describe("Draw Control", () => {
         expect(layerManager.interactionLayer.getStyle()).toEqual(expect.any(Function));
     });
 
-    it("should not style and name layer if StyleManager is undefined", () => {
+    it("should not custom style layer if StyleManager is undefined", () => {
         const control = new DrawControl(layerManager, undefined, {drawType: "Point"}, i18next);
 
         control.setFeatureCollection("{\"type\": \"FeatureCollection\", \"features\": [{\"type\": \"Feature\", \"geometry\": {\"type\": \"Point\", \"coordinates\": [1, 1]}}]}");
@@ -154,9 +154,9 @@ describe("Draw Control", () => {
         expect(control.featureLayer.get("styleId")).not.toBe("1");
     });
 
-    it("should not style and name layer if no interactionLayerStlyeId is given", () => {
+    it("should not custom style layer if no interactionLayerStlyeId is given", () => {
         const myStyleManager = new StyleManager(defaultConfig.style, undefined),
-         control = new DrawControl(layerManager, myStyleManager, {drawType: "Point"}, i18next);
+            control = new DrawControl(layerManager, myStyleManager, {drawType: "Point"}, i18next);
 
         control.setFeatureCollection("{\"type\": \"FeatureCollection\", \"features\": [{\"type\": \"Feature\", \"geometry\": {\"type\": \"Point\", \"coordinates\": [1, 1]}}]}");
 
