@@ -64,6 +64,8 @@ This part contains `<gdik-input>` specific parameters. The following properties 
   <dd>Layer id defined in services section to be present as the foreground layer in component</dd>
   <dt><b>searchUrl</b></dt>
   <dd>Url of OSGTS to use for geocoding (gdik-search)</dd>
+  <dt><b>interactionLayerStyleId</b></dt>
+  <dd>ID of a defined style that will be applied to the interactionLayer (e.g. Draw)</dd>
 </dl>
 
 ### portal
@@ -84,7 +86,8 @@ This part the content of the [masterportal style.json file](https://www.masterpo
   "component": {
     "backgroundLayers": ["basemap", "topplus"],
     "foregroundLayer": "overlay",
-    "searchUrl": "https://osgts.example.com"
+    "searchUrl": "https://osgts.example.com",
+    "interactionLayerStyleId": "interactionLayer"
   },
   "portal": {
     "epsg": "EPSG:25832",
@@ -158,6 +161,48 @@ This part the content of the [masterportal style.json file](https://www.masterpo
             }
          }
        ]
+    },
+    {
+      "styleId": "interactionLayer",
+      "rules": [
+        {
+          "style": {
+            "circleStrokeColor": [
+              255,
+              0,
+              0,
+              0.8
+            ],
+            "circleStrokeWidth": 3,
+            "circleFillColor": [
+              255,
+              0,
+              0,
+              0.3
+            ],
+            "lineStrokeColor": [
+              255,
+              0,
+              0,
+              0.8
+            ],
+            "lineStrokeWidth": 3,
+            "polygonStrokeColor": [
+              255,
+              0,
+              0,
+              0.8
+            ],
+            "polygonStrokeWidth": 3,
+            "polygonFillColor": [
+              255,
+              0,
+              0,
+              0.3
+            ]
+          }
+        }
+      ]
     }
  ]
 }
