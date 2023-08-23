@@ -50,7 +50,7 @@ export default class DrawControl extends Control {
         this.featureLayer.set("type", "Draw");
         this.featureLayer.set("name", "Internal InteractionLayer");
 
-        if (styleManager && styleManager.getInteractionLayerStyleId()) {
+        if (styleManager?.getInteractionLayerStyleId()) {
             this.featureLayer.set("styleId", styleManager.getInteractionLayerStyleId());
             styleManager.addStyleToLayer(this.featureLayer);
             drawOptions.style = this.featureLayer.getStyle();
