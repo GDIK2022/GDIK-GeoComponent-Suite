@@ -4,7 +4,7 @@ export default class GCSSelect extends HTMLElement {
 
 
     static get observedAttributes () {
-        return ["feature"];
+        return ["value"];
     }
 
     constructor () {
@@ -16,50 +16,21 @@ export default class GCSSelect extends HTMLElement {
         i18next.addResources("en", "draw", {ERASE_DRAW: "Erase geometry"});
         i18next.addResources("de", "draw", {ERASE_DRAW: "Geometrie löschen"});
 
-        this.control = new SelectControl(); // TODO SelectControl
+        this.control = new SelectControl(layerManager, styleManager, {}, i18next);
 
-        if (this.hasAttribute("feature")) {
-            this.control.setFeatureCollection(this.getAttribute("feature"));
-        }
+        this.control.on("selectfeature", () => {
+            const fc = this.control.getSelectedFeature();
 
-        this.control.on("featureupdate", () => {
-            const fc = this.control.getFeatureCollection();
-
-            if (fc === undefined) {
-                this.setAttribute("feature", "");
+            if (fc === undefined || fc.getLength() <= 0) {
+                this.setAttribute("value", "");
                 return;
             }
-            this.setAttribute("feature", fc);
+            this.setAttribute("value", fc);
         });
 
         map.addControl(this.control);
     }
 
-    attributeChangedCallback (name, oldValue, newValue) {
-
-        if (oldValue === null) {
-            return;
-        }
-
-        if (oldValue === newValue) {
-            return;
-        }
-        if (this.control === null) {
-            return;
-        }
-
-        switch (name) {
-            case "feature":
-                if (newValue === null) {
-                    this.control.featureSource.clear();
-                    return;
-                }
-                this.control.setFeatureCollection(newValue);
-                break;
-            default:
-                break;
-        }
-    }
 }
 
 customElements.define("gcs-select", GCSSelect);
