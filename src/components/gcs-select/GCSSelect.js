@@ -19,6 +19,7 @@ export default class GCSSelect extends HTMLElement {
         this.control = new SelectControl(layerManager, styleManager, {}, i18next);
 
         this.control.on("selectfeature", () => {
+            console.log("hi");
             const fc = this.control.getSelectedFeature();
 
             if (fc === undefined || fc.getLength() <= 0) {

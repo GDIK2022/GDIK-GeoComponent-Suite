@@ -176,7 +176,7 @@ export default class GCSMap extends HTMLElement {
         config.portal.layers = [];
         map = mapsAPI.map.createMap({...config.portal, layerConf: config.services}, "2D");
 
-        this.layerManager = new LayerManager(map, config.component.backgroundLayers, config.component?.foregroundLayer);
+        this.layerManager = new LayerManager(map, config.component.backgroundLayers, config.component?.foregroundLayer, config.component?.interactionLayer);
         this.layerManager.on("backgroudchange", () => {
             this.setAttribute("active-bg", this.layerManager.activeBackgroundLayer.get("id"));
         });

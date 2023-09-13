@@ -1,7 +1,6 @@
 import {Control} from "ol/control";
 import Select from 'ol/interaction/Select.js';
-import VectorLayer from 'ol/layer/Vector.js';
-import VectorSource from 'ol/source/Vector.js';
+import {click} from 'ol/events/condition.js';
 
 export default class SelectControl extends Control {
     constructor (layerManager, styleManager, options, i18next) {
@@ -19,8 +18,7 @@ export default class SelectControl extends Control {
 
         super({element: div});
 
-        this.featureSource = new VectorSource();
-        this.featureLayer = new VectorLayer({source: this.featureSource});
+        this.featureLayer = layerManager.interactionLayer;
 
         this.featureLayer.set("type", "Select");
         this.featureLayer.set("name", "Internal InteractionLayer");
@@ -31,12 +29,17 @@ export default class SelectControl extends Control {
             options.style = this.featureLayer.getStyle();
         }
 
-        layerManager.setInteractionLayer(this.featureLayer);
+        options.layers = [this.featureLayer];
+        options.condition = click;
+
+        console.log(options);
 
         this.selectInteraction = new Select(options);
         this.selectInteraction.setActive();
 
-        this.modifyInteraction.on("select", this.handleSelectFeature.bind(this));
+        this.selectInteraction.on("select", this.handleSelectFeature.bind(this));
+
+        layerManager.map.addInteraction(this.selectInteraction);
 
         clearDrawBtn.onclick = this.handleClearDrawBtnClick.bind(this);
 
@@ -44,6 +47,10 @@ export default class SelectControl extends Control {
 
         this.clearDrawBtn = clearDrawBtn;
         this.i18next = i18next;
+
+        console.log(layerManager.map.getInteractions());
+        console.log(layerManager.interactionLayer);
+        layerManager.interactionLayer.setVisible(true);
     }
 
     setMap (map) {
@@ -55,7 +62,8 @@ export default class SelectControl extends Control {
         this.clearDrawBtn.title = this.i18next.t("ERASE_DRAW", {ns: "draw"});
     }
 
-    handleChangeFeature () {
+    handleSelectFeature () {
+        console.log("handleSelectFeature");
         this.dispatchEvent("selectfeature");
     }
 

@@ -3,7 +3,7 @@ import Observable from "ol/Observable";
 
 export default class LayerManager extends Observable {
 
-    constructor (map, backgroundLayerIds, foregroundLayerId = null) {
+    constructor (map, backgroundLayerIds, foregroundLayerId = undefined, interactionLayerId = undefined) {
         super();
         this.map = map;
         this.backgroundLayerIds = [];
@@ -51,6 +51,10 @@ export default class LayerManager extends Observable {
             this.foregroundLayer = layer;
             this.foregroundLayer.setVisible(true);
         }
+
+        if (interactionLayerId) {
+            this.setInteractionLayerById(interactionLayerId);
+        }
     }
 
     changeBackgroundLayer (id) {
@@ -74,6 +78,26 @@ export default class LayerManager extends Observable {
         this.map.removeLayer(this.interactionLayer);
         this.interactionLayer = interactionLayer;
         this.map.addLayer(interactionLayer);
+    }
+
+    setInteractionLayerById (layerId) {
+        const rawLayer = rawLayerList.getLayerWhere({id: layerId});
+        let layer = null;
+
+        if (!rawLayer) {
+            console.error("Interaction layer with id '" + layerId + "' not found. Skipped.");
+            return;
+        }
+
+        layer = this.map.addLayer(layerId);
+        layer.set("name", rawLayer.name);
+        layer.set("styleId", rawLayer.styleId);
+        layer.set("type", rawLayer.typ);
+
+        this.map.removeLayer(this.interactionLayer);
+        this.interactionLayer = layer;
+
+        return this.interactionLayer;
     }
 
 }

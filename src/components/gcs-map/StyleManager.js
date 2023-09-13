@@ -3,7 +3,7 @@ import createStyle from "masterportalAPI/src/vectorStyle/createStyle";
 export default class StyleManager {
 
     static get supportedLayerTypes () {
-        return ["WFS", "GeoJSON", "SensorThings", "TileSet3D", "Draw"];
+        return ["WFS", "GeoJSON", "SensorThings", "TileSet3D", "Draw", "Select"];
     }
 
     constructor (styleList, interactionLayerStyleId) {
