@@ -5,6 +5,7 @@ import GCSMap from "../../../src/components/gcs-map/GCSMap";
 import * as defaultConfig from "../../../src/components/gcs-map/assets/config.json";
 import * as customConfig from "./assets/config.json";
 import * as customConfig2 from "./assets/config2.json";
+// import * as customConfig3 from "./assets/config3.json";
 
 describe("Init gcs-map", () => {
 

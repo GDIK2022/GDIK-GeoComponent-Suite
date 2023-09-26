@@ -13,16 +13,15 @@ export default class GCSSelect extends HTMLElement {
     }
 
     registerGCSMap (map, layerManager, i18next, styleManager) {
-        i18next.addResources("en", "draw", {ERASE_DRAW: "Erase geometry"});
-        i18next.addResources("de", "draw", {ERASE_DRAW: "Geometrie löschen"});
+        i18next.addResources("en", "draw", {ERASE_DRAW: "Clear selection"});
+        i18next.addResources("de", "draw", {ERASE_DRAW: "Auswahl aufheben"});
 
         this.control = new SelectControl(layerManager, styleManager, {}, i18next);
 
         this.control.on("selectfeature", () => {
-            console.log("hi");
-            const fc = this.control.getSelectedFeature();
+            const fc = this.control.getSelectedFeatures();
 
-            if (fc === undefined || fc.getLength() <= 0) {
+            if (fc === undefined) {
                 this.setAttribute("value", "");
                 return;
             }

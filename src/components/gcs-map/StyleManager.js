@@ -6,9 +6,10 @@ export default class StyleManager {
         return ["WFS", "GeoJSON", "SensorThings", "TileSet3D", "Draw", "Select"];
     }
 
-    constructor (styleList, interactionLayerStyleId) {
+    constructor (styleList, interactionLayerStyleId, interactionLayerHighlightStyleId) {
         this.styleList = styleList || [];
         this.interactionLayerStyleId = interactionLayerStyleId || undefined;
+        this.interactionLayerHighlightStyleId = interactionLayerHighlightStyleId || undefined;
     }
 
     addStyleToLayer (layer, failSilent = false) {
@@ -46,8 +47,18 @@ export default class StyleManager {
         return this.styleList.some(style => style.styleId === styleId);
     }
 
+    getStyleFunctionFromStyleId (styleId) {
+        const style = this.styleList.find(styleObject => styleObject.styleId === styleId);
+
+        return this.createVectorStyleFunction(style);
+    }
+
     getInteractionLayerStyleId () {
         return this.interactionLayerStyleId;
+    }
+
+    getInteractionLayerHighlightStyleId () {
+        return this.interactionLayerHighlightStyleId;
     }
 
 }

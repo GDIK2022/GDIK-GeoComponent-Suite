@@ -3,6 +3,10 @@ import Observable from "ol/Observable";
 
 export default class LayerManager extends Observable {
 
+    static get supportedInteractionLayerTypes () {
+        return ["WFS", "GeoJSON", "Draw", "Select"];
+    }
+
     constructor (map, backgroundLayerIds, foregroundLayerId = undefined, interactionLayerId = undefined) {
         super();
         this.map = map;
@@ -80,12 +84,22 @@ export default class LayerManager extends Observable {
         this.map.addLayer(interactionLayer);
     }
 
-    setInteractionLayerById (layerId) {
+    setInteractionLayerById (layerId, failSilent = false) {
         const rawLayer = rawLayerList.getLayerWhere({id: layerId});
+
         let layer = null;
 
         if (!rawLayer) {
-            console.error("Interaction layer with id '" + layerId + "' not found. Skipped.");
+            if (!failSilent) {
+                console.error("Interaction layer with id '" + layerId + "' not found. Skipped.");
+            }
+            return;
+        }
+
+        if (!LayerManager.supportedInteractionLayerTypes.includes(rawLayer?.typ)) {
+            if (!failSilent) {
+                console.error("Interaction layer must be one of the following types: " + LayerManager.supportedInteractionLayerTypes.join(", "));
+            }
             return;
         }
 
@@ -96,8 +110,6 @@ export default class LayerManager extends Observable {
 
         this.map.removeLayer(this.interactionLayer);
         this.interactionLayer = layer;
-
-        return this.interactionLayer;
     }
 
 }

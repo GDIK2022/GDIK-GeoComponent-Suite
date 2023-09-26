@@ -44,6 +44,38 @@ describe("LayerManager", () => {
                 "singleTile": false,
                 "tilesize": 256,
                 "gutter": 20
+            },
+            {
+                "id": "1337",
+                "name": "WFS-Layer",
+                "url": "https://mywfs.de/wfs",
+                "typ": "WFS",
+                "featureType": "test_polygon",
+                "featurePrefix": "test",
+                "featureNS": "http://opengeo.org/test",
+                "version": "1.1.0",
+                "gfiAttributes": "showAll",
+                "layerAttribution": "nicht vorhanden",
+                "legend": true,
+                "isSecured": false,
+                "datasets": [],
+                "gfiTheme": "default"
+            },
+            {
+                "id": "1338",
+                "name": "WFS-Layer",
+                "url": "https://mywfs.de/wfs",
+                "typ": "WMS",
+                "featureType": "test_polygon",
+                "featurePrefix": "test",
+                "featureNS": "http://opengeo.org/test",
+                "version": "1.1.0",
+                "gfiAttributes": "showAll",
+                "layerAttribution": "nicht vorhanden",
+                "legend": true,
+                "isSecured": false,
+                "datasets": [],
+                "gfiTheme": "default"
             }
         ]);
     });
@@ -245,5 +277,92 @@ describe("LayerManager", () => {
         expect(layerManager.foregroundLayer.get("name")).toBe("My WMS");
         expect(map.getLayers().item(map.getLayers().getLength() - 1).get("name")).toBe("My WMS");
 
+    });
+
+    it("should initialize with interaction layer", () => {
+        const map = mapsAPI.map.createMap(),
+            backgroundLayerIds = ["1001"],
+            foregroundLayerId = null,
+            interactionLayerId = "1337",
+            layerManager = new LayerManager(map, backgroundLayerIds, foregroundLayerId, interactionLayerId);
+
+        expect(layerManager.interactionLayer.get("name")).toBe("WFS-Layer");
+        expect(layerManager.interactionLayer.get("styleId")).toBe(undefined);
+        expect(layerManager.interactionLayer.get("type")).toBe("WFS");
+    });
+
+    it("should log an error when given interaction layer id is not present", () => {
+        const map = mapsAPI.map.createMap(),
+            backgroundLayerIds = ["1001"],
+            foregroundLayerId = null,
+            interactionLayerId = "1336";
+
+        console.error = jest.fn();
+
+        new LayerManager(map, backgroundLayerIds, foregroundLayerId, interactionLayerId);
+
+        expect(console.error.mock.calls[0][0]).toBe("Interaction layer with id '1336' not found. Skipped.");
+    });
+
+    it("should log an error when given interaction layer can't have interactions", () => {
+        const map = mapsAPI.map.createMap(),
+            backgroundLayerIds = ["1001"],
+            foregroundLayerId = null,
+            interactionLayerId = "1338";
+
+        console.error = jest.fn();
+
+        new LayerManager(map, backgroundLayerIds, foregroundLayerId, interactionLayerId);
+
+        expect(console.error.mock.calls[0][0]).toBe("Interaction layer must be one of the following types: WFS, GeoJSON, Draw, Select");
+    });
+
+    it("should fail silently when given interaction layer id is not present", () => {
+        const map = mapsAPI.map.createMap(),
+            backgroundLayerIds = ["1001"],
+            foregroundLayerId = null,
+            interactionLayerId = "1336";
+
+        console.error = jest.fn();
+
+        // eslint-disable-next-line one-var
+        const layerManager = new LayerManager(map, backgroundLayerIds, foregroundLayerId);
+
+        layerManager.setInteractionLayerById(interactionLayerId, true);
+
+        expect(console.error.mock.calls.length).toBe(0);
+    });
+
+    it("should fail silently when given interaction layer can't have interactions", () => {
+        const map = mapsAPI.map.createMap(),
+            backgroundLayerIds = ["1001"],
+            foregroundLayerId = null,
+            interactionLayerId = "1338";
+
+        console.error = jest.fn();
+
+        // eslint-disable-next-line one-var
+        const layerManager = new LayerManager(map, backgroundLayerIds, foregroundLayerId);
+
+        layerManager.setInteractionLayerById(interactionLayerId, true);
+
+        expect(console.error.mock.calls.length).toBe(0);
+    });
+
+    it("should set the interaction layer on top by Id", () => {
+        const map = mapsAPI.map.createMap(),
+            backgroundLayerIds = ["1001", "1002"],
+            layerManager = new LayerManager(map, backgroundLayerIds),
+            layerOne = new VectorLayer(),
+            layerTwo = "1337";
+
+        layerOne.set("name", "layerOne");
+
+        layerManager.setInteractionLayer(layerOne);
+
+        expect(map.getLayers().item(map.getLayers().getLength() - 1).get("name")).toBe("layerOne");
+
+        layerManager.setInteractionLayerById(layerTwo);
+        expect(map.getLayers().item(map.getLayers().getLength() - 1).get("name")).toBe("WFS-Layer");
     });
 });

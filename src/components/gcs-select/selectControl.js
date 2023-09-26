@@ -1,20 +1,23 @@
 import {Control} from "ol/control";
-import Select from 'ol/interaction/Select.js';
-import {click} from 'ol/events/condition.js';
+import Select from "ol/interaction/Select.js";
+import {click} from "ol/events/condition.js";
+import GeoJSON from "ol/format/GeoJSON";
+
+const format = new GeoJSON();
 
 export default class SelectControl extends Control {
     constructor (layerManager, styleManager, options, i18next) {
 
         const div = document.createElement("div"),
-            clearDrawBtn = document.createElement("button");
+            clearSelectionBtn = document.createElement("button");
 
         div.className = "ol-control gcs-delete";
 
-        clearDrawBtn.innerHTML = "&#x1F5D1;";
-        clearDrawBtn.disabled = true;
-        clearDrawBtn.title = i18next.t("ERASE_DRAW", {ns: "draw"});
+        clearSelectionBtn.innerHTML = "&#x1F5D1;";
+        clearSelectionBtn.disabled = true;
+        clearSelectionBtn.title = i18next.t("ERASE_DRAW", {ns: "draw"});
 
-        div.appendChild(clearDrawBtn);
+        div.appendChild(clearSelectionBtn);
 
         super({element: div});
 
@@ -26,30 +29,28 @@ export default class SelectControl extends Control {
         if (styleManager?.getInteractionLayerStyleId()) {
             this.featureLayer.set("styleId", styleManager.getInteractionLayerStyleId());
             styleManager.addStyleToLayer(this.featureLayer);
-            options.style = this.featureLayer.getStyle();
+        }
+        if (styleManager?.getInteractionLayerHighlightStyleId()) {
+            options.style = styleManager.getStyleFunctionFromStyleId(styleManager.getInteractionLayerHighlightStyleId());
         }
 
         options.layers = [this.featureLayer];
         options.condition = click;
 
-        console.log(options);
-
         this.selectInteraction = new Select(options);
-        this.selectInteraction.setActive();
+        this.selectInteraction.setActive(true);
 
         this.selectInteraction.on("select", this.handleSelectFeature.bind(this));
 
         layerManager.map.addInteraction(this.selectInteraction);
 
-        clearDrawBtn.onclick = this.handleClearDrawBtnClick.bind(this);
+        clearSelectionBtn.onclick = this.handleClearDrawBtnClick.bind(this);
 
         i18next.on("languageChanged", this.handleLanguageChange.bind(this));
 
-        this.clearDrawBtn = clearDrawBtn;
+        this.clearDrawBtn = clearSelectionBtn;
         this.i18next = i18next;
 
-        console.log(layerManager.map.getInteractions());
-        console.log(layerManager.interactionLayer);
         layerManager.interactionLayer.setVisible(true);
     }
 
@@ -63,7 +64,6 @@ export default class SelectControl extends Control {
     }
 
     handleSelectFeature () {
-        console.log("handleSelectFeature");
         this.dispatchEvent("selectfeature");
     }
 
@@ -72,8 +72,8 @@ export default class SelectControl extends Control {
         this.featureSource.dispatchEvent("deselectfeature");
     }
 
-    getSelectedFeature () {
-        return this.selectInteraction.getFeatures();
+    getSelectedFeatures () {
+        return this.selectInteraction.getFeatures().getLength() === 0 ? undefined : format.writeFeatures(this.selectInteraction.getFeatures().getArray());
     }
 
 }
