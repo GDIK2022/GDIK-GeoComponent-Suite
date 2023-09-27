@@ -186,13 +186,13 @@ describe("LayerManager", () => {
     it("should log an error when given foreground layer id not present", () => {
         const map = mapsAPI.map.createMap(),
             backgroundLayerIds = [],
-            foregroundLayerId = "1337";
+            foregroundLayerId = "1339";
 
         console.error = jest.fn();
 
         new LayerManager(map, backgroundLayerIds, foregroundLayerId);
 
-        expect(console.error.mock.calls[0][0]).toBe("Foreground layer with id '1337' not found.");
+        expect(console.error.mock.calls[0][0]).toBe("Foreground layer with id '1339' not found.");
     });
 
     it("should log an error when changing background layer to a not present id", async () => {

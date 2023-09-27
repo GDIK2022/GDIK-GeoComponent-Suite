@@ -21,6 +21,10 @@ export default class SelectControl extends Control {
 
         super({element: div});
 
+        if (!layerManager?.interactionLayer) {
+            throw Error("Interaction layer is undefined");
+        }
+
         this.featureLayer = layerManager.interactionLayer;
 
         this.featureLayer.set("type", "Select");
@@ -48,7 +52,7 @@ export default class SelectControl extends Control {
 
         i18next.on("languageChanged", this.handleLanguageChange.bind(this));
 
-        this.clearDrawBtn = clearSelectionBtn;
+        this.clearSelectionBtn = clearSelectionBtn;
         this.i18next = i18next;
 
         layerManager.interactionLayer.setVisible(true);
@@ -60,16 +64,23 @@ export default class SelectControl extends Control {
     }
 
     handleLanguageChange () {
-        this.clearDrawBtn.title = this.i18next.t("ERASE_DRAW", {ns: "draw"});
+        this.clearSelectionBtn.title = this.i18next.t("ERASE_DRAW", {ns: "draw"});
     }
 
     handleSelectFeature () {
-        this.dispatchEvent("selectfeature");
+        if (this.selectInteraction.getFeatures().getLength() === 0) {
+            this.clearSelectionBtn.disabled = true;
+            this.dispatchEvent("deselectfeature");
+        }
+        else {
+            this.clearSelectionBtn.disabled = false;
+            this.dispatchEvent("selectfeature");
+        }
     }
 
     handleClearDrawBtnClick () {
         this.selectInteraction.getFeatures().clear();
-        this.featureSource.dispatchEvent("deselectfeature");
+        this.dispatchEvent("deselectfeature");
     }
 
     getSelectedFeatures () {

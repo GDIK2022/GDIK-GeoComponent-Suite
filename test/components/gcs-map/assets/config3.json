@@ -5,7 +5,7 @@
     "foregroundLayer": "666",
     "searchUrl": "https://osgts.example.com",
     "interactionLayerStyleId": "1",
-    "interactionLayerId": "666",
+    "interactionLayer": "666",
     "interactionLayerHighlightStyleId": "2"
   },
   "portal": {
@@ -45,7 +45,7 @@
     },
     {
       "id": "666",
-      "name": "Norderstedt Beispiel",
+      "name": "WFS-Layer",
       "url": "https://geoservice.norderstedt.de/geoserver/test/wfs",
       "typ": "WFS",
       "featureType": "test_polygon",

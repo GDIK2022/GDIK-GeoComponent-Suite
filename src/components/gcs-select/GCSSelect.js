@@ -28,6 +28,10 @@ export default class GCSSelect extends HTMLElement {
             this.setAttribute("value", fc);
         });
 
+        this.control.on("deselectfeature", () => {
+            this.setAttribute("value", "");
+        });
+
         map.addControl(this.control);
     }
 
