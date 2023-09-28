@@ -57,11 +57,18 @@ describe("Select Control", () => {
     });
 
     it("should add an active click interaction to the interaction layer and map", () => {
-        new SelectControl(layerManager2, undefined, {}, i18next);
+        const control = new SelectControl(layerManager2, undefined, {}, i18next);
 
-        // Map has 8 interactions. The last one is Select;
-        expect(map.getInteractions()?.item(7) instanceof Select).toBe(true);
-        expect(map.getInteractions()?.item(7).getActive()).toBe(true);
+        control.setMap(map);
+
+        let selectInteraction = map.getInteractions().getArray().filter((interaction) => interaction.constructor.name === "Select");
+
+        expect(selectInteraction.length).toBe(1);
+
+        selectInteraction = selectInteraction[0];
+
+        expect(selectInteraction instanceof Select).toBe(true);
+        expect(selectInteraction.getActive()).toBe(true);
     });
 
     it("should apply interaction layer style", () => {
@@ -183,6 +190,13 @@ describe("Select Control", () => {
         control.featureLayer.getSource().addFeature(feature);
 
         expect(control.getSelectedFeatures()).toEqual(undefined);
+    });
+
+    it("should be single select", () => {
+        const control = new SelectControl(layerManager2, undefined, {}, i18next);
+
+        // eslint-disable-next-line no-underscore-dangle
+        expect(control.selectInteraction.multi_).toEqual(false);
     });
 
 });

@@ -13,8 +13,8 @@ export default class GCSSelect extends HTMLElement {
     }
 
     registerGCSMap (map, layerManager, i18next, styleManager) {
-        i18next.addResources("en", "draw", {ERASE_DRAW: "Clear selection"});
-        i18next.addResources("de", "draw", {ERASE_DRAW: "Auswahl aufheben"});
+        i18next.addResources("en", "select", {CLEAR_SELECTION: "Clear selection"});
+        i18next.addResources("de", "select", {CLEAR_SELECTION: "Auswahl aufheben"});
 
         this.control = new SelectControl(layerManager, styleManager, {}, i18next);
 

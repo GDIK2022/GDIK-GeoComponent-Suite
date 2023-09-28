@@ -15,7 +15,7 @@ export default class SelectControl extends Control {
 
         clearSelectionBtn.innerHTML = "&#x1F5D1;";
         clearSelectionBtn.disabled = true;
-        clearSelectionBtn.title = i18next.t("ERASE_DRAW", {ns: "draw"});
+        clearSelectionBtn.title = i18next.t("CLEAR_SELECTION", {ns: "select"});
 
         div.appendChild(clearSelectionBtn);
 
@@ -40,13 +40,12 @@ export default class SelectControl extends Control {
 
         options.layers = [this.featureLayer];
         options.condition = click;
+        options.multi = false;
 
         this.selectInteraction = new Select(options);
         this.selectInteraction.setActive(true);
 
         this.selectInteraction.on("select", this.handleSelectFeature.bind(this));
-
-        layerManager.map.addInteraction(this.selectInteraction);
 
         clearSelectionBtn.onclick = this.handleClearDrawBtnClick.bind(this);
 
@@ -64,7 +63,7 @@ export default class SelectControl extends Control {
     }
 
     handleLanguageChange () {
-        this.clearSelectionBtn.title = this.i18next.t("ERASE_DRAW", {ns: "draw"});
+        this.clearSelectionBtn.title = this.i18next.t("CLEAR_SELECTION", {ns: "select"});
     }
 
     handleSelectFeature () {
