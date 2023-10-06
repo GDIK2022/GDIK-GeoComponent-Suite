@@ -278,11 +278,13 @@ describe("value assignment", () => {
 
         expect(dispatchEventSpy).toHaveBeenCalledTimes(2);
 
+        // eslint-disable-next-line one-var
         const mockCalls = dispatchEventSpy.mock.calls;
 
         expect(mockCalls[0][0]).toBeInstanceOf(InputEvent);
         expect(mockCalls[1][0]).toBeInstanceOf(CustomEvent);
 
+        // eslint-disable-next-line one-var
         const inputEvent = mockCalls[0][0],
             changeEvent = mockCalls[1][0];
 
@@ -306,11 +308,13 @@ describe("value assignment", () => {
 
         expect(dispatchEventSpy).toHaveBeenCalledTimes(2);
 
+        // eslint-disable-next-line one-var
         const mockCalls = dispatchEventSpy.mock.calls;
 
         expect(mockCalls[0][0]).toBeInstanceOf(InputEvent);
         expect(mockCalls[1][0]).toBeInstanceOf(CustomEvent);
 
+        // eslint-disable-next-line one-var
         const inputEvent = mockCalls[0][0],
             changeEvent = mockCalls[1][0];
 

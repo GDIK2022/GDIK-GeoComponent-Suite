@@ -127,7 +127,7 @@ describe("StyleManager", () => {
 
         styleManager.addStyleToLayer(layerManager.backgroundLayers[0], false);
 
-        expect(console.error.mock.calls[0][0]).toBe("Styling is only supported for Layers of type WFS, GeoJSON, SensorThings, TileSet3D, Draw");
+        expect(console.error.mock.calls[0][0]).toBe("Styling is only supported for Layers of type WFS, GeoJSON, SensorThings, TileSet3D, Draw, Select");
     });
 
     it("should log a warning if Layer is not in styleList", () => {
@@ -188,5 +188,17 @@ describe("StyleManager", () => {
         const styleManager = new StyleManager(styleList);
 
         expect(styleManager.getInteractionLayerStyleId()).toBe(undefined);
+    });
+
+    it("should create a StyleManager with an interactionLayerHighlightStyleId", () => {
+        const styleManager = new StyleManager(styleList, null, "highlight");
+
+        expect(styleManager.interactionLayerHighlightStyleId).toBe("highlight");
+    });
+
+    it("should return interactionLayerHighlightStyleId", () => {
+        const styleManager = new StyleManager(styleList, null, "highlight");
+
+        expect(styleManager.getInteractionLayerHighlightStyleId()).toBe("highlight");
     });
 });

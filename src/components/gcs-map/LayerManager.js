@@ -3,7 +3,11 @@ import Observable from "ol/Observable";
 
 export default class LayerManager extends Observable {
 
-    constructor (map, backgroundLayerIds, foregroundLayerId = null) {
+    static get supportedInteractionLayerTypes () {
+        return ["WFS", "GeoJSON", "Draw", "Select"];
+    }
+
+    constructor (map, backgroundLayerIds, foregroundLayerId = undefined, interactionLayerId = undefined) {
         super();
         this.map = map;
         this.backgroundLayerIds = [];
@@ -51,6 +55,10 @@ export default class LayerManager extends Observable {
             this.foregroundLayer = layer;
             this.foregroundLayer.setVisible(true);
         }
+
+        if (interactionLayerId) {
+            this.setInteractionLayerById(interactionLayerId);
+        }
     }
 
     changeBackgroundLayer (id) {
@@ -74,6 +82,34 @@ export default class LayerManager extends Observable {
         this.map.removeLayer(this.interactionLayer);
         this.interactionLayer = interactionLayer;
         this.map.addLayer(interactionLayer);
+    }
+
+    setInteractionLayerById (layerId, failSilent = false) {
+        const rawLayer = rawLayerList.getLayerWhere({id: layerId});
+
+        let layer = null;
+
+        if (!rawLayer) {
+            if (!failSilent) {
+                console.error("Interaction layer with id '" + layerId + "' not found. Skipped.");
+            }
+            return;
+        }
+
+        if (!LayerManager.supportedInteractionLayerTypes.includes(rawLayer?.typ)) {
+            if (!failSilent) {
+                console.error("Interaction layer must be one of the following types: " + LayerManager.supportedInteractionLayerTypes.join(", "));
+            }
+            return;
+        }
+
+        layer = this.map.addLayer(layerId);
+        layer.set("name", rawLayer.name);
+        layer.set("styleId", rawLayer.styleId);
+        layer.set("type", rawLayer.typ);
+
+        this.map.removeLayer(this.interactionLayer);
+        this.interactionLayer = layer;
     }
 
 }

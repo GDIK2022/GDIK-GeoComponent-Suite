@@ -5,6 +5,7 @@ import GCSMap from "../../../src/components/gcs-map/GCSMap";
 import * as defaultConfig from "../../../src/components/gcs-map/assets/config.json";
 import * as customConfig from "./assets/config.json";
 import * as customConfig2 from "./assets/config2.json";
+import * as customConfig3 from "./assets/config3.json";
 
 describe("Init gcs-map", () => {
 
@@ -311,5 +312,59 @@ describe("Reading of config.json", () => {
 
         expect(Array.isArray(component.styleManager.styleList)).toBe(true);
         expect(component.styleManager.styleList.length).toBe(0);
+    });
+
+    it("should initialize LayerManager correctly with interactionLayer", async () => {
+        fetch.mockResponseOnce(JSON.stringify(customConfig3)); // customConfig3 has an interactionLayer defined
+        const component = new GCSMap();
+
+        component.setAttribute("config-url", "http://config.service/config.json");
+
+        await component.connectedCallback();
+
+        expect(component.layerManager.backgroundLayers.length).toBe(2);
+        expect(component.layerManager.interactionLayer).not.toBeNull();
+        expect(component.layerManager.interactionLayer.get("name")).toBe("WFS-Layer");
+    });
+
+    it("should initialize LayerManager correctly without interactionLayer", async () => {
+        const component = new GCSMap(); // defaultConfig has no interaction defined
+
+        await component.connectedCallback();
+
+        expect(component.layerManager.backgroundLayers.length).toBe(2);
+        expect(component.layerManager.interactionLayer).toBeNull();
+    });
+
+    it("should initialize StyleManager correctly with interactionLayer Style defined", async () => {
+        fetch.mockResponseOnce(JSON.stringify(customConfig3));
+        const component = new GCSMap();
+
+        console.error = jest.fn();
+
+        component.setAttribute("config-url", "http://config.service/config.json");
+
+        await component.connectedCallback();
+
+        expect(Array.isArray(component.styleManager.styleList)).toBe(true);
+        expect(component.styleManager.getInteractionLayerStyleId()).toBe("1");
+        expect(component.styleManager.styleList.length).toBe(2);
+        expect(console.error.mock.calls.length).toBe(0);
+    });
+
+    it("should initialize StyleManager correctly with interactionLayer highlight style defined", async () => {
+        fetch.mockResponseOnce(JSON.stringify(customConfig3));
+        const component = new GCSMap();
+
+        console.error = jest.fn();
+
+        component.setAttribute("config-url", "http://config.service/config.json");
+
+        await component.connectedCallback();
+
+        expect(Array.isArray(component.styleManager.styleList)).toBe(true);
+        expect(component.styleManager.getInteractionLayerHighlightStyleId()).toBe("2");
+        expect(component.styleManager.styleList.length).toBe(2);
+        expect(console.error.mock.calls.length).toBe(0);
     });
 });
