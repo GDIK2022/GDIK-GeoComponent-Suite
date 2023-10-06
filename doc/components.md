@@ -87,3 +87,23 @@ Map interface for searching in the map. It's possible to search for alot of vari
              search-string="stade">
   </gcs-search>
 ```
+
+### \<gcs-select\>
+
+**Have to be placed as child of \<gcs-map\>**
+
+Map interface for selecting a feature. Selected geometry is available by value attribute. Layer with selectable geometries is defined in config file passed to map by `interactionLayer` property of component property.
+
+#### Attribues
+
+| Name       | Required | Type       | Default    | Reactive | Description |
+|------------|----------|------------|------------|----------|-------------|
+| value      | no       | string     | -          | yes      | Feature Collection with selected feature (currently one feature is supported)
+
+#### Example
+
+```
+<gcs-map>
+  <gcs-select slot="content"></gcs-select>
+</gcs-map>
+```

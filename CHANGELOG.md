@@ -10,6 +10,14 @@ The [Semantic Versioning](https://semver.org/spec/v2.0.0.html) is used.
 ### Removed
 ### Fixed
 
+## 1.0.13
+### Added
+- Added <gcs-select> element
+### Changed
+### Deprecated
+### Removed
+### Fixed
+
 ## 1.0.12
 ### Added
 - Added styling for interaction layers (e.g. Draw)
