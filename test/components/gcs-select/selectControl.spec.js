@@ -22,7 +22,7 @@ describe("Select Control", () => {
         styleManager = new StyleManager(defaultConfig.style, defaultConfig.component.interactionLayerStyleId, defaultConfig.component.interactionLayerHighlightStyleId);
     });
 
-    it("should raise an error when no draw type is given or draw type is not supported", () => {
+    it("should raise an error when no interaction layer is defined", () => {
         expect(SelectControl).toBeDefined();
 
         let thrownError;

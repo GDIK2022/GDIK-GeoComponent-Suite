@@ -17,7 +17,7 @@ describe("Select related", () => {
         layerManager = new LayerManager(map, [], undefined, defaultConfig.component.interactionLayer);
     });
 
-    it("should have select control with inactive select interaction added when draw-type set", () => {
+    it("should have select control with active select interaction added", () => {
         const component = new GCSSelect();
         let selectInteraction;
 
@@ -61,7 +61,7 @@ describe("Select related", () => {
             ]});
     });
 
-    it("shouldn't have value attribute when feature was deselected", async () => {
+    it("should have empty attribute when feature was deselected", async () => {
         const component = new GCSSelect(),
             feature = new Feature({geometry: new Point([1, 1])});
 
@@ -77,6 +77,7 @@ describe("Select related", () => {
         expect(component.control.featureLayer.getSource().getFeatures()[0]).toBe(feature);
         expect(component.hasAttribute("value")).toBe(true);
 
+        // Deselect a feature
         component.control.selectInteraction.getFeatures().pop();
         component.control.selectInteraction.dispatchEvent({type: "select", selected: [], deselected: [feature]});
         expect(component.hasAttribute("value")).toBe(true);
