@@ -330,7 +330,7 @@ describe("value assignment", () => {
         expect(component.shadowRoot.childNodes[0].childNodes[1].getAttribute("feature")).toBe("");
     });
 
-    it("should not break when value is set to nonsense at runtime", async () => {
+    it("should not break when value is set to nonsense on init", async () => {
         const component = new GDIKInput();
 
         component.setAttribute("draw-type", "Point");
