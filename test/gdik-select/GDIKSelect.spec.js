@@ -3,6 +3,8 @@ enableFetchMocks();
 
 import GDIKSelect from "../../src/gdik-select/GDIKSelect";
 
+import * as customConfig from "../components/gcs-map/assets/config.json";
+
 // https://www.thinktecture.com/web-components/web-components-flaws/
 // https://www.webcomponents.org/community/articles/web-components-best-practices
 
