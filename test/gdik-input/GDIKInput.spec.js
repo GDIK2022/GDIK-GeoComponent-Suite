@@ -381,4 +381,6 @@ describe("config file handling", () => {
     });
 
     it.todo("should add search component when searchUrl defined in loaded config");
+
+    it.todo("should not break when a gdik-select config is passed");
 });
