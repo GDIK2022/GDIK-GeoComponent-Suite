@@ -2,7 +2,7 @@ import {enableFetchMocks} from "jest-fetch-mock";
 enableFetchMocks();
 
 import GDIKSelect from "../../src/gdik-select/GDIKSelect";
-s
+
 describe("Init gdik-select", () => {
     it("can create gdik-select component", () => {
         expect(GDIKSelect).toBeDefined();

@@ -60,12 +60,14 @@ export default class GDIKSelect extends HTMLElement {
             if (mutation.type !== "attributes") {
                 return;
             }
+
             if (GDIKSelect.observedAttributes.includes(mutation.attributeName)) {
                 const newValue = mutation.target.getAttribute(mutation.attributeName);
 
                 if (this.getAttribute(mutation.attributeName) === newValue) {
                     return;
                 }
+
                 if (mutation.attributeName === "value") {
                     this.setValue(newValue);
                     return;
