@@ -2,12 +2,7 @@ import {enableFetchMocks} from "jest-fetch-mock";
 enableFetchMocks();
 
 import GDIKSelect from "../../src/gdik-select/GDIKSelect";
-
-import * as customConfig from "../components/gcs-map/assets/config.json";
-
-// https://www.thinktecture.com/web-components/web-components-flaws/
-// https://www.webcomponents.org/community/articles/web-components-best-practices
-
+s
 describe("Init gdik-select", () => {
     it("can create gdik-select component", () => {
         expect(GDIKSelect).toBeDefined();
@@ -139,7 +134,7 @@ describe("value assignment", () => {
 
         component.handleObservedAttributeCallback([{target: {getAttribute: () => {
             return value;
-        }}, attributeName: "feature", type: "attributes"}]);
+        }}, attributeName: "value", type: "attributes"}]);
 
         expect(component.value).toEqual(featureCollection);
         expect(component.getAttribute("value")).toBe(value);
@@ -155,7 +150,7 @@ describe("value assignment", () => {
 
         component.handleObservedAttributeCallback([{target: {getAttribute: () => {
             return value;
-        }}, attributeName: "feature", type: "attributes"}]);
+        }}, attributeName: "value", type: "attributes"}]);
 
         expect(dispatchEventSpy).toHaveBeenCalledTimes(2);
     });
@@ -168,7 +163,7 @@ describe("value assignment", () => {
 
         component.handleObservedAttributeCallback([{target: {getAttribute: () => {
             return value;
-        }}, attributeName: "feature", type: "attributes"}]);
+        }}, attributeName: "value", type: "attributes"}]);
 
         expect(dispatchEventSpy).toHaveBeenCalledTimes(2);
 
@@ -197,7 +192,7 @@ describe("value assignment", () => {
 
         component.handleObservedAttributeCallback([{target: {getAttribute: () => {
             return "";
-        }}, attributeName: "feature", type: "attributes"}]);
+        }}, attributeName: "value", type: "attributes"}]);
 
         expect(dispatchEventSpy).toHaveBeenCalledTimes(2);
 
