@@ -10,7 +10,7 @@ GeoComponent Suite is build upon the [masterportalAPI](https://bitbucket.org/geo
 
 ### \<gdik-input\>
 
-The `<gdik-input>` element is used to create interactive map controls for web-based forms in order to accept geometries from the user. Geometries can be points, lines and polygons drawn by the user. User input data can be accessed by using the *feature* attribute. Input data is also submitted when the surrounding form is submitted.
+The `<gdik-input>` element is used to create interactive map controls for web-based forms in order to accept geometries from the user. Geometries can be points, lines and polygons drawn by the user. User input data can be accessed by using the *value* attribute. Input data is also submitted when the surrounding form is submitted.
 
 The element can be customized by providing an URL pointing to a config file to the *config-url* attribute. The config file is based on masterportalAPI config schema documented in the [masterportal project](https://bitbucket.org/geowerkstatt-hamburg/masterportal/src/dev/).
 
@@ -49,13 +49,52 @@ When value is changed the component emits an event of type "change". Current com
 </gdik-input>
 ```
 
+### \<gdik-select\>
+
+The `<gdik-select>` element is used to create interactive map controls for web-based forms in order to select geometries from a given vector source. Vector sources can be WFS, GeoJSON or OGC API Features. User input data can be accessed by using the *value* attribute. Input data is also submitted when the surrounding form is submitted.
+
+The element can be customized by providing an URL pointing to a config file to the *config-url* attribute. The config file is based on masterportalAPI config schema documented in the [masterportal project](https://bitbucket.org/geowerkstatt-hamburg/masterportal/src/dev/). An interactionLayer must be defined in the config. This layer is the source for selectable geometries.
+
+
+#### Attributes
+
+| Name       | Required | Type       | Default    | Reactive | Description |
+|------------|----------|------------|------------|----------|-------------|
+| config-url | yes      | string     | -          | no       | config file url |
+| lon        | no       | string     | 448360.0   | yes      | center position |
+| lat        | no       | string     | 5888434.0  | yes      | center position |
+| active-bg  | no       | string     | 1001       | yes      | active background layer |
+| value      | no       | string     | -          | yes      | Feature Collection with feature (currently one feature is supported), added to draw mode
+| search-string  | no       | string     | -          | yes       | string to search in the map for  |
+| lng        | no       | string     | de         | yes      | Language of text elements like tooltips
+
+#### Events
+
+##### "input"
+
+When value is changed the component emits an event of type "input". Current component value is added to data attribute of event as string.
+
+##### "change"
+
+When value is changed the component emits an event of type "change". Current component value is added to detail attribute of event as object or null.
+
+#### Example
+
+```
+<gdik-select config-url="data/config.json"
+            lon="448360.0"
+            lat="5888434.0"
+            active-bg="1002">
+</gdik-select>
+```
+
 ## Configuration
 
 `<gdik-input>` accepts a URL pointing to a config file given in *config-url* attribute. The config file is in json format. The configuration file is divided into three main sections:
 
 ### component
 
-This part contains `<gdik-input>` specific parameters. The following properties are included in this section:
+This part contains `<gdik-input>` or `<gdik-select>` specific parameters. The following properties are included in this section:
 
 <dl>
   <dt><b>backgroundLayers</b></dt>
@@ -66,6 +105,8 @@ This part contains `<gdik-input>` specific parameters. The following properties 
   <dd>Url of OSGTS to use for geocoding (gdik-search)</dd>
   <dt><b>interactionLayerStyleId</b></dt>
   <dd>ID of a defined style that will be applied to the interactionLayer (e.g. Draw)</dd>
+  <dt><b>interactionLayer<b>(`<gdik-select>`-only)</dt>
+  <dd>ID of a defined vector layer. See `services`-section for layer definitions</dd>
 </dl>
 
 ### portal
