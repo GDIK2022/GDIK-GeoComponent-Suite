@@ -10,6 +10,14 @@ The [Semantic Versioning](https://semver.org/spec/v2.0.0.html) is used.
 ### Removed
 ### Fixed
 
+## 1.1.1
+### Added
+### Changed
+- Refactored map template generation
+### Deprecated
+### Removed
+### Fixed
+
 ## 1.1.0
 ### Added
 - Added <gdik-select> element
