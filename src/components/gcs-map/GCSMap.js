@@ -2,8 +2,6 @@ const merge = require("deepmerge");
 
 import i18next from "i18next";
 
-import olCss from "bundle-text:../../../node_modules/ol/ol.css";
-
 import DoubleClickZoom from "ol/interaction/DoubleClickZoom";
 import Zoom from "ol/control/Zoom";
 import FullScreen from "ol/control/FullScreen";
@@ -114,9 +112,10 @@ export default class GCSMap extends HTMLElement {
     renderComponent () {
         const shadow = this.attachShadow({mode: "open"});
 
-        shadow.appendChild(template.content.cloneNode(true));
-
-        shadow.children[0].textContent = olCss + shadow.children[0].textContent;
+        for (let i = 0; i < template.childElementCount; i++) {
+            shadow.appendChild(template.childNodes[i].cloneNode(true));
+        }
+        // shadow.children[0].textContent = olCss + shadow.children[0].textContent;
 
         this.container = this.shadowRoot.querySelector(".gcs-map");
 
