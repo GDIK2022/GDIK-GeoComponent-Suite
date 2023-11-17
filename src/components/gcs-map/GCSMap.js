@@ -115,7 +115,6 @@ export default class GCSMap extends HTMLElement {
         for (let i = 0; i < template.childElementCount; i++) {
             shadow.appendChild(template.childNodes[i].cloneNode(true));
         }
-        // shadow.children[0].textContent = olCss + shadow.children[0].textContent;
 
         this.container = this.shadowRoot.querySelector(".gcs-map");
 
