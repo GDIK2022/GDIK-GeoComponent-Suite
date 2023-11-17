@@ -234,6 +234,20 @@ export default class GCSMap extends HTMLElement {
 
         return founds.length === 0 ? undefined : founds[0];
     }
+
+    getImage (mimetype = "image/png") {
+        const canvas = this.map.getTargetElement().querySelectorAll("canvas")[0];
+        let imageData = null;
+
+        try {
+            imageData = canvas.toDataURL(mimetype);
+        }
+        catch (e) {
+            console.error(e);
+        }
+
+        return imageData;
+    }
 }
 
 customElements.define("gcs-map", GCSMap);

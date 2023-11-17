@@ -169,12 +169,6 @@ export default class GDIKInput extends HTMLElement {
             detail: jsonValue, composed: true, bubbles: true
         }));
     }
-
-    getImage () {
-        const canvas = this.shadowRoot.firstChild.shadowRoot.querySelectorAll("canvas")[0];
-
-        return canvas.toDataURL("image/png");
-    }
 }
 
 customElements.define("gdik-input", GDIKInput);
