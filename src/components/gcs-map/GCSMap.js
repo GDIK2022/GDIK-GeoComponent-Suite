@@ -172,6 +172,11 @@ export default class GCSMap extends HTMLElement {
         this.container.innerHTML = "";
 
         config.portal.layers = [];
+
+        config.services.forEach((value, index) => {
+            config.services[index].crossOrigin = "anonymous";
+        });
+
         map = mapsAPI.map.createMap({...config.portal, layerConf: config.services}, "2D");
 
         this.layerManager = new LayerManager(map, config.component.backgroundLayers, config.component?.foregroundLayer, config.component?.interactionLayer);
