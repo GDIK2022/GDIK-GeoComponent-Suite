@@ -2,6 +2,7 @@ import {enableFetchMocks} from "jest-fetch-mock";
 enableFetchMocks();
 
 import GDIKSelect from "../../src/gdik-select/GDIKSelect";
+import GCSMap from "../../src/components/gcs-map/GCSMap";
 
 describe("Init gdik-select", () => {
     it("can create gdik-select component", () => {
@@ -243,4 +244,22 @@ describe("config file handling", () => {
     it.todo("should add search component when searchUrl defined in loaded config");
 
     it.todo("should not break when a gdik-input config is passed");
+});
+
+describe("public functions", () => {
+    beforeEach(() => {
+        jest.restoreAllMocks();
+    });
+
+    it("should call map getImage method", async () => {
+        // eslint-disable-next-line no-empty-function
+        const gcsMapGetImage = jest.spyOn(GCSMap.prototype, "getImage").mockImplementation(() => {}),
+            component = new GDIKSelect();
+
+        await component.connectedCallback();
+
+        component.getImage();
+
+        expect(gcsMapGetImage).toHaveBeenCalled();
+    });
 });

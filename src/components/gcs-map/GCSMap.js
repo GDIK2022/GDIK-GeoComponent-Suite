@@ -115,7 +115,6 @@ export default class GCSMap extends HTMLElement {
         for (let i = 0; i < template.childElementCount; i++) {
             shadow.appendChild(template.childNodes[i].cloneNode(true));
         }
-        // shadow.children[0].textContent = olCss + shadow.children[0].textContent;
 
         this.container = this.shadowRoot.querySelector(".gcs-map");
 
@@ -173,6 +172,11 @@ export default class GCSMap extends HTMLElement {
         this.container.innerHTML = "";
 
         config.portal.layers = [];
+
+        config.services.forEach((value, index) => {
+            config.services[index].crossOrigin = "anonymous";
+        });
+
         map = mapsAPI.map.createMap({...config.portal, layerConf: config.services}, "2D");
 
         this.layerManager = new LayerManager(map, config.component.backgroundLayers, config.component?.foregroundLayer, config.component?.interactionLayer);
@@ -229,6 +233,20 @@ export default class GCSMap extends HTMLElement {
         const founds = map.getInteractions().getArray().filter((interaction) => interaction instanceof c);
 
         return founds.length === 0 ? undefined : founds[0];
+    }
+
+    getImage (mimetype = "image/png") {
+        const canvas = this.map.getTargetElement().querySelectorAll("canvas")[0];
+        let imageData = null;
+
+        try {
+            imageData = canvas.toDataURL(mimetype);
+        }
+        catch (e) {
+            return null;
+        }
+
+        return imageData;
     }
 }
 

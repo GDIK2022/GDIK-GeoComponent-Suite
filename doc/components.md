@@ -13,6 +13,13 @@ Simple map. Interactive presentation of geodata with minimal map controls: Zoom 
 | zoom       | no       | number     | -          | yes      | Initial / current zoom level
 | lng        | no       | string     | de         | yes      | Language of text elements like tooltips
 
+#### Methods
+
+##### getImage(mimetype)
+
+This function returns a Base64 encoded string representation of current map section with all active back- and foreground layers.
+The mimetype parameter is optional. The default is "image/png".
+
 #### Example
 
 ```

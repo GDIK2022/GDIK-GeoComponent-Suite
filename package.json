@@ -1,6 +1,6 @@
 {
   "name": "@GDIK2022/GDIK-GeoComponent-Suite",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "author": {
     "name": "Landesamt für Geoinformation und Landesvermessung Niedersachsen (LGLN)",
     "email": "team-waas@lgln.niedersachsen.de",
@@ -15,7 +15,8 @@
     "url": "https://github.com/GDIK2022/GDIK-GeoComponent-Suite.git"
   },
   "scripts": {
-    "test": "jest --config ./jest.config.js --collectCoverage --collectCoverageFrom=src/**/*.js",
+    "test": "jest --config ./jest.config.js",
+    "test:coverage": "jest --config ./jest.config.js --collectCoverage --collectCoverageFrom=src/**/*.js",
     "test:watch": "jest --config ./jest.config.js --watch",
     "lint": "eslint ./src/** ./test/**",
     "audit": "npm audit --prod",
