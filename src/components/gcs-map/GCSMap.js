@@ -243,7 +243,7 @@ export default class GCSMap extends HTMLElement {
             imageData = canvas.toDataURL(mimetype);
         }
         catch (e) {
-            console.error(e);
+            return null;
         }
 
         return imageData;
