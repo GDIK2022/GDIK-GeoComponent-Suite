@@ -10,6 +10,15 @@ The [Semantic Versioning](https://semver.org/spec/v2.0.0.html) is used.
 ### Removed
 ### Fixed
 
+## 1.2.0
+### Added
+- public getImage method to gdik-elements
+- test coverage task to package.json
+### Changed
+### Deprecated
+### Removed
+### Fixed
+
 ## 1.1.1
 ### Added
 ### Changed
