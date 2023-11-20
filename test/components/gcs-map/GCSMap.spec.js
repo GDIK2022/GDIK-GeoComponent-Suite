@@ -376,18 +376,19 @@ describe("public functions", () => {
         // setupJestCanvasMock();
     });
 
-    it.todo("should return current OL canvas content", async () => {
-        // const target = document.createElement("div"),
-        //     component = new GCSMap();
+    it.todo("should return current OL canvas content");
+    // , async () => {
+    //    const target = document.createElement("div"),
+    //        component = new GCSMap();
 
-        // document.querySelector("body").appendChild(target);
+    //    document.querySelector("body").appendChild(target);
 
-        // target.appendChild(component);
+    //    target.appendChild(component);
 
-        // await component.mapPromise;
+    //    await component.mapPromise;
 
-        // // Map element don't have a canvas.
-        // // Probably this is related to jest-canvas-mock or/and jest-environment-jsdom?
-        // expect(component.getImage()).toMatch(new RegExp("^data:image/([a-zA-Z]*);base64,.*$"));
-    });
+    //    // Map element don't have a canvas.
+    //    // Probably this is related to jest-canvas-mock or/and jest-environment-jsdom?
+    //    expect(component.getImage()).toMatch(new RegExp("^data:image/([a-zA-Z]*);base64,.*$"));
+    // });
 });
