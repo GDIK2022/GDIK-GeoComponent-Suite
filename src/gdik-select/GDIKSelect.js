@@ -165,6 +165,9 @@ export default class GDIKSelect extends HTMLElement {
             detail: jsonValue, composed: true, bubbles: true
         }));
     }
+    getImage (mimetype = "image/png") {
+        return this.mapElement.getImage(mimetype);
+    }
 }
 
 customElements.define("gdik-select", GDIKSelect);

@@ -169,6 +169,10 @@ export default class GDIKInput extends HTMLElement {
             detail: jsonValue, composed: true, bubbles: true
         }));
     }
+
+    getImage (mimetype = "image/png") {
+        return this.mapElement.getImage(mimetype);
+    }
 }
 
 customElements.define("gdik-input", GDIKInput);
