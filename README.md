@@ -38,6 +38,11 @@ When value is changed the component emits an event of type "input". Current comp
 
 When value is changed the component emits an event of type "change". Current component value is added to detail attribute of event as object or null.
 
+##### getImage(mimetype)
+
+This function returns a Base64 encoded string representation of current map section with all active back- and foreground layers as well as the selectable geometries and the current selected one.
+The mimetype parameter is optional. The default is "image/png".
+
 #### Example
 
 ```
@@ -77,6 +82,13 @@ When value is changed the component emits an event of type "input". Current comp
 ##### "change"
 
 When value is changed the component emits an event of type "change". Current component value is added to detail attribute of event as object or null.
+
+#### Methods
+
+##### getImage(mimetype)
+
+This function returns a Base64 encoded string representation of current map section with all active back- and foreground layers as well as the selectable geometries and the current selected one.
+The mimetype parameter is optional. The default is "image/png".
 
 #### Example
 
