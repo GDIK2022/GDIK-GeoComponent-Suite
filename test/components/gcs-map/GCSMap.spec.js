@@ -1,6 +1,9 @@
 import {enableFetchMocks} from "jest-fetch-mock";
 enableFetchMocks();
 
+import Feature from "ol/Feature";
+import Point from "ol/geom/Point";
+
 import GCSMap from "../../../src/components/gcs-map/GCSMap";
 import * as defaultConfig from "../../../src/components/gcs-map/assets/config.json";
 import * as customConfig from "./assets/config.json";
@@ -391,4 +394,18 @@ describe("public functions", () => {
     //    // Probably this is related to jest-canvas-mock or/and jest-environment-jsdom?
     //    expect(component.getImage()).toMatch(new RegExp("^data:image/([a-zA-Z]*);base64,.*$"));
     // });
+
+    it("should center map on given feature", async () => {
+        const component = new GCSMap(),
+            coordinate = [455555.0, 5555555.0],
+            geometry = new Point(coordinate);
+
+        await component.connectedCallback();
+
+        expect(component.map.getView().getCenter()).not.toEqual(coordinate);
+
+        component.fit(geometry);
+
+        expect(component.map.getView().getCenter()).toEqual(coordinate);
+    });
 });

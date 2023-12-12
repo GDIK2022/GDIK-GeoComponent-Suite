@@ -10,6 +10,14 @@ The [Semantic Versioning](https://semver.org/spec/v2.0.0.html) is used.
 ### Removed
 ### Fixed
 
+## 1.3.0
+### Added
+- public centerToFeature method to gdik-elements
+### Changed
+### Deprecated
+### Removed
+### Fixed
+
 ## 1.2.0
 ### Added
 - public getImage method to gdik-elements

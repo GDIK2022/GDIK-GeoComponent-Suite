@@ -248,6 +248,10 @@ export default class GCSMap extends HTMLElement {
 
         return imageData;
     }
+
+    fit (geometry) {
+        this.map.getView().fit(geometry, {padding: [20, 20, 20, 20], minResolution: 2.6});
+    }
 }
 
 customElements.define("gcs-map", GCSMap);

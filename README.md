@@ -43,6 +43,10 @@ When value is changed the component emits an event of type "change". Current com
 This function returns a Base64 encoded string representation of current map section with all active back- and foreground layers as well as the selectable geometries and the current selected one.
 The mimetype parameter is optional. The default is "image/png".
 
+##### centerToFeature()
+
+This function center the map to the drawn feature. If no feature is drawn, nothing happens. The minimum resolution is set to 2.6 which is equal to a scale of 1:10000 by 96 dpi. The feature will fit into map with a padding of 20px to each side.
+
 #### Example
 
 ```
@@ -89,6 +93,10 @@ When value is changed the component emits an event of type "change". Current com
 
 This function returns a Base64 encoded string representation of current map section with all active back- and foreground layers as well as the selectable geometries and the current selected one.
 The mimetype parameter is optional. The default is "image/png".
+
+##### centerToFeature()
+
+This function center the map to the selected feature. If no feature is selected, nothing happens. The minimum resolution is set to 2.6 which is equal to a scale of 1:10000 by 96 dpi. The feature will fit into map with a padding of 20px to each side.
 
 #### Example
 

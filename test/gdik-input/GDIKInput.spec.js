@@ -402,4 +402,23 @@ describe("public functions", () => {
 
         expect(gcsMapGetImage).toHaveBeenCalled();
     });
+
+    it("should call map fit method when component have a value", async () => {
+        const gcsMapFit = jest.spyOn(GCSMap.prototype, "fit").mockImplementation(() => {}),
+            component = new GDIKInput(),
+            geometry = {"type": "Point", "coordinates": [1, 1]},
+            jsonValue = {"type": "FeatureCollection", "features": [{"type": "Feature", "geometry": geometry}]},
+            value = JSON.stringify(jsonValue);
+
+        component.setAttribute("value", value);
+        component.setAttribute("draw-type", "Point");
+
+        await component.connectedCallback();
+
+        expect(component.value).toEqual(jsonValue);
+
+        component.centerToFeature();
+
+        expect(gcsMapFit).toHaveBeenCalledWith(geometry);
+    });
 });
