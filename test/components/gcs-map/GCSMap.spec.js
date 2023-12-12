@@ -1,8 +1,6 @@
 import {enableFetchMocks} from "jest-fetch-mock";
 enableFetchMocks();
 
-import Point from "ol/geom/Point";
-
 import GCSMap from "../../../src/components/gcs-map/GCSMap";
 import * as defaultConfig from "../../../src/components/gcs-map/assets/config.json";
 import * as customConfig from "./assets/config.json";
@@ -397,7 +395,7 @@ describe("public functions", () => {
     it("should center map on given feature", async () => {
         const component = new GCSMap(),
             coordinate = [455555.0, 5555555.0],
-            geometry = new Point(coordinate);
+            geometry = {"type": "Point", "coordinates": coordinate};
 
         await component.connectedCallback();
 
