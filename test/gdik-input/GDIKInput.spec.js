@@ -404,6 +404,7 @@ describe("public functions", () => {
     });
 
     it("should call map fit method when component have a value", async () => {
+        // eslint-disable-next-line no-empty-function
         const gcsMapFit = jest.spyOn(GCSMap.prototype, "fit").mockImplementation(() => {}),
             component = new GDIKInput(),
             geometry = {"type": "Point", "coordinates": [1, 1]},

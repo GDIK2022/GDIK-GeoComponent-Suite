@@ -1,7 +1,6 @@
 import {enableFetchMocks} from "jest-fetch-mock";
 enableFetchMocks();
 
-import Feature from "ol/Feature";
 import Point from "ol/geom/Point";
 
 import GCSMap from "../../../src/components/gcs-map/GCSMap";
