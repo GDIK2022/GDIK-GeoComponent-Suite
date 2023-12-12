@@ -14,6 +14,8 @@ The [Semantic Versioning](https://semver.org/spec/v2.0.0.html) is used.
 ### Added
 - public centerToFeature method to gdik-elements
 ### Changed
+The following packages have been updated:
+- geowerkstatt-hamburg/masterportalAPI: 2.24.0 to 2.30.0
 ### Deprecated
 ### Removed
 ### Fixed
