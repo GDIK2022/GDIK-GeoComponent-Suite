@@ -125,7 +125,7 @@ This part contains `<gdik-input>` or `<gdik-select>` specific parameters. The fo
   <dd>Url of OSGTS to use for geocoding (gdik-search). If `searchUrl` is provided, an input field appears in the gdik element. A user can than provide a search string into it. The search is started by hitting the `enter` key. After OSGTS server responses, search results will be displayed below the input field and the user can select the most matching one. The map is centered on the selected search result.</dd>
   <dt><b>interactionLayerStyleId</b></dt>
   <dd>ID of a defined style that will be applied to the interactionLayer (e.g. Draw)</dd>
-  <dt><b>interactionLayer<b>(`<gdik-select>`-only)</dt>
+  <dt><b>interactionLayer (<i>gdik-select</i>-only)</b></dt>
   <dd>ID of a defined vector layer. See `services`-section for layer definitions</dd>
 </dl>
 
