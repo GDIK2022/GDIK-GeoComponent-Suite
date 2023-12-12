@@ -32,6 +32,8 @@ export default class SearchControl extends Control {
         if (this.searchString) {
             this.handleSearch({keyCode: 13, target: this.input, preventDefault: () => {
                 // noop
+            }, stopPropagation: () => {
+                // noop
             }});
         }
         super.setMap(map);
@@ -54,6 +56,8 @@ export default class SearchControl extends Control {
         if (property.key === "searchString") {
             this.input.value = this.get("searchString");
             this.handleSearch({keyCode: 13, target: this.input, preventDefault: () => {
+                // noop
+            }, stopPropagation: () => {
                 // noop
             }});
         }

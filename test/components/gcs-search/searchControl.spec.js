@@ -42,6 +42,8 @@ describe("Search", () => {
         // simulate enter pressed in input element
         control.handleSearch({keyCode: 13, target: control.element.firstChild, preventDefault: () => {
             // noop
+        }, stopPropagation: () => {
+            // noop
         }});
 
         expect(fetch).toBeCalledWith("https://search?outputformat=json&srsName=EPSG:25832&query=" + options.searchString + "&count=5");
