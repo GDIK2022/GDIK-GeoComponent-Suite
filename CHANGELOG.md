@@ -17,6 +17,7 @@ The [Semantic Versioning](https://semver.org/spec/v2.0.0.html) is used.
 ### Deprecated
 ### Removed
 ### Fixed
+- stop event propagation for hit enter key on gcs-search input field
 
 ## 1.2.0
 ### Added
