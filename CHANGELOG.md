@@ -10,6 +10,17 @@ The [Semantic Versioning](https://semver.org/spec/v2.0.0.html) is used.
 ### Removed
 ### Fixed
 
+## 1.3.0
+### Added
+- public centerToFeature method to gdik-elements
+### Changed
+The following packages have been updated:
+- geowerkstatt-hamburg/masterportalAPI: 2.24.0 to 2.30.0
+### Deprecated
+### Removed
+### Fixed
+- stop event propagation for hit enter key on gcs-search input field
+
 ## 1.2.0
 ### Added
 - public getImage method to gdik-elements

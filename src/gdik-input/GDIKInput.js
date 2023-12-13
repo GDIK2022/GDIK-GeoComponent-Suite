@@ -173,6 +173,13 @@ export default class GDIKInput extends HTMLElement {
     getImage (mimetype = "image/png") {
         return this.mapElement.getImage(mimetype);
     }
+
+    centerToFeature () {
+        if (!this.value) {
+            return;
+        }
+        this.mapElement.fit(this.value.features[0].geometry);
+    }
 }
 
 customElements.define("gdik-input", GDIKInput);

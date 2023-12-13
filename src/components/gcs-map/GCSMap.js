@@ -5,6 +5,7 @@ import i18next from "i18next";
 import DoubleClickZoom from "ol/interaction/DoubleClickZoom";
 import Zoom from "ol/control/Zoom";
 import FullScreen from "ol/control/FullScreen";
+import GeoJSON from "ol/format/GeoJSON.js";
 
 import mapsAPI from "masterportalAPI/src/maps/api.js";
 
@@ -14,6 +15,7 @@ import * as defaultConfig from "./assets/config.json";
 import template from "./templates/GCSMap.tmpl";
 import LayerManager from "./LayerManager";
 import StyleManager from "./StyleManager";
+
 
 export default class GCSMap extends HTMLElement {
     static get observedAttributes () {
@@ -39,6 +41,8 @@ export default class GCSMap extends HTMLElement {
         this.i18next.addResources("en", "map", {ZOOM_IN: "Zoom in", ZOOM_OUT: "Zoom out", FULLSCREEN: "Fullscreen"});
         this.i18next.addResources("de", "map", {ZOOM_IN: "Maßstab vergrößern", ZOOM_OUT: "Maßstab kleinern", FULLSCREEN: "Vollbild"});
         this.i18next.on("languageChanged", this.handleLanguageChange.bind(this));
+
+        this.geometryReader = new GeoJSON();
     }
 
     // Web Component Callback
@@ -247,6 +251,10 @@ export default class GCSMap extends HTMLElement {
         }
 
         return imageData;
+    }
+
+    fit (geometry) {
+        this.map.getView().fit(this.geometryReader.readGeometry(geometry), {padding: [20, 20, 20, 20], minResolution: 2.6});
     }
 }
 

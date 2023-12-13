@@ -391,4 +391,18 @@ describe("public functions", () => {
     //    // Probably this is related to jest-canvas-mock or/and jest-environment-jsdom?
     //    expect(component.getImage()).toMatch(new RegExp("^data:image/([a-zA-Z]*);base64,.*$"));
     // });
+
+    it("should center map on given feature", async () => {
+        const component = new GCSMap(),
+            coordinate = [455555.0, 5555555.0],
+            geometry = {"type": "Point", "coordinates": coordinate};
+
+        await component.connectedCallback();
+
+        expect(component.map.getView().getCenter()).not.toEqual(coordinate);
+
+        component.fit(geometry);
+
+        expect(component.map.getView().getCenter()).toEqual(coordinate);
+    });
 });
