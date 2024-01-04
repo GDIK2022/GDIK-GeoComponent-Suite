@@ -10,6 +10,15 @@ The [Semantic Versioning](https://semver.org/spec/v2.0.0.html) is used.
 ### Removed
 ### Fixed
 
+## 1.3.1
+### Added
+- Basemap.de Gray layer to default layers
+### Changed
+### Deprecated
+### Removed
+- TopPlusOpen default layer
+### Fixed
+
 ## 1.3.0
 ### Added
 - public centerToFeature method to gdik-elements
