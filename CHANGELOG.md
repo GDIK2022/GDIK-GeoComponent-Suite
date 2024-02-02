@@ -6,6 +6,7 @@ The [Semantic Versioning](https://semver.org/spec/v2.0.0.html) is used.
 ## Unreleased - in development
 ### Added
 ### Changed
+- pipeline concept to seperate pipelines for feature-, dev and main branches
 ### Deprecated
 ### Removed
 ### Fixed
