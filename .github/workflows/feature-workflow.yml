@@ -2,9 +2,11 @@ name: Workflow
 on:
   push:
     branches:
+      - '*'
+    branches-ignore:
+      - 'dev'
+      - 'stage'
       - 'main'
-    tags-ignore:
-      - "v*"
 jobs:
   init:
     runs-on: ubuntu-latest
@@ -64,26 +66,3 @@ jobs:
           restore-keys: npm-
       - run: npm i
       - run: npm audit --omit=dev
-  publish:
-    needs: [test, audit]
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '20.10'
-          registry-url: 'https://npm.pkg.github.com'
-      - run: node -p -e '`PACKAGE_VERSION=${require("./package.json").version}`' >> $GITHUB_ENV
-      - run: npm ci
-      - run: npm run build
-      - name: Upload binaries to release
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: dist/gdik-geocomponent-suite.js
-          asset_name: gdik-geocomponent-suite.js
-          tag: ${{ env.PACKAGE_VERSION }}
-          overwrite: true
-          body: "TODO: releasetext"
