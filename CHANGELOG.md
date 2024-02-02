@@ -8,6 +8,7 @@ The [Semantic Versioning](https://semver.org/spec/v2.0.0.html) is used.
 ### Changed
 ### Deprecated
 ### Removed
+- TopPlusOpen default layers
 ### Fixed
 
 ## 1.3.1
