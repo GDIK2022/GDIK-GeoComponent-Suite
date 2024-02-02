@@ -32,7 +32,7 @@ describe("Init gdik-select", () => {
             lon = "1",
             lat = "2",
             zoom = "8",
-            activeBg = "1002",
+            activeBg = "basemapGray",
             lng = "en";
 
         component.setAttribute("lon", lon);
@@ -59,7 +59,7 @@ describe("Init gdik-select", () => {
             lon = "1",
             lat = "2",
             zoom = "8",
-            activeBg = "1002",
+            activeBg = "basemapGray",
             lng = "en";
 
         component.connectedCallback();
@@ -91,7 +91,7 @@ describe("Init gdik-select", () => {
                 lon: "1",
                 lat: "2",
                 zoom: "8",
-                "active-bg": "1002",
+                "active-bg": "basemapGray",
                 "search-string": "search-string",
                 lng: "en"
             };
