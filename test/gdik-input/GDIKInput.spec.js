@@ -51,7 +51,7 @@ describe("Init gdik-input", () => {
             lon = "1",
             lat = "2",
             zoom = "8",
-            activeBg = "1002",
+            activeBg = "basemapGray",
             drawType = "Point",
             lng = "en";
 
@@ -85,7 +85,7 @@ describe("Init gdik-input", () => {
             lon = "1",
             lat = "2",
             zoom = "8",
-            activeBg = "1002",
+            activeBg = "basemapGray",
             lng = "en";
 
         component.setAttribute("draw-type", "Point");
@@ -123,7 +123,7 @@ describe("Init gdik-input", () => {
                 lon: "1",
                 lat: "2",
                 zoom: "8",
-                "active-bg": "1002",
+                "active-bg": "basemapGray",
                 value: value,
                 "search-string": "search-string",
                 lng: "en"

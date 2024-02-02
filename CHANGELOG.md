@@ -5,10 +5,12 @@ The [Semantic Versioning](https://semver.org/spec/v2.0.0.html) is used.
 
 ## Unreleased - in development
 ### Added
+- Basemap.de Gray layer to default layers
 ### Changed
-- pipeline concept to seperate pipelines for feature-, dev and main branches
+- pipeline concept to separate pipelines for feature-, dev and main branches
 ### Deprecated
 ### Removed
+- TopPlusOpen from default layers
 ### Fixed
 
 ## 1.3.0

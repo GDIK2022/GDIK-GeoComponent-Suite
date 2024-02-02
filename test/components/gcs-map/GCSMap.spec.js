@@ -46,7 +46,7 @@ describe("Init gcs-map", () => {
 
         expect(component.map.getView().getCenter()).toEqual(defaultConfig.portal.startCenter);
 
-        expect(component.getAttribute("active-bg")).toBe("1001");
+        expect(component.getAttribute("active-bg")).toBe("basemapColor");
     });
 
     it("should use values from given config", async () => {
@@ -149,6 +149,8 @@ describe("Attribute active-bg", () => {
 
         component.setAttribute("active-bg", backgroundLayer);
 
+        await new Promise(process.nextTick);
+
         expect(component.layerManager.activeBackgroundLayer.get("id")).toBe(backgroundLayer);
     });
 
@@ -162,8 +164,8 @@ describe("Attribute active-bg", () => {
         await component.connectedCallback();
         expect(console.error.mock.calls[0][0]).toBe("Background layer with id 1003 not found");
 
-        expect(component.getAttribute("active-bg", "1001"));
-        expect(component.layerManager.activeBackgroundLayer.get("id")).toBe("1001");
+        expect(component.getAttribute("active-bg")).toBe("basemapColor");
+        expect(component.layerManager.activeBackgroundLayer.get("id")).toBe("basemapColor");
     });
 
     it("should log an error when background layer cannot be found on attribute change", async () => {
@@ -174,11 +176,15 @@ describe("Attribute active-bg", () => {
 
         await component.connectedCallback();
 
-        component.setAttribute("active-bg", backgroundLayer);
-        expect(console.error.mock.calls[0][0]).toBe("Background layer with id 1003 not found");
+        expect(component.getAttribute("active-bg")).toBe("basemapColor");
 
-        expect(component.getAttribute("active-bg", "1001"));
-        expect(component.layerManager.activeBackgroundLayer.get("id")).toBe("1001");
+        component.setAttribute("active-bg", backgroundLayer);
+
+        await new Promise(process.nextTick);
+
+        expect(console.error.mock.calls[0][0]).toBe("Background layer with id 1003 not found");
+        expect(component.getAttribute("active-bg")).toBe("basemapColor");
+        expect(component.layerManager.activeBackgroundLayer.get("id")).toBe("basemapColor");
     });
 });
 
@@ -188,7 +194,7 @@ describe("Attribute change related", () => {
             lon = 450000.0,
             lat = 5500000.0,
             zoom = 8,
-            backgroundLayer = "1002";
+            backgroundLayer = "basemapGray";
 
         await component.connectedCallback();
 
@@ -202,6 +208,8 @@ describe("Attribute change related", () => {
         component.setAttribute("lat", lat);
         component.setAttribute("zoom", zoom);
         component.setAttribute("active-bg", backgroundLayer);
+
+        await new Promise(process.nextTick);
 
         expect(component.map.getView().getCenter()).toEqual([lon, lat]);
         expect(component.map.getView().getZoom()).toBe(zoom);
@@ -241,7 +249,7 @@ describe("Attribute change related", () => {
 
     it("shoud change background layer attribute when background layer changes", async () => {
         const component = new GCSMap(),
-            backgroundLayer = "1002";
+            backgroundLayer = "basemapGray";
 
         await component.connectedCallback();
 
