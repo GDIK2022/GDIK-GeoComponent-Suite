@@ -103,7 +103,7 @@ export default class LayerManager extends Observable {
             return;
         }
 
-        layer = this.map.addLayer(layerId);
+        layer = this.map.addLayer(layerId, {layerParams: rawLayer});
         layer.set("name", rawLayer.name);
         layer.set("styleId", rawLayer.styleId);
         layer.set("type", rawLayer.typ);
