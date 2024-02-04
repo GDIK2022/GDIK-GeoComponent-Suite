@@ -87,3 +87,4 @@ jobs:
           tag: ${{ env.PACKAGE_VERSION }}
           overwrite: true
           body: "TODO: releasetext"
+          make_latest: true

@@ -83,3 +83,4 @@ jobs:
           asset_name: gdik-geocomponent-suite-dev.js
           overwrite: true
           body: "Current development build - use with caution!"
+          make_latest: false
