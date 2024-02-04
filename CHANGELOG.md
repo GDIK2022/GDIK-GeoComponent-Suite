@@ -12,6 +12,7 @@ The [Semantic Versioning](https://semver.org/spec/v2.0.0.html) is used.
 ### Removed
 - TopPlusOpen from default layers
 ### Fixed
+- Using interaction layer options
 
 ## 1.3.0
 ### Added
