@@ -1,4 +1,4 @@
-name: Workflow
+name: Dev-Branch Workflow
 on:
   push:
     branches:
@@ -83,3 +83,5 @@ jobs:
           asset_name: gdik-geocomponent-suite-dev.js
           overwrite: true
           body: "Current development build - use with caution!"
+          make_latest: false
+          target_commit: ${{ github.ref }}

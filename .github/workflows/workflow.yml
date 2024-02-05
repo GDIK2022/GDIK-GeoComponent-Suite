@@ -1,4 +1,4 @@
-name: Workflow
+name: Main-Branch Workflow
 on:
   push:
     branches:
@@ -87,3 +87,4 @@ jobs:
           tag: ${{ env.PACKAGE_VERSION }}
           overwrite: true
           body: "TODO: releasetext"
+          make_latest: true
