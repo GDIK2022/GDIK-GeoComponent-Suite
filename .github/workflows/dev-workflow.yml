@@ -85,3 +85,4 @@ jobs:
           body: "Current development build - use with caution!"
           make_latest: false
           target_commit: ${{ github.ref }}
+          tag: current-dev
