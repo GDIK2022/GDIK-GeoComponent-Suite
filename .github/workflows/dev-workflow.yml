@@ -75,6 +75,12 @@ jobs:
           registry-url: 'https://npm.pkg.github.com'
       - run: npm ci
       - run: npm run build
+      - name: Delete current dev release
+        uses: dev-drprasad/delete-tag-and-release@v1.0
+        with:
+          tag_name: current-dev
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          delete_release: true
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
         with:
