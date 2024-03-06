@@ -7,7 +7,7 @@ jobs:
   init:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-node@v3
         with:
           node-version: '20.10'
@@ -21,7 +21,7 @@ jobs:
     needs: init
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-node@v3
         with:
           node-version: '20.10'
@@ -51,7 +51,7 @@ jobs:
     needs: init
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-node@v3
         with:
           node-version: '20.10'
@@ -68,7 +68,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-node@v3
         with:
           node-version: '20.10'
@@ -85,3 +85,4 @@ jobs:
           body: "Current development build - use with caution!"
           make_latest: false
           target_commit: ${{ github.ref }}
+          tag: current-dev
