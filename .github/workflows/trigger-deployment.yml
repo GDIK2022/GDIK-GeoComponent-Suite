@@ -39,7 +39,9 @@ jobs:
               https://api.github.com/repos/${{ vars.DEPLOYMENT_REPO_OWNER }}/${{ vars.DEPLOYMENT_REPO_NAME }}/dispatches \
               -d '{
                     "event_type": "${{ vars.DEPLOYMENT_EVENT_TYPE }}", 
-                    "client_payload": {}
+                    "client_payload": {
+                      "branch": "${{ github.ref_name }}"
+                    }
                   }'
 
   delete_workflows:
