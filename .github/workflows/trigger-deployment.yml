@@ -1,0 +1,62 @@
+name: Deployment Component-Suite-Versionen
+
+run-name: Deploy to Frontend by @${{ github.actor }} on ${{ github.ref_name }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      days:
+        description: 'Days-worth of runs to keep for each workflow'
+        required: true
+        default: '30'
+      minimum_runs:
+        description: 'Minimum runs to keep for each workflow'
+        required: true
+        default: '10'
+      dry_run:
+        description: 'Logs simulated changes, no deletions are performed'
+        type: boolean
+        default: true
+        required: false
+  release: 
+    types: [published, unpublished]
+
+jobs:
+  trigger_deployment:
+    runs-on: ubuntu-latest
+    name: Löst das Deployment aus
+
+    steps:
+
+      - name: Workflow im Deployment-Repo triggern
+        id: start-deployment
+        run: |
+            curl -L \
+              -X POST \
+              -H "Accept: application/vnd.github+json" \
+              -H "Authorization: Bearer ${{ secrets.GH_TOKEN }}" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              https://api.github.com/repos/${{ vars.DEPLOYMENT_REPO_OWNER }}/${{ vars.DEPLOYMENT_REPO_NAME }}/dispatches \
+              -d '{
+                    "event_type": "${{ vars.DEPLOYMENT_EVENT_TYPE }}", 
+                    "client_payload": {
+                      "branch": "${{ github.ref_name }}"
+                    }
+                  }'
+
+  delete_workflows:
+    runs-on: ubuntu-latest
+    name: Löscht alte Workflows
+    needs: trigger_deployment
+
+    steps:
+
+      - name: Delete workflow runs
+        uses: Mattraks/delete-workflow-runs@v2
+        with:
+          token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          retain_days: ${{ github.event.inputs.days || 20 }}
+          keep_minimum_runs: ${{ github.event.inputs.minimum_runs || 10 }}
+          delete_workflow_pattern: ${{ github.workflow }}
+          dry_run: ${{ github.event.inputs.dry_run || true }}
