@@ -5,6 +5,13 @@ The [Semantic Versioning](https://semver.org/spec/v2.0.0.html) is used.
 
 ## Unreleased - in development
 ### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+
+## 1.3.1
+### Added
 - Basemap.de Gray layer to default layers
 ### Changed
 - pipeline concept to separate pipelines for feature-, dev and main branches
