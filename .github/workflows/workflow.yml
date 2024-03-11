@@ -88,3 +88,4 @@ jobs:
           overwrite: true
           body: "TODO: releasetext"
           make_latest: true
+          draft: false

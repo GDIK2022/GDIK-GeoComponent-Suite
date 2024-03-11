@@ -92,3 +92,4 @@ jobs:
           make_latest: false
           target_commit: ${{ github.ref }}
           tag: current-dev
+          draft: false

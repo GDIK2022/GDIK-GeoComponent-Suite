@@ -92,3 +92,4 @@ jobs:
           overwrite: true
           body: "Release candidate"
           make_latest: false
+          draft: false
