@@ -1,0 +1,94 @@
+name: Dev-Branch Workflow
+on:
+  push:
+    branches:
+      - 'testing'
+jobs:
+  init:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20.10'
+      - uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: npm-${{ hashFiles('package-lock.json') }}
+          restore-keys: npm-
+      - run: npm i
+  test:
+    needs: init
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20.10'
+      - uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: npm-${{ hashFiles('package-lock.json') }}
+          restore-keys: npm-
+      - run: npm i
+      - run: npm run test
+  lint:
+    needs: init
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20.10'
+      - uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: npm-${{ hashFiles('package-lock.json') }}
+          restore-keys: npm-
+      - run: npm i
+      - run: npm run lint
+  audit:
+    needs: init
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20.10'
+      - uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: npm-${{ hashFiles('package-lock.json') }}
+          restore-keys: npm-
+      - run: npm i
+      - run: npm audit --omit=dev
+  publish:
+    needs: [test, audit]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20.10'
+          registry-url: 'https://npm.pkg.github.com'
+      - run: node -p -e '`PACKAGE_VERSION=RC-${require("./package.json").version}`' >> $GITHUB_ENV
+      - run: npm ci
+      - run: npm run build
+      - name: Delete same RC
+        uses: dev-drprasad/delete-tag-and-release@v1.0
+        with:
+          tag_name: ${{ env.PACKAGE_VERSION }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          delete_release: true
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: dist/gdik-geocomponent-suite.js
+          asset_name: gdik-geocomponent-suite-rc.js
+          tag: ${{ env.PACKAGE_VERSION }}
+          overwrite: true
+          body: "Release candidate"
+          make_latest: false
