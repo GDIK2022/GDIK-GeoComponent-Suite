@@ -1,4 +1,4 @@
-name: Feature-Branches Workflow
+name: Feature-Branche Workflow
 on:
   push:
     branches-ignore:

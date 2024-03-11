@@ -1,4 +1,4 @@
-name: Dev-Branch Workflow
+name: Development-Stage Workflow
 on:
   push:
     branches:
