@@ -101,9 +101,11 @@ export default class GCSMap extends HTMLElement {
                 this.map.getView().setZoom(newValue);
                 break;
             case "active-bg":
-                this.layerManager.changeBackgroundLayer(newValue).catch(() => {
-                    // TODO implement
-                });
+                this.layerManager.changeBackgroundLayer(newValue)
+                    .catch(() => {
+                        // reset component attribute when background layer is not changed
+                        this.setAttribute("active-bg", oldValue);
+                    });
                 break;
             case "lng":
                 this.i18next.changeLanguage(newValue);

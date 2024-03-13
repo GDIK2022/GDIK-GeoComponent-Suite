@@ -1,10 +1,8 @@
-name: Production-Stage Workflow
+name: Testing-Stage Workflow
 on:
   push:
     branches:
-      - 'main'
-    tags-ignore:
-      - "v*"
+      - 'testing'
 jobs:
   init:
     runs-on: ubuntu-latest
@@ -38,7 +36,7 @@ jobs:
     needs: init
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: '20.10'
@@ -75,17 +73,23 @@ jobs:
         with:
           node-version: '20.10'
           registry-url: 'https://npm.pkg.github.com'
-      - run: node -p -e '`PACKAGE_VERSION=${require("./package.json").version}`' >> $GITHUB_ENV
+      - run: node -p -e '`PACKAGE_VERSION=RC-${require("./package.json").version}`' >> $GITHUB_ENV
       - run: npm ci
       - run: npm run build
+      - name: Delete same RC
+        uses: dev-drprasad/delete-tag-and-release@v1.0
+        with:
+          tag_name: ${{ env.PACKAGE_VERSION }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          delete_release: true
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: dist/gdik-geocomponent-suite.js
-          asset_name: gdik-geocomponent-suite.js
+          asset_name: gdik-geocomponent-suite-rc.js
           tag: ${{ env.PACKAGE_VERSION }}
           overwrite: true
-          body: "TODO: releasetext"
-          make_latest: true
+          body: "Release candidate"
+          make_latest: false
           draft: false

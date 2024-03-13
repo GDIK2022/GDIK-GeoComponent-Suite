@@ -27,7 +27,7 @@ describe("Layerswitcher related", () => {
         bgLayers = layerswitcherElement.querySelectorAll("ul li");
         expect(bgLayers.length).toBe(2);
 
-        expect(bgLayers[0].innerHTML).toBe("basemap.de");
+        expect(bgLayers[0].innerHTML).toBe("Basemap.de - Farbe");
     });
 
     it("should render all given background layers", async () => {
