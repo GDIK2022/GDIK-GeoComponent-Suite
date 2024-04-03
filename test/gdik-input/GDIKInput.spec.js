@@ -391,7 +391,21 @@ describe("config file handling", () => {
         expect(mockedFetchConfig).toHaveBeenCalledWith(configUrl);
     });
 
-    it.todo("should add search component when searchUrl defined in loaded config");
+    it("should add search component when searchUrl defined in loaded config", async () => {
+        const component = new GDIKInput(),
+            configUrl = "https://config";
+
+        mockedFetchConfig.mockImplementation(async () => JSON.parse(JSON.stringify(config)));
+
+        component.setAttribute("config-url", configUrl);
+
+        document.body.appendChild(component);
+
+        await new Promise(process.nextTick);
+
+        expect(component.searchElement).toBeDefined();
+        expect(component.searchElement.nodeName).toBe("GCS-SEARCH");
+    });
 
     it.todo("should not break when a gdik-select config is passed");
 });
