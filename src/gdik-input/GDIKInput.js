@@ -1,3 +1,5 @@
+import { GCSMap, GCSGeolocation, GCSDraw, GCSLayerSwitcher } from "../components";
+
 export default class GDIKInput extends HTMLElement {
 
     static get observedAttributes () {
