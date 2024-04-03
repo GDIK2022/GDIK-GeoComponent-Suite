@@ -4,6 +4,8 @@ enableFetchMocks();
 import GDIKInput from "../../src/gdik-input/GDIKInput";
 import GCSMap from "../../src/components/gcs-map/GCSMap";
 
+import * as config from "./assets/config.json";
+
 describe("Init gdik-input", () => {
     const featureCollection = {"type": "FeatureCollection", "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [1, 1]}}]},
         value = JSON.stringify(featureCollection);
@@ -363,22 +365,30 @@ describe("value assignment", () => {
 
 describe("config file handling", () => {
 
+    let mockedFetchConfig;
+
     beforeEach(() => {
-        fetch.resetMocks();
+        mockedFetchConfig = jest.spyOn(GCSMap.prototype, "fetchConfig");
+    });
+
+    afterEach(() => {
+        jest.restoreAllMocks();
     });
 
     it("should load given config url", async () => {
         const component = new GDIKInput(),
             configUrl = "https://config";
 
+        mockedFetchConfig.mockImplementation(() => JSON.parse(JSON.stringify(config)));
+
         component.setAttribute("config-url", configUrl);
 
-        await component.connectedCallback();
-
-        // TODO check fetch called
+        document.body.appendChild(component);
 
         expect(component.shadowRoot.childNodes[0].nodeName).toBe("GCS-MAP");
         expect(component.shadowRoot.childNodes[0].getAttribute("config-url")).toBe(configUrl);
+
+        expect(mockedFetchConfig).toHaveBeenCalledWith(configUrl);
     });
 
     it.todo("should add search component when searchUrl defined in loaded config");
