@@ -4,7 +4,7 @@ enableFetchMocks();
 import GDIKInput from "../../src/gdik-input/GDIKInput";
 import GCSMap from "../../src/components/gcs-map/GCSMap";
 
-import * as config from "./assets/config.json";
+import * as searchConfig from "./assets/search.json";
 
 describe("Init gdik-input", () => {
     const featureCollection = {"type": "FeatureCollection", "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [1, 1]}}]},
@@ -379,7 +379,7 @@ describe("config file handling", () => {
         const component = new GDIKInput(),
             configUrl = "https://config";
 
-        mockedFetchConfig.mockImplementation(() => JSON.parse(JSON.stringify(config)));
+        mockedFetchConfig.mockImplementation(() => JSON.parse(JSON.stringify(searchConfig)));
 
         component.setAttribute("config-url", configUrl);
 
@@ -395,7 +395,7 @@ describe("config file handling", () => {
         const component = new GDIKInput(),
             configUrl = "https://config";
 
-        mockedFetchConfig.mockImplementation(async () => JSON.parse(JSON.stringify(config)));
+        mockedFetchConfig.mockImplementation(async () => JSON.parse(JSON.stringify(searchConfig)));
 
         component.setAttribute("config-url", configUrl);
 
