@@ -5,6 +5,7 @@ import GDIKInput from "../../src/gdik-input/GDIKInput";
 import GCSMap from "../../src/components/gcs-map/GCSMap";
 
 import * as searchConfig from "./assets/search.json";
+import * as drawTypeConfig from "./assets/drawType.json";
 
 describe("Init gdik-input", () => {
     const featureCollection = {"type": "FeatureCollection", "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [1, 1]}}]},
@@ -389,6 +390,43 @@ describe("config file handling", () => {
         expect(component.shadowRoot.childNodes[0].getAttribute("config-url")).toBe(configUrl);
 
         expect(mockedFetchConfig).toHaveBeenCalledWith(configUrl);
+    });
+
+    it("should set draw type by config file value", async () => {
+        const component = new GDIKInput(),
+            configUrl = "https://config";
+
+        mockedFetchConfig.mockImplementation(() => JSON.parse(JSON.stringify(drawTypeConfig)));
+
+        component.setAttribute("config-url", configUrl);
+
+        document.body.appendChild(component);
+
+        expect(component.shadowRoot.childNodes.length).toBe(1);
+        expect(component.shadowRoot.childNodes[0].nodeName).toBe("GCS-MAP");
+        expect(component.shadowRoot.childNodes[0].childNodes.length).toBe(3);
+        expect(component.shadowRoot.childNodes[0].childNodes[0].nodeName).toBe("GCS-LAYERSWITCHER");
+        expect(component.shadowRoot.childNodes[0].childNodes[1].nodeName).toBe("GCS-DRAW");
+        expect(component.shadowRoot.childNodes[0].childNodes[1].drawType).toBe("Point");
+    });
+
+    it("should use draw-type attribute over config file value", async () => {
+        const component = new GDIKInput(),
+            configUrl = "https://config";
+
+        mockedFetchConfig.mockImplementation(() => JSON.parse(JSON.stringify(drawTypeConfig)));
+
+        component.setAttribute("config-url", configUrl);
+        component.setAttribute("draw-type", "Polygon");
+
+        document.body.appendChild(component);
+
+        expect(component.shadowRoot.childNodes.length).toBe(1);
+        expect(component.shadowRoot.childNodes[0].nodeName).toBe("GCS-MAP");
+        expect(component.shadowRoot.childNodes[0].childNodes.length).toBe(3);
+        expect(component.shadowRoot.childNodes[0].childNodes[0].nodeName).toBe("GCS-LAYERSWITCHER");
+        expect(component.shadowRoot.childNodes[0].childNodes[1].nodeName).toBe("GCS-DRAW");
+        expect(component.shadowRoot.childNodes[0].childNodes[1].getAttribute("draw-type")).toBe("Polygon");
     });
 
     it("should add search component when searchUrl defined in loaded config", async () => {
