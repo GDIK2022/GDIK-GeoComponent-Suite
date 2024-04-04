@@ -401,13 +401,15 @@ describe("config file handling", () => {
         component.setAttribute("config-url", configUrl);
 
         document.body.appendChild(component);
+        await new Promise(process.nextTick);
 
         expect(component.shadowRoot.childNodes.length).toBe(1);
         expect(component.shadowRoot.childNodes[0].nodeName).toBe("GCS-MAP");
         expect(component.shadowRoot.childNodes[0].childNodes.length).toBe(3);
         expect(component.shadowRoot.childNodes[0].childNodes[0].nodeName).toBe("GCS-LAYERSWITCHER");
-        expect(component.shadowRoot.childNodes[0].childNodes[1].nodeName).toBe("GCS-DRAW");
-        expect(component.shadowRoot.childNodes[0].childNodes[1].drawType).toBe("Point");
+        expect(component.shadowRoot.childNodes[0].childNodes[1].nodeName).toBe("GCS-GEOLOCATION");
+        expect(component.shadowRoot.childNodes[0].childNodes[2].nodeName).toBe("GCS-DRAW");
+        expect(component.shadowRoot.childNodes[0].childNodes[2].getAttribute("draw-type")).toBe("Point");
     });
 
     it("should use draw-type attribute over config file value", async () => {
@@ -420,13 +422,15 @@ describe("config file handling", () => {
         component.setAttribute("draw-type", "Polygon");
 
         document.body.appendChild(component);
+        await new Promise(process.nextTick);
 
         expect(component.shadowRoot.childNodes.length).toBe(1);
         expect(component.shadowRoot.childNodes[0].nodeName).toBe("GCS-MAP");
         expect(component.shadowRoot.childNodes[0].childNodes.length).toBe(3);
         expect(component.shadowRoot.childNodes[0].childNodes[0].nodeName).toBe("GCS-LAYERSWITCHER");
-        expect(component.shadowRoot.childNodes[0].childNodes[1].nodeName).toBe("GCS-DRAW");
-        expect(component.shadowRoot.childNodes[0].childNodes[1].getAttribute("draw-type")).toBe("Polygon");
+        expect(component.shadowRoot.childNodes[0].childNodes[1].nodeName).toBe("GCS-GEOLOCATION");
+        expect(component.shadowRoot.childNodes[0].childNodes[2].nodeName).toBe("GCS-DRAW");
+        expect(component.shadowRoot.childNodes[0].childNodes[2].getAttribute("draw-type")).toBe("Polygon");
     });
 
     it("should add search component when searchUrl defined in loaded config", async () => {
