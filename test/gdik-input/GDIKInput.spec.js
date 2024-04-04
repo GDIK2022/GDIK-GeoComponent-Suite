@@ -171,7 +171,7 @@ describe("Init gdik-input", () => {
 
 describe("value assignment", () => {
     const featureCollection = {"type": "FeatureCollection", "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [1, 1]}}]},
-        featureCollection2 = {"type": "FeatureCollection", "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [2, 2]}}]},
+        featureCollection2 = {"type": "FeatureCollection", "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [2, 2]}, "properties": null}]},
         value = JSON.stringify(featureCollection),
         value2 = JSON.stringify(featureCollection2);
 
