@@ -102,6 +102,7 @@ export default class GDIKInput extends HTMLElement {
     handleConfigLoaded (e) {
         const config = e.detail,
             drawType = this.getAttribute("draw-type") || config?.component?.drawType;
+
         if (drawType) {
             this.input = document.createElement("input");
             this.input.name = this.getAttribute("name") || "gdik-input";
