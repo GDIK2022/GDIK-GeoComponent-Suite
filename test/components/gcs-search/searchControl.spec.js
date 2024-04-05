@@ -15,9 +15,10 @@ describe("Search", () => {
 
     let map;
 
-    fetch.mockResponse(JSON.stringify(searchResult));
-
     beforeEach(() => {
+        fetch.resetMocks();
+        fetch.mockResponseOnce(JSON.stringify(searchResult));
+
         map = mapsAPI.map.createMap({...defaultConfig.portal, layerConf: defaultConfig.services}, "2D");
     });
 
@@ -72,6 +73,21 @@ describe("Search", () => {
 
         expect(control.element.firstChild.value).toBe(resultText);
 
+
+        expect(map.getView().getCenter()).toEqual(resultCoord);
+    });
+
+    it("should select first search result when passing search string in constructor", () => {
+        const control = new SearchControl(options),
+            resultText = searchResult.features[0].properties.text,
+            resultCoord = [
+                (searchResult.features[0].bbox[2] - searchResult.features[0].bbox[0]) / 2,
+                (searchResult.features[0].bbox[2] - searchResult.features[0].bbox[0]) / 2
+            ];
+
+        map.addControl(control);
+
+        expect(control.element.firstChild.value).toBe(resultText);
 
         expect(map.getView().getCenter()).toEqual(resultCoord);
     });
