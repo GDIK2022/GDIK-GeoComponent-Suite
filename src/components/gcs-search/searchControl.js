@@ -96,9 +96,10 @@ export default class SearchControl extends Control {
 
     selectFirstResult (findings) {
         const text = findings.features[0].properties.text,
-            coords = findings.features[0].geometry.coordinates;
+            coords = findings.features[0].geometry.coordinates,
+            multipleResults = findings.features.length !== 1;
 
-        this.showResult(text, coords);
+        this.showResult(text, coords, multipleResults);
     }
 
     clearResults () {
