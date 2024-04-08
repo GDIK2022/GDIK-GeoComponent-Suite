@@ -30,12 +30,9 @@ export default class SearchControl extends Control {
             srs: map.getView().getProjection().getCode()
         });
         if (this.searchString) {
-            this.search(this.searchString).then((resp) => {
-                const text = resp.features[0].properties.text,
-                    coords = resp.features[0].geometry.coordinates;
-
-                this.showResult(text, coords);
-            }).catch((err) => this.handleSearchError(err));
+            this.search(this.searchString)
+                .then((resp) => this.selectFirstResult(resp))
+                .catch((err) => this.handleSearchError(err));
         }
         super.setMap(map);
     }
@@ -72,7 +69,9 @@ export default class SearchControl extends Control {
     handlePropertyChange (property) {
         if (property.key === "searchString") {
             this.input.value = this.get("searchString");
-            this.search(this.input.value).catch((err) => this.handleSearchError(err));
+            this.search(this.input.value)
+                .then((resp) => this.selectFirstResult(resp))
+                .catch((err) => this.handleSearchError(err));
         }
     }
 
@@ -90,6 +89,13 @@ export default class SearchControl extends Control {
         this.input.value = text;
         this.view.setCenter(coords);
         this.clearResults();
+    }
+
+    selectFirstResult (findings) {
+        const text = findings.features[0].properties.text,
+            coords = findings.features[0].geometry.coordinates;
+
+        this.showResult(text, coords);
     }
 
     clearResults () {
