@@ -89,4 +89,22 @@ describe("Search", () => {
         expect(map.getView().getCenter()).toEqual(resultCoord);
     });
 
+    it("should select first search result when searchString property is changed", async () => {
+        const control = new SearchControl(options),
+            resultText = searchResult.features[0].properties.text,
+            resultCoord = searchResult.features[0].geometry.coordinates;
+
+        map.addControl(control);
+        await new Promise(process.nextTick);
+
+        expect(control.element.firstChild.value).toBe("");
+        expect(map.getView().getCenter()).toEqual(defaultConfig.portal.startCenter);
+
+        control.set("searchString", searchString);
+        await new Promise(process.nextTick);
+
+        expect(control.element.firstChild.value).toBe(resultText);
+        expect(map.getView().getCenter()).toEqual(resultCoord);
+    });
+
 });
