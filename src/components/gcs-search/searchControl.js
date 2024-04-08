@@ -80,15 +80,18 @@ export default class SearchControl extends Control {
             const elem = document.createElement("div");
 
             elem.innerHTML = feature.properties.text;
-            elem.onclick = this.showResult.bind(this, feature.properties.text, feature.geometry.coordinates);
+            elem.onclick = this.showResult.bind(this, feature.properties.text, feature.geometry.coordinates, false);
             this.resultsContainer.appendChild(elem);
         });
     }
 
-    showResult (text, coords) {
+    showResult (text, coords, keepResults = true) {
         this.input.value = text;
         this.view.setCenter(coords);
-        this.clearResults();
+
+        if (!keepResults) {
+            this.clearResults();
+        }
     }
 
     selectFirstResult (findings) {
