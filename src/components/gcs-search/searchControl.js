@@ -13,7 +13,7 @@ export default class SearchControl extends Control {
 
         this.input = document.createElement("input");
         this.on("propertychange", this.handlePropertyChange.bind(this));
-        this.searchString = options.searchString;
+        this.searchString = options.searchString || "";
         this.input.value = this.searchString;
         this.input.onkeydown = this.handleSearch.bind(this);
         containerDiv.appendChild(this.input);
