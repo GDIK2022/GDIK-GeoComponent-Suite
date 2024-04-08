@@ -25,16 +25,12 @@ export default class SearchControl extends Control {
 
     setMap (map) {
         this.view = map.getView();
-        this.search = new OSGTS({
+        this.searchEngine = new OSGTS({
             searchUrl: this.searchUrl,
             srs: map.getView().getProjection().getCode()
         });
         if (this.searchString) {
-            this.handleSearch({keyCode: 13, target: this.input, preventDefault: () => {
-                // noop
-            }, stopPropagation: () => {
-                // noop
-            }});
+            this.search(this.searchString);
         }
         super.setMap(map);
     }
@@ -45,21 +41,21 @@ export default class SearchControl extends Control {
         if (e.keyCode === 13) {
             e.preventDefault();
             e.stopPropagation();
-            this.clearResults();
-            if (this.search) {
-                this.search.search(elem.value).then((resp) => this.renderResponse(resp));
-            }
+            this.search(elem.value);
+        }
+    }
+
+    search (string) {
+        this.clearResults();
+        if (this.searchEngine) {
+            this.searchEngine.search(string).then((resp) => this.renderResponse(resp));
         }
     }
 
     handlePropertyChange (property) {
         if (property.key === "searchString") {
             this.input.value = this.get("searchString");
-            this.handleSearch({keyCode: 13, target: this.input, preventDefault: () => {
-                // noop
-            }, stopPropagation: () => {
-                // noop
-            }});
+            this.search(this.input.value);
         }
     }
 

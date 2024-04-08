@@ -9,9 +9,9 @@ enableFetchMocks();
 
 describe("Search", () => {
     const options = {
-        searchUrl: "https://search",
-        searchString: "Stade"
-    };
+            searchUrl: "https://search"
+        },
+        searchString = "Oldenburg";
 
     let map;
 
@@ -39,7 +39,7 @@ describe("Search", () => {
 
         map.addControl(control);
 
-        control.element.firstChild.value = options.searchString;
+        control.element.firstChild.value = searchString;
         // simulate enter pressed in input element
         control.handleSearch({keyCode: 13, target: control.element.firstChild, preventDefault: () => {
             // noop
@@ -47,7 +47,7 @@ describe("Search", () => {
             // noop
         }});
 
-        expect(fetch).toBeCalledWith("https://search?outputformat=json&srsName=EPSG:25832&query=" + options.searchString + "&count=5");
+        expect(fetch).toBeCalledWith("https://search?outputformat=json&srsName=EPSG:25832&query=" + searchString + "&count=5");
     });
 
     it("should render search results", () => {
@@ -78,7 +78,7 @@ describe("Search", () => {
     });
 
     it("should select first search result when passing search string in constructor", () => {
-        const control = new SearchControl(options),
+        const control = new SearchControl({"searchString": searchString}, ...options),
             resultText = searchResult.features[0].properties.text,
             resultCoord = [
                 (searchResult.features[0].bbox[2] - searchResult.features[0].bbox[0]) / 2,
