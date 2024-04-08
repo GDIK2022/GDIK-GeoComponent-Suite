@@ -77,18 +77,15 @@ describe("Search", () => {
         expect(map.getView().getCenter()).toEqual(resultCoord);
     });
 
-    it("should select first search result when passing search string in constructor", () => {
-        const control = new SearchControl({"searchString": searchString}, ...options),
+    it("should select first search result when passing search string in constructor", async () => {
+        const control = new SearchControl({searchString: searchString, ...options}),
             resultText = searchResult.features[0].properties.text,
-            resultCoord = [
-                (searchResult.features[0].bbox[2] - searchResult.features[0].bbox[0]) / 2,
-                (searchResult.features[0].bbox[2] - searchResult.features[0].bbox[0]) / 2
-            ];
+            resultCoord = searchResult.features[0].geometry.coordinates;
 
         map.addControl(control);
+        await new Promise(process.nextTick);
 
         expect(control.element.firstChild.value).toBe(resultText);
-
         expect(map.getView().getCenter()).toEqual(resultCoord);
     });
 

@@ -30,7 +30,12 @@ export default class SearchControl extends Control {
             srs: map.getView().getProjection().getCode()
         });
         if (this.searchString) {
-            this.search(this.searchString);
+            this.search(this.searchString).then((resp) => {
+                const text = resp.features[0].properties.text,
+                    coords = resp.features[0].geometry.coordinates;
+
+                this.showResult(text, coords);
+            }).catch((err) => this.handleSearchError(err));
         }
         super.setMap(map);
     }
@@ -41,21 +46,33 @@ export default class SearchControl extends Control {
         if (e.keyCode === 13) {
             e.preventDefault();
             e.stopPropagation();
-            this.search(elem.value);
+            this.search(elem.value).catch((err) => this.handleSearchError(err));
         }
     }
 
-    search (string) {
+    async search (string) {
         this.clearResults();
-        if (this.searchEngine) {
-            this.searchEngine.search(string).then((resp) => this.renderResponse(resp));
+        if (this.searchEngine === undefined) {
+            return new Promise((resolve, reject) => {
+                reject();
+            });
         }
+
+        return this.searchEngine.search(string).then((resp) => {
+            this.renderResponse(resp);
+            return resp;
+        });
+    }
+
+    // eslint-disable-next-line no-unused-vars, handle-callback-err
+    handleSearchError (err) {
+        // TODO implement
     }
 
     handlePropertyChange (property) {
         if (property.key === "searchString") {
             this.input.value = this.get("searchString");
-            this.search(this.input.value);
+            this.search(this.input.value).catch((err) => this.handleSearchError(err));
         }
     }
 
