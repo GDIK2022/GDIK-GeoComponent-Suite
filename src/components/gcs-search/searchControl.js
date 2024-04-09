@@ -97,7 +97,7 @@ export default class SearchControl extends Control {
         const zoom = this.view.getZoomForResolution(this.fallbackResultResolution);
 
         this.input.value = text;
-        console.log("==>", bbox)
+
         if (bbox !== undefined) {
             this.view.fit(bbox);
         }
