@@ -57,6 +57,7 @@ export default class GCSMap extends HTMLElement {
         // load defautconfig
         this.configURL = this.getAttribute("config-url");
         this.config = await this.fetchConfig(this.configURL);
+        this.dispatchEvent(new CustomEvent("configloaded", {detail: this.config}));
 
         if (this.hasAttribute("lon") && this.hasAttribute("lat")) {
             this.config.portal.startCenter = [this.getAttribute("lon"), this.getAttribute("lat")];
@@ -146,7 +147,6 @@ export default class GCSMap extends HTMLElement {
             console.warn("Fall back to default config");
             loadedConfig = merge({}, defaultConfig);
         }
-        this.dispatchEvent(new CustomEvent("configloaded", {detail: loadedConfig}));
         return loadedConfig;
     }
 

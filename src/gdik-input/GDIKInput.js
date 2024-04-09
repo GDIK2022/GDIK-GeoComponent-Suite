@@ -1,3 +1,5 @@
+import {GCSMap, GCSGeolocation, GCSDraw, GCSLayerSwitcher, GCSSearch} from "../components";
+
 export default class GDIKInput extends HTMLElement {
 
     static get observedAttributes () {
@@ -8,7 +10,7 @@ export default class GDIKInput extends HTMLElement {
     connectedCallback () {
         const shadow = this.attachShadow({mode: "open"});
 
-        this.mapElement = document.createElement("gcs-map");
+        this.mapElement = new GCSMap();
         if (this.hasAttribute("config-url")) {
             this.mapElement.setAttribute("config-url", this.getAttribute("config-url"));
         }
@@ -20,7 +22,7 @@ export default class GDIKInput extends HTMLElement {
         this.mapElement.addEventListener("configloaded", this.handleConfigLoaded.bind(this));
         shadow.appendChild(this.mapElement);
 
-        this.layerswitcherElement = document.createElement("gcs-layerswitcher");
+        this.layerswitcherElement = new GCSLayerSwitcher();
         this.layerswitcherElement.slot = "content";
 
         this.mapElement.appendChild(this.layerswitcherElement);
@@ -34,25 +36,7 @@ export default class GDIKInput extends HTMLElement {
         this.observer = new MutationObserver(this.handleObservedAttributeCallback.bind(this));
         this.observer.observe(this.mapElement, {attributes: true, childList: false, subtree: false});
 
-        if (this.hasAttribute("draw-type")) {
-            this.input = document.createElement("input");
-            this.input.name = this.getAttribute("name") || "gdik-input";
-            this.input.type = "hidden";
-            this.appendChild(this.input);
-
-            this.drawElement = document.createElement("gcs-draw");
-            this.drawElement.slot = "content";
-            this.drawElement.setAttribute("draw-type", this.getAttribute("draw-type"));
-
-            if (this.hasAttribute("value")) {
-                this.setValue(this.getAttribute("value"), true);
-            }
-
-            this.mapElement.appendChild(this.drawElement);
-            this.observer.observe(this.drawElement, {attributes: true, childList: false, subtree: false});
-        }
-
-        this.geolocationElement = document.createElement("gcs-geolocation");
+        this.geolocationElement = new GCSGeolocation();
         this.geolocationElement.slot = "content";
         this.mapElement.appendChild(this.geolocationElement);
     }
@@ -116,10 +100,29 @@ export default class GDIKInput extends HTMLElement {
     }
 
     handleConfigLoaded (e) {
-        const config = e.detail;
+        const config = e.detail,
+            drawType = this.getAttribute("draw-type") || config?.component?.drawType;
+
+        if (drawType) {
+            this.input = document.createElement("input");
+            this.input.name = this.getAttribute("name") || "gdik-input";
+            this.input.type = "hidden";
+            this.appendChild(this.input);
+
+            this.drawElement = new GCSDraw();
+            this.drawElement.slot = "content";
+            this.drawElement.setAttribute("draw-type", drawType);
+
+            if (this.hasAttribute("value")) {
+                this.setValue(this.getAttribute("value"), true);
+            }
+
+            this.mapElement.appendChild(this.drawElement);
+            this.observer.observe(this.drawElement, {attributes: true, childList: false, subtree: false});
+        }
 
         if (config.component.searchUrl) {
-            this.searchElement = document.createElement("gcs-search");
+            this.searchElement = new GCSSearch();
             this.searchElement.slot = "content";
             this.searchElement.setAttribute("search-url", config.component.searchUrl);
             this.searchElement.setAttribute("suggest-url", config.component.suggestUrl);
