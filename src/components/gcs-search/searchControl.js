@@ -11,7 +11,7 @@ export default class SearchControl extends Control {
 
         this.searchUrl = options.searchUrl;
         this.fallbackResultResolution = 1.3229159522920524;
-        // converted to fallbackResultResolution in set map when defineds
+        // converted to fallbackResultResolution in set map when defined
         this.fallbackResultZoomLevel = options.fallbackResultZoomLevel;
 
         this.input = document.createElement("input");
