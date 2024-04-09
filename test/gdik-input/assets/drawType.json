@@ -1,0 +1,31 @@
+{
+     "component": {
+          "name": "Test config",
+          "backgroundLayers": ["1001"],
+          "drawType": "Point"
+     },
+     "portal": {
+          "epsg": "EPSG:25832",
+          "namedProjections": [
+               ["EPSG:25832", "+title=ETRS89/UTM 32N +proj=utm +zone=32 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"]
+          ],
+          "extent": [400000.0, 5000000.0, 500000.0, 6000000.0],
+          "startCenter": [450000.0, 5500000.0],
+          "startZoomLevel": 5,
+          "units": "m"
+     },
+     "services": [
+          {
+               "id": "1001",
+               "typ": "WMS",
+               "name": "basemap.de",
+               "url": "https://sgx.geodatenzentrum.de/wms_basemapde",
+               "version": "1.3.0",
+               "layers": "de_basemapde_web_raster_farbe",
+               "transparent": true,
+               "singleTile": false,
+               "tilesize": 256,
+               "gutter": 0
+          }
+     ]
+}
