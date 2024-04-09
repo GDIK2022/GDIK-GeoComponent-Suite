@@ -88,7 +88,7 @@ describe("Search", () => {
         expect(control.element.firstChild.value).toBe(resultText);
 
         expect(map.getView().getCenter()).toEqual([447056.0376122469, 5888591.139847938]);
-        // default fallback zoom level
+        // zoom level defined by bbox
         expect(map.getView().getZoom()).toBe(3);
     });
 
