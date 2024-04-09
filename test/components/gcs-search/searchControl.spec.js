@@ -1,4 +1,5 @@
 import mapsAPI from "masterportalAPI/src/maps/api.js";
+import {getCenter} from "ol/extent";
 
 import SearchControl from "../../../src/components/gcs-search/searchControl";
 import * as defaultConfig from "../../../src/components/gcs-map/assets/config.json";
@@ -75,12 +76,48 @@ describe("Search", () => {
 
 
         expect(map.getView().getCenter()).toEqual(resultCoord);
+        // default fallback zoom level
+        expect(map.getView().getZoom()).toBe(11);
+    });
+
+    it("should move to search result bbox instead of coordinate and fit zoom to bbox", () => {
+        const control = new SearchControl(options),
+            resultText = "teststring",
+            resultCoord = [450010.0, 5500010.0],
+            resultBBox = [441632.41251335153, 5881752.268513008, 452479.6627111422, 5895430.011182868];
+
+        map.addControl(control);
+
+        control.showResult(resultText, resultCoord, resultBBox);
+
+        expect(control.element.firstChild.value).toBe(resultText);
+
+        expect(map.getView().getCenter()).toEqual([447056.0376122469, 5888591.139847938]);
+        // zoom level defined by bbox
+        expect(map.getView().getZoom()).toBe(3);
+    });
+
+    it("should zoom map to defined zoom level", () => {
+        const fallbackResultZoomLevel = 10,
+            control = new SearchControl({fallbackResultZoomLevel: fallbackResultZoomLevel, ...options}),
+            resultText = "teststring",
+            resultCoord = [450010.0, 5500010.0];
+
+        map.addControl(control);
+
+        control.showResult(resultText, resultCoord);
+
+        expect(control.element.firstChild.value).toBe(resultText);
+
+
+        expect(map.getView().getCenter()).toEqual(resultCoord);
+        expect(map.getView().getZoom()).toBe(fallbackResultZoomLevel);
     });
 
     it("should select first search result when passing search string in constructor", async () => {
         const control = new SearchControl({searchString: searchString, ...options}),
             resultText = searchResult.features[0].properties.text,
-            resultCoord = searchResult.features[0].geometry.coordinates;
+            resultCoord = getCenter(searchResult.features[0].bbox);
 
         map.addControl(control);
         await new Promise(process.nextTick);
@@ -92,7 +129,7 @@ describe("Search", () => {
     it("should select first search result when searchString property is changed", async () => {
         const control = new SearchControl(options),
             resultText = searchResult.features[0].properties.text,
-            resultCoord = searchResult.features[0].geometry.coordinates;
+            resultCoord = getCenter(searchResult.features[0].bbox);
 
         map.addControl(control);
         await new Promise(process.nextTick);

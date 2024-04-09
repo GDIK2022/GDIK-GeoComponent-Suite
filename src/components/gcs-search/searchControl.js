@@ -10,6 +10,9 @@ export default class SearchControl extends Control {
         super({element: containerDiv});
 
         this.searchUrl = options.searchUrl;
+        this.fallbackResultResolution = 1.3229159522920524;
+        // converted to fallbackResultResolution in set map when defined
+        this.fallbackResultZoomLevel = options.fallbackResultZoomLevel;
 
         this.input = document.createElement("input");
         this.on("propertychange", this.handlePropertyChange.bind(this));
@@ -29,6 +32,10 @@ export default class SearchControl extends Control {
             searchUrl: this.searchUrl,
             srs: map.getView().getProjection().getCode()
         });
+        if (this.fallbackResultZoomLevel !== undefined) {
+            this.fallbackResultResolution = this.view.getResolutionForZoom(this.fallbackResultZoomLevel);
+        }
+
         if (this.searchString) {
             this.search(this.searchString)
                 .then((resp) => this.selectFirstResult(resp))
@@ -80,26 +87,38 @@ export default class SearchControl extends Control {
             const elem = document.createElement("div");
 
             elem.innerHTML = feature.properties.text;
-            elem.onclick = this.showResult.bind(this, feature.properties.text, feature.geometry.coordinates, false);
+
+            elem.onclick = this.showResult.bind(this, feature.properties.text, feature.geometry.coordinates, feature.bbox, false);
             this.resultsContainer.appendChild(elem);
         });
     }
 
-    showResult (text, coords, keepResults = true) {
+    showResult (text, coords, bbox, keepResults = true) {
+        const zoom = this.view.getZoomForResolution(this.fallbackResultResolution);
+
         this.input.value = text;
-        this.view.setCenter(coords);
+        console.log("==>", bbox)
+        if (bbox !== undefined) {
+            this.view.fit(bbox);
+        }
+        else {
+            this.view.setCenter(coords);
+            this.view.setZoom(zoom);
+        }
 
         if (!keepResults) {
             this.clearResults();
         }
+
     }
 
     selectFirstResult (findings) {
         const text = findings.features[0].properties.text,
             coords = findings.features[0].geometry.coordinates,
+            bbox = findings.features[0].bbox,
             multipleResults = findings.features.length !== 1;
 
-        this.showResult(text, coords, multipleResults);
+        this.showResult(text, coords, bbox, multipleResults);
     }
 
     clearResults () {
