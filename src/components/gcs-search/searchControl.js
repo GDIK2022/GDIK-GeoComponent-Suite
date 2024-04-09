@@ -10,6 +10,9 @@ export default class SearchControl extends Control {
         super({element: containerDiv});
 
         this.searchUrl = options.searchUrl;
+        this.fallbackResultResolution = 1.3229159522920524;
+        // converted to fallbackResultResolution in set map when defined
+        this.fallbackResultZoomLevel = options.fallbackResultZoomLevel;
 
         this.input = document.createElement("input");
         this.on("propertychange", this.handlePropertyChange.bind(this));
@@ -29,6 +32,10 @@ export default class SearchControl extends Control {
             searchUrl: this.searchUrl,
             srs: map.getView().getProjection().getCode()
         });
+        if (this.fallbackResultZoomLevel !== undefined) {
+            this.fallbackResultResolution = this.view.getResolutionForZoom(this.fallbackResultZoomLevel);
+        }
+
         if (this.searchString) {
             this.handleSearch({keyCode: 13, target: this.input, preventDefault: () => {
                 // noop
@@ -68,14 +75,24 @@ export default class SearchControl extends Control {
             const elem = document.createElement("div");
 
             elem.innerHTML = feature.properties.text;
-            elem.onclick = this.showResult.bind(this, feature.properties.text, feature.geometry.coordinates);
+
+            elem.onclick = this.showResult.bind(this, feature.properties.text, feature.geometry.coordinates, feature.bbox);
             this.resultsContainer.appendChild(elem);
         });
     }
 
-    showResult (text, coords) {
+    showResult (text, coords, bbox) {
+        const zoom = this.view.getZoomForResolution(this.fallbackResultResolution);
+
         this.input.value = text;
-        this.view.setCenter(coords);
+
+        if (bbox !== undefined) {
+            this.view.fit(bbox);
+        }
+        else {
+            this.view.setCenter(coords);
+            this.view.setZoom(zoom);
+        }
         this.clearResults();
     }
 
