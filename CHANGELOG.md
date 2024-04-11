@@ -10,6 +10,16 @@ The [Semantic Versioning](https://semver.org/spec/v2.0.0.html) is used.
 ### Removed
 ### Fixed
 
+## 1.3.2
+### Added
+### Changed
+- jump to search result when search string attribute is set or changed
+### Deprecated
+### Removed
+### Fixed
+- drawType in config file has no effect
+- zoom level not changed when search result selected
+
 ## 1.3.1
 ### Added
 - Basemap.de Gray layer to default layers
