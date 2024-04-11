@@ -1,20 +1,25 @@
 import mapsAPI from "masterportalAPI/src/maps/api.js";
+import {getCenter} from "ol/extent";
 
 import SearchControl from "../../../src/components/gcs-search/searchControl";
 import * as defaultConfig from "../../../src/components/gcs-map/assets/config.json";
 import * as searchResult from "./assets/searchResults.json";
 
+import {enableFetchMocks} from "jest-fetch-mock";
+enableFetchMocks();
+
 describe("Search", () => {
     const options = {
-        searchUrl: "https://search",
-        searchString: "Stade"
-    };
+            searchUrl: "https://search"
+        },
+        searchString = "Oldenburg";
 
     let map;
 
-    fetch.mockResponse(JSON.stringify(searchResult));
-
     beforeEach(() => {
+        fetch.resetMocks();
+        fetch.mockResponseOnce(JSON.stringify(searchResult));
+
         map = mapsAPI.map.createMap({...defaultConfig.portal, layerConf: defaultConfig.services}, "2D");
     });
 
@@ -35,7 +40,7 @@ describe("Search", () => {
 
         map.addControl(control);
 
-        control.element.firstChild.value = options.searchString;
+        control.element.firstChild.value = searchString;
         // simulate enter pressed in input element
         control.handleSearch({keyCode: 13, target: control.element.firstChild, preventDefault: () => {
             // noop
@@ -43,7 +48,7 @@ describe("Search", () => {
             // noop
         }});
 
-        expect(fetch).toBeCalledWith("https://search?outputformat=json&srsName=EPSG:25832&query=" + options.searchString + "&count=5");
+        expect(fetch).toBeCalledWith("https://search?outputformat=json&srsName=EPSG:25832&query=" + searchString + "&count=5");
     });
 
     it("should render search results", () => {
@@ -107,6 +112,36 @@ describe("Search", () => {
 
         expect(map.getView().getCenter()).toEqual(resultCoord);
         expect(map.getView().getZoom()).toBe(fallbackResultZoomLevel);
+    });
+
+    it("should select first search result when passing search string in constructor", async () => {
+        const control = new SearchControl({searchString: searchString, ...options}),
+            resultText = searchResult.features[0].properties.text,
+            resultCoord = getCenter(searchResult.features[0].bbox);
+
+        map.addControl(control);
+        await new Promise(process.nextTick);
+
+        expect(control.element.firstChild.value).toBe(resultText);
+        expect(map.getView().getCenter()).toEqual(resultCoord);
+    });
+
+    it("should select first search result when searchString property is changed", async () => {
+        const control = new SearchControl(options),
+            resultText = searchResult.features[0].properties.text,
+            resultCoord = getCenter(searchResult.features[0].bbox);
+
+        map.addControl(control);
+        await new Promise(process.nextTick);
+
+        expect(control.element.firstChild.value).toBe("");
+        expect(map.getView().getCenter()).toEqual(defaultConfig.portal.startCenter);
+
+        control.set("searchString", searchString);
+        await new Promise(process.nextTick);
+
+        expect(control.element.firstChild.value).toBe(resultText);
+        expect(map.getView().getCenter()).toEqual(resultCoord);
     });
 
 });

@@ -16,7 +16,7 @@ export default class SearchControl extends Control {
 
         this.input = document.createElement("input");
         this.on("propertychange", this.handlePropertyChange.bind(this));
-        this.searchString = options.searchString;
+        this.searchString = options.searchString || "";
         this.input.value = this.searchString;
         this.input.onkeydown = this.handleSearch.bind(this);
         containerDiv.appendChild(this.input);
@@ -28,7 +28,7 @@ export default class SearchControl extends Control {
 
     setMap (map) {
         this.view = map.getView();
-        this.search = new OSGTS({
+        this.searchEngine = new OSGTS({
             searchUrl: this.searchUrl,
             srs: map.getView().getProjection().getCode()
         });
@@ -37,11 +37,9 @@ export default class SearchControl extends Control {
         }
 
         if (this.searchString) {
-            this.handleSearch({keyCode: 13, target: this.input, preventDefault: () => {
-                // noop
-            }, stopPropagation: () => {
-                // noop
-            }});
+            this.search(this.searchString)
+                .then((resp) => this.selectFirstResult(resp))
+                .catch((err) => this.handleSearchError(err));
         }
         super.setMap(map);
     }
@@ -52,21 +50,35 @@ export default class SearchControl extends Control {
         if (e.keyCode === 13) {
             e.preventDefault();
             e.stopPropagation();
-            this.clearResults();
-            if (this.search) {
-                this.search.search(elem.value).then((resp) => this.renderResponse(resp));
-            }
+            this.search(elem.value).catch((err) => this.handleSearchError(err));
         }
+    }
+
+    async search (string) {
+        this.clearResults();
+        if (this.searchEngine === undefined) {
+            return new Promise((resolve, reject) => {
+                reject();
+            });
+        }
+
+        return this.searchEngine.search(string).then((resp) => {
+            this.renderResponse(resp);
+            return resp;
+        });
+    }
+
+    // eslint-disable-next-line no-unused-vars, handle-callback-err
+    handleSearchError (err) {
+        // TODO implement
     }
 
     handlePropertyChange (property) {
         if (property.key === "searchString") {
             this.input.value = this.get("searchString");
-            this.handleSearch({keyCode: 13, target: this.input, preventDefault: () => {
-                // noop
-            }, stopPropagation: () => {
-                // noop
-            }});
+            this.search(this.input.value)
+                .then((resp) => this.selectFirstResult(resp))
+                .catch((err) => this.handleSearchError(err));
         }
     }
 
@@ -76,12 +88,12 @@ export default class SearchControl extends Control {
 
             elem.innerHTML = feature.properties.text;
 
-            elem.onclick = this.showResult.bind(this, feature.properties.text, feature.geometry.coordinates, feature.bbox);
+            elem.onclick = this.showResult.bind(this, feature.properties.text, feature.geometry.coordinates, feature.bbox, false);
             this.resultsContainer.appendChild(elem);
         });
     }
 
-    showResult (text, coords, bbox) {
+    showResult (text, coords, bbox, keepResults = true) {
         const zoom = this.view.getZoomForResolution(this.fallbackResultResolution);
 
         this.input.value = text;
@@ -93,7 +105,20 @@ export default class SearchControl extends Control {
             this.view.setCenter(coords);
             this.view.setZoom(zoom);
         }
-        this.clearResults();
+
+        if (!keepResults) {
+            this.clearResults();
+        }
+
+    }
+
+    selectFirstResult (findings) {
+        const text = findings.features[0].properties.text,
+            coords = findings.features[0].geometry.coordinates,
+            bbox = findings.features[0].bbox,
+            multipleResults = findings.features.length !== 1;
+
+        this.showResult(text, coords, bbox, multipleResults);
     }
 
     clearResults () {
