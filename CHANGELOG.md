@@ -10,6 +10,14 @@ The [Semantic Versioning](https://semver.org/spec/v2.0.0.html) is used.
 ### Removed
 ### Fixed
 
+## 1.3.3
+### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+- image export bug in some browsers by some screen scales
+
 ## 1.3.2
 ### Added
 ### Changed
