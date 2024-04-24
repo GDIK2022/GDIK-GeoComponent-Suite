@@ -30,7 +30,7 @@ describe("Search related", () => {
 
         component.registerGCSMap(map);
 
-        expect(component.control.search.searchUrl).toBe(searchUrl);
+        expect(component.control.searchEngine.searchUrl).toBe(searchUrl);
     });
     describe("attributeChangedCallback tests", () => {
         const component = new GCSSearch();
