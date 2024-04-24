@@ -242,17 +242,32 @@ export default class GCSMap extends HTMLElement {
     }
 
     getImage (mimetype = "image/png") {
-        const canvas = this.map.getTargetElement().querySelectorAll("canvas")[0];
-        let imageData = null;
+        // Introduced workaround for https://stackoverflow.com/questions/77843077/why-does-openlayers-use-several-canvas-elements-for-rendering-when-the-pixel-rat
+        // Revert to single canvas handling when using OpenLayers version with https://github.com/openlayers/openlayers/pull/15344
+
+        const canvasList = this.map.getTargetElement().querySelectorAll("canvas"),
+            targetCanvas = document.createElement("canvas");
+        let targetWidth = 0,
+            targetHeight = 0;
+
+        for (let i = 0; i < canvasList.length; i++) {
+            targetWidth = Math.max(canvasList[i].width, targetWidth);
+            targetHeight = Math.max(canvasList[i].height, targetHeight);
+        }
+
+        targetCanvas.width = targetWidth;
+        targetCanvas.height = targetHeight;
+
+        for (let i = 0; i < canvasList.length; i++) {
+            targetCanvas.getContext("2d").drawImage(canvasList[i], 0, 0);
+        }
 
         try {
-            imageData = canvas.toDataURL(mimetype);
+            return targetCanvas.toDataURL(mimetype);
         }
         catch (e) {
             return null;
         }
-
-        return imageData;
     }
 
     fit (geometry) {
